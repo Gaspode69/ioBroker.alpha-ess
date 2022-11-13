@@ -52,7 +52,7 @@
         "readme": "https://github.com/Gaspode69/ioBroker.alpha-ess/blob/main/README.md",
         "loglevel": "info",
         "mode": "daemon",
-        "type": "energy",
+        "type": "metering",
         "compact": true,
         "connectionType": "cloud",
         "dataSource": "poll",
@@ -70,10 +70,42 @@
             }
         ]
     },
+    "encryptedNative": [
+        "password"
+    ],
+    "protectedNative": [
+        "username",
+        "password"
+    ],
     "native": {
-        "option1": true,
-        "option2": "42"
+        "username": "demo",
+        "password": "",
+        "systemId": "AL2002017100021",
+        "intervalRealtimedata": "30",
+        "intervalSettingsdata": "0"
     },
     "objects": [],
-    "instanceObjects": []
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "Device or service connected",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
+    ]
 }

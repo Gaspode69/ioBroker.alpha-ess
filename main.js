@@ -8,18 +8,51 @@
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 
-// Load your modules here, e.g.:
-// const fs = require("fs");
+const crypto = require('crypto');
+const request = require('request');
+
+/** @typedef {'Realtime'|'Settings'} FETCH_TYPES */
+
+const AUTHPREFIX = 'al8e4s';
+const AUTHCONSTANT = 'LS885ZYDA95JVFQKUIUUUV7PQNODZRDZIS4ERREDS0EED8BCWSS';
+const AUTHSUFFIX = 'ui893ed';
+const BaseURI = 'https://cloud.alphaess.com/';
 
 class AlphaEss extends utils.Adapter {
+
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
      */
     constructor(options) {
+
         super({
             ...options,
             name: 'alpha-ess',
         });
+
+        this.realtimeDataTimeoutHandle = null;
+        this.settingsDataTimeoutHandle = null;
+        this.wrongCredentials = false;
+
+        this.Auth =
+        {
+            username: '',
+            password: '',
+            AccessToken: '',
+            Expires: 0,
+            RefreshToken: ''
+        };
+
+        this.firstRound =
+        {
+            'Realtime': true,
+            'Settings': true
+        };
+
+        this.intervalRealtimedata = 60;
+        this.intervalSettingsdata = 0;
+
+
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
         // this.on('objectChange', this.onObjectChange.bind(this));
@@ -31,57 +64,63 @@ class AlphaEss extends utils.Adapter {
      * Is called when databases are connected and adapter received configuration.
      */
     async onReady() {
-        // Initialize your adapter here
+        // Reset the connection indicator during startup
+        await this.setStateAsync('info.connection', false, true);
 
-        // The adapters config (in the instance object everything under the attribute "native") is accessible via
-        // this.config:
-        this.log.info('config option1: ' + this.config.option1);
-        this.log.info('config option2: ' + this.config.option2);
+        this.intervalSettingsdata = Number(this.config.intervalSettingsdata);
+        if (Number.isNaN(this.intervalSettingsdata)) {
+            this.log.info('Invalid interval for settings data in config');
+            this.intervalSettingsdata = 0;
+        }
 
-        /*
-		For every state in the system there has to be also an object of type state
-		Here a simple template for a boolean variable named "testVariable"
-		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
-		*/
-        await this.setObjectNotExistsAsync('testVariable', {
-            type: 'state',
-            common: {
-                name: 'testVariable',
-                type: 'boolean',
-                role: 'indicator',
-                read: true,
-                write: true,
-            },
-            native: {},
-        });
+        // Ensure minimal poll interval for realtime data and settings data:
+        if (this.intervalRealtimedata != 0 && this.intervalRealtimedata < 10) {
+            this.log.info('Interval for realtime data too small. Setting it to 10 seconds');
+            this.intervalRealtimedata = 10;
+        }
+        if (this.intervalSettingsdata != 0 && this.intervalSettingsdata < 60) {
+            this.log.info('Interval for settings data too small. Setting it to 60 seconds');
+            this.intervalSettingsdata = 60;
+        }
 
-        // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-        this.subscribeStates('testVariable');
-        // You can also add a subscription for multiple states. The following line watches all states starting with "lights."
-        // this.subscribeStates('lights.*');
-        // Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
-        // this.subscribeStates('*');
+        this.log.debug('config username:             ' + this.config.username);
+        this.log.debug('config password:             ' + this.config.password);
+        this.log.debug('config systemId:             ' + this.config.systemId);
+        this.log.debug('config intervalRealtimedata: ' + this.intervalRealtimedata);
+        this.log.debug('config intervalSettingsdata: ' + this.intervalSettingsdata);
 
-        /*
-			setState examples
-			you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
-		*/
-        // the variable testVariable is set to true as command (ack=false)
-        await this.setStateAsync('testVariable', true);
+        this.firstRound['Realtime'] = true;
+        this.firstRound['Settings'] = true;
 
-        // same thing, but the value is flagged "ack"
-        // ack should be always set to true if the value is received from or acknowledged from the target system
-        await this.setStateAsync('testVariable', { val: true, ack: true });
+        this.wrongCredentials = false;
 
-        // same thing, but the state is deleted after 30s (getState will return null afterwards)
-        await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
+        await this.resetAuth();
 
-        // examples for the checkPassword/checkGroup functions
-        let result = await this.checkPasswordAsync('admin', 'iobroker');
-        this.log.info('check user admin pw iobroker: ' + result);
+        if (this.config.password && this.config.username && this.config.systemId && !this.wrongCredentials) {
+            if (this.intervalRealtimedata > 0) {
+                this.fetchRealtimeData();
+            }
+            else {
+                this.log.info('No interval for reading realtime data set! Adapter won\'t fetch realtime data.');
+            }
 
-        result = await this.checkGroupAsync('admin', 'admin');
-        this.log.info('check group user admin group admin: ' + result);
+            if (this.intervalSettingsdata > 0) {
+                // We delay the first start for 5 seconds
+                const _this = this;
+                this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, 5000);
+            }
+            else {
+                this.log.info('No interval for reading settings data set! Adapter won\'t fetch settings data.');
+            }
+        }
+        else {
+            if (this.wrongCredentials) {
+                this.log.info('Alpha ESS Api returns \'Invalid username or password\'! Adapter won\'t try again to fetch any data.');
+            }
+            else {
+                this.log.info('No username, password and/or system ID set! Adapter won\'t fetch any data.');
+            }
+        }
     }
 
     /**
@@ -90,11 +129,15 @@ class AlphaEss extends utils.Adapter {
      */
     onUnload(callback) {
         try {
-            // Here you must clear all timeouts or intervals that may still be active
-            // clearTimeout(timeout1);
-            // clearTimeout(timeout2);
-            // ...
-            // clearInterval(interval1);
+            if (this.realtimeDataTimeoutHandle) {
+                clearTimeout(this.realtimeDataTimeoutHandle);
+                this.realtimeDataTimeoutHandle = null;
+            }
+            if (this.settingsDataTimeoutHandle) {
+                clearTimeout(this.settingsDataTimeoutHandle);
+                this.settingsDataTimeoutHandle = null;
+            }
+            this.resetAuth();
 
             callback();
         } catch (e) {
@@ -151,6 +194,264 @@ class AlphaEss extends utils.Adapter {
     //         }
     //     }
     // }
+
+
+    checkAuthentication() {
+        return new Promise(async (resolve) => {
+            if (this.Auth.Token && this.Auth.RefreshToken && this.Auth.Expires) {
+                if (Date.now() < this.Auth.Expires) {
+                    this.log.debug('Authentication token still valid.');
+                    resolve(true);
+                }
+                else {
+                    // First we try to refresh the token:
+                    if (await this.authenticate(true)) {
+                        resolve(true);
+                    }
+                    else {
+                        // If refresh fails we log in again
+                        resolve(await this.authenticate(false));
+                    }
+                }
+            }
+            else {
+                resolve(await this.authenticate(false));
+            }
+        });
+    }
+
+
+    /**
+     * @param {boolean} [refresh]
+     */
+    async authenticate(refresh) {
+        return new Promise((resolve) => {
+
+            let LoginData = undefined;
+
+            if (refresh) {
+                this.log.info('Try to refresh authentication token');
+                LoginData =
+                {
+                    'username': this.Auth.username,
+                    'accesstoken': this.Auth.Token,
+                    'refreshtokenkey': this.Auth.RefreshToken
+                };
+            }
+            else {
+                this.log.info('Try to login');
+                LoginData =
+                {
+                    'username': this.Auth.username,
+                    'password': this.Auth.password
+                };
+            }
+
+            this.log.debug('Login data: ' + JSON.stringify(LoginData));
+
+            request({
+                gzip: true,
+                method: 'POST',
+                url: BaseURI + 'api/' + (refresh ? 'Account/RefreshToken' : 'Account/Login'
+                ),
+                headers: this.headers(null),
+                body: JSON.stringify(LoginData)
+            }, async (myError, myResponse) => {
+                if (myError) {
+                    this.log.info('Error occurred during authentication: ' + myError);
+                    resolve(false);
+                }
+                else {
+                    let body;
+                    try {
+                        body = JSON.parse(myResponse.body);
+
+                        //log(body);
+
+                        this.Auth.Token = body.data.AccessToken,
+                            this.Auth.Expires = Date.now() + ((body.data.ExpiresIn - 3600) * 1000), // Set expire time one hour earlier to be sure
+                            this.Auth.RefreshToken = body.data.RefreshTokenKey;
+
+                        this.log.info(refresh ? 'Token succesfully refreshed' : 'Login succesful');
+                        this.log.debug('Auth.Token:        ' + this.Auth.Token);
+                        this.log.debug('Auth.RefreshToken: ' + this.Auth.RefreshToken);
+                        this.log.debug('Auth.Expires:      ' + new Date(this.Auth.Expires));
+                        resolve(true);
+                        return;
+                    }
+                    catch (myError) {
+                        if (body && body.code && body.code == 5) {
+                            this.log.info('Incorrect username or password!');
+                            // Todo: this stoppen?
+                        }
+                        else {
+                            this.log.info('Error occurred during authentication: ' + myError);
+                            this.log.debug('Wrong authentication body returned: ' + myResponse.body);
+                        }
+                        resolve(false);
+                    }
+                }
+            });
+        });
+    }
+
+    fetchRealtimeData() {
+        this.log.debug('Fetching realtime data...');
+
+        if (this.realtimeDataTimeoutHandle) {
+            clearTimeout(this.realtimeDataTimeoutHandle);
+            this.realtimeDataTimeoutHandle = null;
+        }
+
+        this.fetchData('Realtime');
+
+        if (!this.realtimeDataTimeoutHandle) {
+            const _this = this;
+            this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, this.intervalRealtimedata * 1000);
+        }
+    }
+
+    fetchSettingsData() {
+        this.log.debug('Fetching settings data...');
+
+        if (this.settingsDataTimeoutHandle) {
+            clearTimeout(this.settingsDataTimeoutHandle);
+            this.settingsDataTimeoutHandle = null;
+        }
+
+        this.fetchData('Settings');
+
+        if (!this.settingsDataTimeoutHandle) {
+            const _this = this;
+            this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, this.intervalSettingsdata * 1000);
+        }
+    }
+
+    /**
+     * @param { FETCH_TYPES } fetchType
+     */
+    async fetchData(fetchType) {
+        if (!await this.checkAuthentication()) {
+            this.log.info('Error in Authorization');
+            this.resetAuth();
+            await this.setStateAsync('info.connection', false, true);
+            return;
+        }
+
+        let uri;
+        if (fetchType === 'Realtime') {
+            uri = BaseURI + 'api/ESS/GetSecondDataBySn?sys_sn=' + this.config.systemId + '&noLoading=true';
+        }
+        else {
+            uri = BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.config.systemId + '&noLoading=true';
+        }
+
+        this.log.debug('Uri: ' + uri);
+
+        request({
+            gzip: true,
+            method: 'GET',
+            url: uri,
+            headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
+        }, async (myError, myResponse) => {
+            if (myError) {
+                this.log.info('Error (1) when fetching data for ' + this.config.systemId + ': ' + myError);
+                this.handleError();
+            }
+            else {
+                let body;
+                try {
+                    this.log.debug('fetchData, body received: ' + myResponse.body);
+
+                    body = JSON.parse(myResponse.body);
+
+                    if (this.firstRound[fetchType]) {
+                        this.log.info('Fetching data structure: ' + fetchType);
+                        for (const [stateName, value] of Object.entries(body.data)) {
+                            await this.setObjectNotExistsAsync(fetchType + '.' + this.osn(stateName), {
+                                type: 'state',
+                                common: {
+                                    name: fetchType + '.' + this.osn(stateName),
+                                    type: 'string',
+                                    role: 'state',
+                                    read: true,
+                                    write: false,
+                                },
+                                native: {},
+                            });
+                        }
+                        this.firstRound[fetchType] = false;
+                    }
+                    for (let [stateName, value] of Object.entries(body.data)) {
+                        this.log.silly(stateName + ':' + value);
+                        await this.setStateChangedAsync(fetchType + '.' + this.osn(stateName), '' + value, true);
+                    }
+
+                    this.setStateAsync('info.connection', true, true);
+                }
+                catch (myError) {
+                    body = { data: null };
+                    this.log.info('Error (1) when fetching data for ' + this.config.systemId + ': ' + myError);
+                }
+
+                if (body.data === null) {
+                    this.log.info('Error (3) when fetching data for ' + this.config.systemId + ': Malformed or empty response!');
+                    this.handleError();
+                }
+            }
+        });
+    }
+
+    async resetAuth() {
+        await this.setStateAsync('info.connection', false, true);
+        return new Promise((resolve) => {
+            this.Auth =
+            {
+                username: this.config.username,
+                password: this.config.password,
+                AccessToken: '',
+                Expires: 0,
+                RefreshToken: ''
+            };
+            this.log.info('Reset authentication data');
+            resolve(true);
+        });
+    }
+
+    /**
+     * @param {any} extraHeaders
+     */
+    headers(extraHeaders) {
+        const timestamp = ((new Date).getTime() / 1000);
+        const data = AUTHCONSTANT + timestamp;
+        const hash = crypto.createHash('sha512').update(data).digest('hex');
+
+        const stdHeaders = {
+            'Content-Type': 'application/json',
+            'Connection': 'keep-alive',
+            'Accept': '*/*',
+            'Accept-Encoding': 'gzip, deflate',
+            'Cache-Control': 'no-cache',
+            'AuthTimestamp': '' + timestamp,
+            'AuthSignature': AUTHPREFIX + hash + AUTHSUFFIX
+        };
+
+        return Object.assign({}, stdHeaders, extraHeaders);
+    }
+
+    async handleError() {
+        // Currently we just reset authentication data to force a re-login in the next round.
+        // Probably to be improved with a retry stategy ...
+        await this.resetAuth();
+    }
+
+
+    /** otimize statename (i.e. remove forbidden characters for state names)
+     * @param {string} sn
+     */
+    osn(sn) {
+        return sn.replace(/[*,?,",',[,\]]/g, '_');
+    }
 }
 
 if (require.main !== module) {

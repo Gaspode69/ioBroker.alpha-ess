@@ -2,14 +2,29 @@
     "i18n": true,
     "type": "panel",
     "items": {
-        "option1": {
-            "type": "checkbox",
-            "label": "option1",
+        "username": {
+            "type": "text",
+            "label": "Username",
             "newLine": true
         },
-        "option2": {
+        "password": {
+            "type": "password",
+            "label": "Password",
+            "newLine": true
+        },
+        "systemId": {
             "type": "text",
-            "label": "option2",
+            "label": "Alpha ESS System ID",
+            "newLine": true
+        },
+        "intervalRealtimedata": {
+            "type": "text",
+            "label": "Interval to read realtime data",
+            "newLine": true
+        },
+        "intervalSettingsdata": {
+            "type": "text",
+            "label": "Interval to read settings data",
             "newLine": true
         }
     }
