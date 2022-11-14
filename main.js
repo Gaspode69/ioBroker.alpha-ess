@@ -68,6 +68,12 @@ class AlphaEss extends utils.Adapter {
             // Reset the connection indicator during startup
             await this.setStateAsync('info.connection', false, true);
 
+            this.intervalRealtimedata = Number(this.config.intervalRealtimedata);
+            if (Number.isNaN(this.intervalRealtimedata)) {
+                this.log.warn('Invalid interval for realtime data in config');
+                this.intervalRealtimedata = 0;
+            }
+
             this.intervalSettingsdata = Number(this.config.intervalSettingsdata);
             if (Number.isNaN(this.intervalSettingsdata)) {
                 this.log.warn('Invalid interval for settings data in config');
@@ -313,7 +319,7 @@ class AlphaEss extends utils.Adapter {
 
         if (!this.realtimeDataTimeoutHandle) {
             const _this = this;
-            this.realtimeDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, this.intervalRealtimedata * 1000);
+            this.realtimeDataTimeoutHandle = setTimeout(function () { _this.fetchRealtimeData(); }, this.intervalRealtimedata * 1000);
         }
     }
 
