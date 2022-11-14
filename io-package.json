@@ -13,7 +13,8 @@
                 "it": "Versione iniziale",
                 "es": "Versión inicial",
                 "pl": "Pierwsze wydanie",
-                "zh-cn": "首次出版"
+                "zh-cn": "首次出版",
+                "uk": "початковий випуск"
             }
         },
         "titleLang": {
@@ -26,7 +27,8 @@
             "it": "Alfa ESS",
             "es": "Alfa ESS",
             "pl": "Alfa ESS",
-            "zh-cn": "阿尔法 ESS"
+            "zh-cn": "阿尔法 ESS",
+            "uk": "Альфа ESS"
         },
         "desc": {
             "en": "Read and write data from and to Alpha ESS systems.",
@@ -38,10 +40,15 @@
             "it": "Leggere e scrivere dati da e verso sistemi Alpha ESS.",
             "es": "Lea y escriba datos desde y hacia los sistemas Alpha ESS.",
             "pl": "Odczytywanie i zapisywanie danych zi do systemów Alpha ESS.",
-            "zh-cn": "在 Alpha ESS 系统中读取和写入数据。"
+            "zh-cn": "在 Alpha ESS 系统中读取和写入数据。",
+            "uk": "Читання та запис даних із систем Alpha ESS і до них."
         },
-        "authors": ["Gaspode <gaspode69@online.de>"],
-        "keywords": ["photovoltaik"],
+        "authors": [
+            "Gaspode <gaspode69@online.de>"
+        ],
+        "keywords": [
+            "photovoltaik"
+        ],
         "license": "MIT",
         "platform": "Javascript/Node.js",
         "main": "main.js",
