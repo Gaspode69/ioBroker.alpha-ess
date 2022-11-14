@@ -313,7 +313,7 @@ class AlphaEss extends utils.Adapter {
 
         if (!this.realtimeDataTimeoutHandle) {
             const _this = this;
-            this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, this.intervalRealtimedata * 1000);
+            this.realtimeDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, this.intervalRealtimedata * 1000);
         }
     }
 
