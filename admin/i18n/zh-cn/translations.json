@@ -1,5 +1,8 @@
 {
-    "alpha-ess adapter settings": "alpha-ess的适配器设置",
-    "option1": "选项1",
-    "option2": "选项2"
+    "alpha-ess adapter settings": "alpha-ess 的适配器设置",
+    "Username": "用户名",
+    "Password": "密码",
+    "Alpha ESS System ID": "Alpha ESS 系统 ID",
+    "Interval to read realtime data": "读取实时数据的间隔 [s]",
+    "Interval to read settings data": "读取设置数据的间隔 [s]"
 }

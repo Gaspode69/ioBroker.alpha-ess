@@ -3,29 +3,44 @@
     "type": "panel",
     "items": {
         "username": {
+            "sm": 5,
             "type": "text",
             "label": "Username",
             "newLine": true
         },
         "password": {
+            "sm": 5,
             "type": "password",
             "label": "Password",
             "newLine": true
         },
         "systemId": {
+            "sm": 5,
             "type": "text",
             "label": "Alpha ESS System ID",
             "newLine": true
         },
+        "enableRealtimedata": {
+            "type": "checkbox",
+            "newLine": true
+        },
         "intervalRealtimedata": {
-            "type": "text",
+            "sm": 5,
+            "min":10,
+            "type": "number",
             "label": "Interval to read realtime data",
+            "newLine": false
+        },
+        "enableSettingsdata": {
+            "type": "checkbox",
             "newLine": true
         },
         "intervalSettingsdata": {
-            "type": "text",
+            "sm": 5,
+            "min":60,
+            "type": "number",
             "label": "Interval to read settings data",
-            "newLine": true
+            "newLine": false
         }
     }
 }

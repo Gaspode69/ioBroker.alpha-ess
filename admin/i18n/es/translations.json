@@ -1,5 +1,8 @@
 {
-    "alpha-ess adapter settings": "Ajustes del adaptador para alpha-ess",
-    "option1": "Opción 1",
-    "option2": "opcion 2"
+    "alpha-ess adapter settings": "Configuración del adaptador para alpha-ess",
+    "Username": "Nombre de usuario",
+    "Password": "Clave",
+    "Alpha ESS System ID": "Identificación del sistema Alpha ESS",
+    "Interval to read realtime data": "Intervalo para leer datos en tiempo real [s]",
+    "Interval to read settings data": "Intervalo para leer los datos de configuración [s]"
 }

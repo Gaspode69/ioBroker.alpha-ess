@@ -80,6 +80,14 @@ class AlphaEss extends utils.Adapter {
                 this.intervalSettingsdata = 0;
             }
 
+            if (!this.config.enableRealtimedata) {
+                this.intervalRealtimedata = 0;
+            }
+
+            if (!this.config.enableSettingsdata) {
+                this.intervalSettingsdata = 0;
+            }
+
             // Ensure minimal poll interval for realtime data and settings data:
             if (this.intervalRealtimedata != 0 && this.intervalRealtimedata < 10) {
                 this.log.warn('Interval for realtime data too small. Setting it to 10 seconds');
@@ -108,7 +116,7 @@ class AlphaEss extends utils.Adapter {
                     this.fetchRealtimeData();
                 }
                 else {
-                    this.log.info('No interval for reading realtime data set! Adapter won\'t fetch realtime data.');
+                    this.log.info('Realtime data disabled! Adapter won\'t fetch realtime data.');
                 }
 
                 if (this.intervalSettingsdata > 0) {
@@ -117,7 +125,7 @@ class AlphaEss extends utils.Adapter {
                     this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, 5000);
                 }
                 else {
-                    this.log.info('No interval for reading settings data set! Adapter won\'t fetch settings data.');
+                    this.log.info('Settings data disabled! Adapter won\'t fetch settings data.');
                 }
             }
             else {

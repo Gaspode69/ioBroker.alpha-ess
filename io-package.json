@@ -87,8 +87,10 @@
         "username": "demo",
         "password": "",
         "systemId": "AL2002017100021",
-        "intervalRealtimedata": "30",
-        "intervalSettingsdata": "0"
+        "enableRealtimedata": true,
+        "intervalRealtimedata": 30,
+        "enableSettingsdata": false,
+        "intervalSettingsdata": 300
     },
     "objects": [],
     "instanceObjects": [
