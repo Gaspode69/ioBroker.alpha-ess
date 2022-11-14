@@ -196,28 +196,26 @@ class AlphaEss extends utils.Adapter {
     // }
 
 
-    checkAuthentication() {
-        return new Promise(async (resolve) => {
-            if (this.Auth.Token && this.Auth.RefreshToken && this.Auth.Expires) {
-                if (Date.now() < this.Auth.Expires) {
-                    this.log.debug('Authentication token still valid.');
-                    resolve(true);
-                }
-                else {
-                    // First we try to refresh the token:
-                    if (await this.authenticate(true)) {
-                        resolve(true);
-                    }
-                    else {
-                        // If refresh fails we log in again
-                        resolve(await this.authenticate(false));
-                    }
-                }
+    async checkAuthentication() {
+        if (this.Auth.Token && this.Auth.RefreshToken && this.Auth.Expires) {
+            if (Date.now() < this.Auth.Expires) {
+                this.log.debug('Authentication token still valid.');
+                return true;
             }
             else {
-                resolve(await this.authenticate(false));
+                // First we try to refresh the token:
+                if (await this.authenticate(true)) {
+                    return true;
+                }
+                else {
+                    // If refresh fails we log in again
+                    return (await this.authenticate(false));
+                }
             }
-        });
+        }
+        else {
+            return (await this.authenticate(false));
+        }
     }
 
 
@@ -268,9 +266,9 @@ class AlphaEss extends utils.Adapter {
 
                         //log(body);
 
-                        this.Auth.Token = body.data.AccessToken,
-                            this.Auth.Expires = Date.now() + ((body.data.ExpiresIn - 3600) * 1000), // Set expire time one hour earlier to be sure
-                            this.Auth.RefreshToken = body.data.RefreshTokenKey;
+                        this.Auth.Token = body.data.AccessToken;
+                        this.Auth.Expires = Date.now() + ((body.data.ExpiresIn - 3600) * 1000); // Set expire time one hour earlier to be sure
+                        this.Auth.RefreshToken = body.data.RefreshTokenKey;
 
                         this.log.info(refresh ? 'Token succesfully refreshed' : 'Login succesful');
                         this.log.debug('Auth.Token:        ' + this.Auth.Token);
@@ -367,7 +365,7 @@ class AlphaEss extends utils.Adapter {
 
                     if (this.firstRound[fetchType]) {
                         this.log.info('Fetching data structure: ' + fetchType);
-                        for (const [stateName, value] of Object.entries(body.data)) {
+                        for (const [stateName] of Object.entries(body.data)) {
                             await this.setObjectNotExistsAsync(fetchType + '.' + this.osn(stateName), {
                                 type: 'state',
                                 common: {
@@ -382,7 +380,7 @@ class AlphaEss extends utils.Adapter {
                         }
                         this.firstRound[fetchType] = false;
                     }
-                    for (let [stateName, value] of Object.entries(body.data)) {
+                    for (const [stateName, value] of Object.entries(body.data)) {
                         this.log.silly(stateName + ':' + value);
                         await this.setStateChangedAsync(fetchType + '.' + this.osn(stateName), '' + value, true);
                     }
