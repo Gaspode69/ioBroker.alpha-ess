@@ -363,7 +363,7 @@ class AlphaEss extends utils.Adapter {
             let uri;
             if (fetchType === 'Realtime') {
                 this.log.debug('Fetching realtime data...');
-                uri = BaseURI + 'api/ESS/GetSecondDataBySn?sys_sn=' + this.config.systemId + '&noLoading=true';
+                uri = BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.config.systemId + '&noLoading=true';
             }
             else {
                 this.log.debug('Fetching settings data...');

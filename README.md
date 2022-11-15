@@ -37,6 +37,9 @@ The password is stored encrypted and must therefore be entered manually: demo
 ### 0.0.1
 * (Gaspode) initial release
 
+### 0.0.2
+* (Gaspode) corrected api call for realtime data
+
 ## License
 MIT License
 
