@@ -291,6 +291,7 @@ class AlphaEss extends utils.Adapter {
         });
 
         this.realtimeDataTimeoutHandle = null;
+        this.energyDataTimeoutHandle = null;
         this.settingsDataTimeoutHandle = null;
         this.wrongCredentials = false;
 
@@ -377,6 +378,10 @@ class AlphaEss extends utils.Adapter {
             if (this.realtimeDataTimeoutHandle) {
                 clearTimeout(this.realtimeDataTimeoutHandle);
                 this.realtimeDataTimeoutHandle = null;
+            }
+            if (this.energyDataTimeoutHandle) {
+                clearTimeout(this.energyDataTimeoutHandle);
+                this.energyDataTimeoutHandle = null;
             }
             if (this.settingsDataTimeoutHandle) {
                 clearTimeout(this.settingsDataTimeoutHandle);
@@ -572,7 +577,10 @@ class AlphaEss extends utils.Adapter {
 
     async fetchEnergyData() {
         try {
-
+            if (this.energyDataTimeoutHandle) {
+                clearTimeout(this.energyDataTimeoutHandle);
+                this.energyDataTimeoutHandle = null;
+            }
             const groupName = 'Energy';
 
             this.log.debug('Fetching energy data...');
@@ -661,7 +669,9 @@ class AlphaEss extends utils.Adapter {
                         await this.setStateChangedAsync(groupName + '.' + this.osn(stateInfo.name), '' + stateInfo.type == 'number' ? Number.parseFloat(value) : value, true);
                     }
                     else {
-                        this.log.info('Skipped object ' + groupName + '.' + stateName + ' with value' + rawValue);
+                        if (!this.createdStates[groupName]) {
+                            this.log.info('Skipped object ' + groupName + '.' + stateName + ' with value ' + rawValue);
+                        }
                     }
                 }
                 if (!this.createdStates[groupName]) {

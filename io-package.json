@@ -116,7 +116,7 @@
         "enableRealtimedata": true,
         "intervalRealtimedata": 30,
         "enableEnergydata": true,
-        "intervalEnergydata": 60,
+        "intervalEnergydata": 300,
         "enableSettingsdata": false,
         "intervalSettingsdata": 300
     },
