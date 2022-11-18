@@ -15,7 +15,8 @@ Depending on your Alpha ESS product, it is possible to get realtime data and con
 
 This adapter is based on the great work of [Charles Gillanders](https://github.com/CharlesGillanders/alphaess), who reverse engineered the Alpha ESS Web API. This is an internal API which may be changed at any time by Alpha ESS.
 
-Currently this adapter creates and updates one state for each data point returned by the Alpha ESS Web API.
+Currently this adapter creates a state with a hopefully self explaining name for each data point, which I was able to identify.\
+All other data points are ignored. During adapter start these data points are logged as info message.
 
 Basically, it is possible to change selected configuration settings using the Alpha ESS Web API. This is not implemented yet.
 
@@ -23,8 +24,9 @@ Basically, it is possible to change selected configuration settings using the Al
 **Username:** The username of your Alpha ESS Account\
 **Password:** The password of your Alpha ESS Account\
 **Alpha ESS System ID:** The system Identifier of your Alpha ESS equipment\
-**Interval to read realtime data:** 0 means disabled. Values smaller than 10 are treated as 10. Unit: seconds.\
-**Interval to read settings data:** 0 means disabled. Values smaller than 60 are treated as 60. Unit: seconds.
+**Interval to read realtime data:** Unit: seconds.\
+**Interval to read energy data:** Unit: seconds.\
+**Interval to read settings data:** Unit: seconds.
 
 It is possible to use a demo account provided by Alpha ESS. The credentials (user name, system id) are set as default values within the adapter.
 The password is stored encrypted and must therefore be entered manually: demo
