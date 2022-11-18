@@ -18,6 +18,266 @@ const AUTHCONSTANT = 'LS885ZYDA95JVFQKUIUUUV7PQNODZRDZIS4ERREDS0EED8BCWSS';
 const AUTHSUFFIX = 'ui893ed';
 const BaseURI = 'https://cloud.alphaess.com/';
 
+const stateList = [{
+    Group: 'Realtime'
+    , states: [
+        {
+            stateName: 'createtime'
+            , name: 'Last_update'
+            , description: 'Last update'
+            , type: 'string'
+            , unit: ''
+            , dayIndex: false
+        }
+        , {
+            stateName: 'pbat'
+            , name: 'Battery_power'
+            , description: 'Battery power'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'pmeter_l1'
+            , name: 'Grid_L1_power'
+            , description: 'Grid L1 power'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'pmeter_l2'
+            , name: 'Grid_L2_power'
+            , description: 'Grid L2 power'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'pmeter_l3'
+            , name: 'Grid_L3_power'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'ppv1'
+            , name: 'PV_string_1_power'
+            , description: 'PV string 1 power'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'ppv2'
+            , name: 'PV_string_2_power'
+            , description: 'PV string 2 power'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'ppv3'
+            , name: 'PV_string_3_power'
+            , description: 'PV string 3 power'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'ppv4'
+            , name: 'PV_string_4_power'
+            , description: 'PV string 4 power'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'preal_l1'
+            , name: 'Inverter_L1_power'
+            , description: 'Inverter L1 power'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'preal_l2'
+            , name: 'Inverter_L2_power'
+            , description: 'Inverter L2 power'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'preal_l3'
+            , name: 'Inverter_L3_power'
+            , description: 'Inverter L3 power'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'soc'
+            , name: 'Bttery_SOC'
+            , description: 'State of charge'
+            , type: 'number'
+            , unit: '%'
+            , dayIndex: false
+        }]
+},
+{
+    Group: 'Settings'
+    , states: [
+        {
+            stateName: 'ctr_dis'
+            , name: 'Battery_Discharging_enabled'
+            , description: 'Battery Discharging enabled'
+            , type: 'number'
+            , unit: ''
+            , dayIndex: false
+        }
+        , {
+            stateName: 'time_disf1a'
+            , name: 'Discharging_period_1_start'
+            , description: 'Discharging period 1 start'
+            , type: 'string'
+            , unit: ''
+            , dayIndex: false
+        }
+        , {
+            stateName: 'time_dise1a'
+            , name: 'Discharging_period_1_end'
+            , description: 'Discharging period 1 end'
+            , type: 'string'
+            , unit: ''
+            , dayIndex: false
+        }
+        , {
+            stateName: 'time_disf2a'
+            , name: 'Discharging_period_2_start'
+            , description: 'Discharging period 2 start'
+            , type: 'string'
+            , unit: ''
+            , dayIndex: false
+        }
+        , {
+            stateName: 'time_dise2a'
+            , name: 'Discharging_period_2_end'
+            , description: 'Discharging period 2 end'
+            , type: 'string'
+            , unit: ''
+            , dayIndex: false
+        }
+        , {
+            stateName: 'bat_use_cap'
+            , name: 'Discharging_Cutoff_SOC'
+            , description: 'Discharging Cutoff SOC'
+            , type: 'number'
+            , unit: '%'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'grid_charge'
+            , name: 'Battery_Charging_enabled'
+            , description: 'Battery Charging enabled'
+            , type: 'number'
+            , unit: ''
+            , dayIndex: false
+        }
+        , {
+            stateName: 'time_chaf1a'
+            , name: 'Charging_period_1_start'
+            , description: 'Charging period 1 start'
+            , type: 'string'
+            , unit: ''
+            , dayIndex: false
+        }
+        , {
+            stateName: 'time_chae1a'
+            , name: 'Charging_period 1_end'
+            , description: 'Charging period 1 end'
+            , type: 'string'
+            , unit: ''
+            , dayIndex: false
+        }
+        , {
+            stateName: 'time_chaf2a'
+            , name: 'Charging_period_2_start'
+            , description: 'Charging period 2 start'
+            , type: 'string'
+            , unit: ''
+            , dayIndex: false
+        }
+        , {
+            stateName: 'time_chae2a'
+            , name: 'Charging_period_2_end'
+            , description: 'Charging period 2 end'
+            , type: 'string'
+            , unit: ''
+            , dayIndex: false
+        }
+        , {
+            stateName: 'bat_high_cap'
+            , name: 'Charging_stopps_at_SOC'
+            , description: 'Charging stopps at SOC'
+            , type: 'number'
+            , unit: '%'
+            , dayIndex: false
+        }]
+},
+{
+    Group: 'Energy'
+    , states: [
+        {
+            stateName: 'Eloads'
+            , name: 'Consumption_today'
+            , description: 'Today\'s consumption'
+            , type: 'number'
+            , unit: 'kWh'
+            , dayIndex: true
+        }
+        , {
+            stateName: 'Epvs'
+            , name: 'Generation_today'
+            , description: 'Today\'s generation'
+            , type: 'number'
+            , unit: 'kWh'
+            , dayIndex: true
+        }
+        , {
+            stateName: 'Eoutputs'
+            , name: 'Grid_feed_in_today'
+            , description: 'Today\'s grid feed in'
+            , type: 'number'
+            , unit: 'kWh'
+            , dayIndex: true
+        }
+        , {
+            stateName: 'Einputs'
+            , name: 'Grid_consumption_today'
+            , description: 'Today\'s grid consumption'
+            , type: 'number'
+            , unit: 'kWh'
+            , dayIndex: true
+        }
+        , {
+            stateName: 'ECharge'
+            , name: 'Battery_charge_today'
+            , description: 'Today\'s battery charge'
+            , type: 'number'
+            , unit: 'kWh'
+            , dayIndex: true
+        }
+        , {
+            stateName: 'EDischarge'
+            , name: 'Battery_discharge_today'
+            , description: 'Today\'s battery discharge'
+            , type: 'number'
+            , unit: 'kWh'
+            , dayIndex: true
+        }]
+}];
+
 class AlphaEss extends utils.Adapter {
 
     /**
@@ -43,15 +303,8 @@ class AlphaEss extends utils.Adapter {
             RefreshToken: ''
         };
 
-        this.firstRound =
-        {
-            'Realtime': true,
-            'Settings': true
-        };
-
-        this.intervalRealtimedata = 60;
-        this.intervalSettingsdata = 0;
-
+        this.createdStates = [];
+        this.results = {};
 
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
@@ -68,61 +321,39 @@ class AlphaEss extends utils.Adapter {
             // Reset the connection indicator during startup
             await this.setStateAsync('info.connection', false, true);
 
-            this.intervalRealtimedata = Number(this.config.intervalRealtimedata);
-            if (Number.isNaN(this.intervalRealtimedata)) {
-                this.log.warn('Invalid interval for realtime data in config');
-                this.intervalRealtimedata = 0;
-            }
-
-            this.intervalSettingsdata = Number(this.config.intervalSettingsdata);
-            if (Number.isNaN(this.intervalSettingsdata)) {
-                this.log.warn('Invalid interval for settings data in config');
-                this.intervalSettingsdata = 0;
-            }
-
-            if (!this.config.enableRealtimedata) {
-                this.intervalRealtimedata = 0;
-            }
-
-            if (!this.config.enableSettingsdata) {
-                this.intervalSettingsdata = 0;
-            }
-
-            // Ensure minimal poll interval for realtime data and settings data:
-            if (this.intervalRealtimedata != 0 && this.intervalRealtimedata < 10) {
-                this.log.warn('Interval for realtime data too small. Setting it to 10 seconds');
-                this.intervalRealtimedata = 10;
-            }
-            if (this.intervalSettingsdata != 0 && this.intervalSettingsdata < 60) {
-                this.log.warn('Interval for settings data too small. Setting it to 60 seconds');
-                this.intervalSettingsdata = 60;
-            }
-
             this.log.debug('config username:             ' + this.config.username);
             this.log.debug('config password:             ' + this.config.password);
             this.log.debug('config systemId:             ' + this.config.systemId);
-            this.log.debug('config intervalRealtimedata: ' + this.intervalRealtimedata);
-            this.log.debug('config intervalSettingsdata: ' + this.intervalSettingsdata);
-
-            this.firstRound['Realtime'] = true;
-            this.firstRound['Settings'] = true;
+            this.log.debug('config intervalRealtimedata: ' + this.config.intervalRealtimedata);
+            this.log.debug('config intervalSettingsdata: ' + this.config.intervalSettingsdata);
+            this.log.debug('config enableRealtimedata:   ' + this.config.enableRealtimedata);
+            this.log.debug('config enableSettingsdata:   ' + this.config.enableSettingsdata);
 
             this.wrongCredentials = false;
 
             await this.resetAuth();
 
             if (this.config.password && this.config.username && this.config.systemId) {
-                if (this.intervalRealtimedata > 0) {
+                if (this.config.enableRealtimedata) {
                     this.fetchRealtimeData();
                 }
                 else {
                     this.log.info('Realtime data disabled! Adapter won\'t fetch realtime data.');
                 }
 
-                if (this.intervalSettingsdata > 0) {
-                    // We delay the first start for 5 seconds
+                if (this.config.enableEnergydata) {
+                    // We delay the first start for 3 seconds
                     const _this = this;
-                    this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, 5000);
+                    this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchEnergyData(); }, 3000);
+                }
+                else {
+                    this.log.info('Energydata data disabled! Adapter won\'t fetch energy data.');
+                }
+
+                if (this.config.enableSettingsdata) {
+                    // We delay the first start for 6 seconds
+                    const _this = this;
+                    this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, 6000);
                 }
                 else {
                     this.log.info('Settings data disabled! Adapter won\'t fetch settings data.');
@@ -208,7 +439,6 @@ class AlphaEss extends utils.Adapter {
     //         }
     //     }
     // }
-
 
     async checkAuthentication() {
         try {
@@ -317,117 +547,251 @@ class AlphaEss extends utils.Adapter {
         }
     }
 
-    fetchRealtimeData() {
-        if (this.realtimeDataTimeoutHandle) {
-            clearTimeout(this.realtimeDataTimeoutHandle);
-            this.realtimeDataTimeoutHandle = null;
+    async fetchRealtimeData() {
+        try {
+            if (this.realtimeDataTimeoutHandle) {
+                clearTimeout(this.realtimeDataTimeoutHandle);
+                this.realtimeDataTimeoutHandle = null;
+            }
+
+            const groupName = 'Realtime';
+
+            this.log.debug('Fetching realtime data...');
+            const body = await this.getData(BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.config.systemId + '&noLoading=true');
+            this.createAndUpdateStates(groupName, body.data);
+
+            if (!this.realtimeDataTimeoutHandle) {
+                const _this = this;
+                this.realtimeDataTimeoutHandle = setTimeout(function () { _this.fetchRealtimeData(); }, this.config.intervalRealtimedata * 1000);
+            }
         }
-
-        this.fetchData('Realtime');
-
-        if (!this.realtimeDataTimeoutHandle) {
-            const _this = this;
-            this.realtimeDataTimeoutHandle = setTimeout(function () { _this.fetchRealtimeData(); }, this.intervalRealtimedata * 1000);
+        catch (e) {
+            this.log.error('fetchRealtimeData Exception occurred: ' + e);
         }
     }
 
-    fetchSettingsData() {
-        if (this.settingsDataTimeoutHandle) {
-            clearTimeout(this.settingsDataTimeoutHandle);
-            this.settingsDataTimeoutHandle = null;
+    async fetchEnergyData() {
+        try {
+
+            const groupName = 'Energy';
+
+            this.log.debug('Fetching energy data...');
+
+            const dt = new Date();
+            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-01');
+            const json = {
+                'statisticBy': 'month',
+                'sDate': dts,
+                'isOEM': 0,
+                'sn': this.config.systemId,
+                'userId': '',
+            };
+            const body = await this.postData(BaseURI + 'api/Statistic/SystemStatistic', JSON.stringify(json));
+            this.createAndUpdateStates(groupName, body.data);
+
+            if (!this.energyDataTimeoutHandle) {
+                const _this = this;
+                this.energyDataTimeoutHandle = setTimeout(function () { _this.fetchEnergyData(); }, this.config.intervalEnergydata * 1000);
+            }
         }
+        catch (e) {
+            this.log.error('fetchEnergyData Exception occurred: ' + e);
+        }
+    }
 
-        this.fetchData('Settings');
+    async fetchSettingsData() {
+        try {
+            if (this.settingsDataTimeoutHandle) {
+                clearTimeout(this.settingsDataTimeoutHandle);
+                this.settingsDataTimeoutHandle = null;
+            }
 
-        if (!this.settingsDataTimeoutHandle) {
-            const _this = this;
-            this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, this.intervalSettingsdata * 1000);
+            const groupName = 'Settings';
+
+            this.log.debug('Fetching settings data...');
+            const body = await this.getData(BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.config.systemId + '&noLoading=true');
+            this.createAndUpdateStates(groupName, body.data);
+
+            if (!this.settingsDataTimeoutHandle) {
+                const _this = this;
+                this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, this.config.intervalSettingsdata * 1000);
+            }
+        }
+        catch (e) {
+            this.log.error('fetchSettingsData Exception occurred: ' + e);
         }
     }
 
     /**
-     * @param { FETCH_TYPES } fetchType
+     * @param {string} groupName
+     * @param {{ [s: string]: any; }} data
      */
-    async fetchData(fetchType) {
+    async createAndUpdateStates(groupName, data,) {
         try {
+            if (data) {
+                const idx = new Date().getDate() - 1;
+
+                for (const [stateName, rawValue] of Object.entries(data)) {
+                    const stateInfo = this.getStateInfo(groupName, stateName);
+                    if (stateInfo) {
+                        if (!this.createdStates[groupName]) {
+                            await this.setObjectNotExistsAsync(groupName + '.' + this.osn(stateInfo.name), {
+                                type: 'state',
+                                common: {
+                                    name: groupName + '.' + this.osn(stateInfo.name),
+                                    type: stateInfo.type,
+                                    role: 'state',
+                                    // @ts-ignore
+                                    read: true,
+                                    write: false,
+                                    unit: stateInfo.unit,
+                                    desc: stateInfo.description,
+                                },
+                                native: {},
+                            });
+                        }
+                        let value = '';
+                        if (stateInfo.dayIndex) {
+                            value = rawValue[idx];
+                        }
+                        else {
+                            value = rawValue;
+                        }
+                        this.log.silly(groupName + '.' + this.osn(stateInfo.name) + ':' + value);
+                        await this.setStateChangedAsync(groupName + '.' + this.osn(stateInfo.name), '' + stateInfo.type == 'number' ? Number.parseFloat(value) : value, true);
+                    }
+                    else {
+                        this.log.info('Skipped object ' + groupName + '.' + stateName + ' with value' + rawValue);
+                    }
+                }
+                if (!this.createdStates[groupName]) {
+                    this.log.info('Created states for : ' + groupName);
+                    this.createdStates[groupName] = true;
+                }
+            }
+        }
+        catch (e) {
+            this.log.error('createAndUpdateStates Exception occurred: ' + e);
+        }
+    }
+
+    /**
+     * @param {string} uri
+     */
+    async getData(uri) {
+        try {
+            let body = { data: null };
+
             if (this.wrongCredentials) {
-                return;
+                return body;
             }
             if (!await this.checkAuthentication()) {
                 this.log.warn('Error in Authorization');
                 this.resetAuth();
                 await this.setStateAsync('info.connection', false, true);
-                return;
+                return body;
             }
 
-            let uri;
-            if (fetchType === 'Realtime') {
-                this.log.debug('Fetching realtime data...');
-                uri = BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.config.systemId + '&noLoading=true';
-            }
-            else {
-                this.log.debug('Fetching settings data...');
-                uri = BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.config.systemId + '&noLoading=true';
-            }
+            this.log.debug('getData Uri: ' + uri);
 
-            this.log.debug('Uri: ' + uri);
-
-            request({
-                gzip: true,
-                method: 'GET',
-                url: uri,
-                headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
-            }, async (myError, myResponse) => {
-                try {
-                    if (myError) {
-                        this.log.error('Error (1) when fetching data for ' + this.config.systemId + ': ' + myError);
-                        this.handleError();
-                    }
-                    else {
-                        let body;
-                        try {
-                            this.log.debug('fetchData, body received: ' + myResponse.body);
-
-                            body = JSON.parse(myResponse.body);
-
-                            if (this.firstRound[fetchType]) {
-                                this.log.info('Fetching data structure: ' + fetchType);
-                                for (const [stateName] of Object.entries(body.data)) {
-                                    await this.setObjectNotExistsAsync(fetchType + '.' + this.osn(stateName), {
-                                        type: 'state',
-                                        common: {
-                                            name: fetchType + '.' + this.osn(stateName),
-                                            type: 'string',
-                                            role: 'state',
-                                            read: true,
-                                            write: false,
-                                        },
-                                        native: {},
-                                    });
-                                }
-                                this.firstRound[fetchType] = false;
-                            }
-                            for (const [stateName, value] of Object.entries(body.data)) {
-                                this.log.silly(stateName + ':' + value);
-                                await this.setStateChangedAsync(fetchType + '.' + this.osn(stateName), '' + value, true);
-                            }
-
-                            this.setStateAsync('info.connection', true, true);
-                        }
-                        catch (myError) {
-                            body = { data: null };
+            return new Promise((resolve) => {
+                request({
+                    gzip: true,
+                    method: 'GET',
+                    url: uri,
+                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
+                }, (myError, myResponse) => {
+                    try {
+                        if (myError) {
                             this.log.error('Error (1) when fetching data for ' + this.config.systemId + ': ' + myError);
-                        }
-
-                        if (body.data === null) {
-                            this.log.error('Error (3) when fetching data for ' + this.config.systemId + ': Malformed or empty response!');
                             this.handleError();
                         }
+                        else {
+                            try {
+                                this.log.debug('getData, body received: ' + myResponse.body);
+
+                                body = JSON.parse(myResponse.body);
+                                this.setStateAsync('info.connection', true, true);
+                            }
+                            catch (myError) {
+                                this.log.error('Error (1) when fetching data for ' + this.config.systemId + ': ' + myError);
+                            }
+
+                            if (body.data === null) {
+                                this.log.error('Error (3) when fetching data for ' + this.config.systemId + ': Malformed or empty response!');
+                                this.handleError();
+                            }
+                        }
                     }
-                }
-                catch (e) {
-                    this.log.error('fetchData Exception occurred: ' + e);
-                }
+                    catch (e) {
+                        this.log.error('getData Exception occurred: ' + e);
+                    }
+
+                    resolve(body);
+                });
+            });
+        }
+        catch (e) {
+            this.log.error('fetchData Exception occurred: ' + e);
+        }
+    }
+
+    /**
+    * @param {string} uri
+    * @param {string} sndBody
+    */
+    async postData(uri, sndBody) {
+        try {
+            let body = { data: null };
+
+            if (this.wrongCredentials) {
+                return body;
+            }
+            if (!await this.checkAuthentication()) {
+                this.log.warn('Error in Authorization');
+                this.resetAuth();
+                await this.setStateAsync('info.connection', false, true);
+                return body;
+            }
+
+            this.log.debug('getData Uri: ' + uri);
+
+            return new Promise((resolve) => {
+                request({
+                    gzip: true,
+                    method: 'POST',
+                    url: uri,
+                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token }),
+                    body: sndBody
+                }, (myError, myResponse) => {
+                    try {
+                        if (myError) {
+                            this.log.error('Error (1) when fetching data for ' + this.config.systemId + ': ' + myError);
+                            this.handleError();
+                        }
+                        else {
+                            try {
+                                this.log.debug('getData, body received: ' + myResponse.body);
+
+                                body = JSON.parse(myResponse.body);
+                                this.setStateAsync('info.connection', true, true);
+                            }
+                            catch (myError) {
+                                this.log.error('Error (1) when fetching data for ' + this.config.systemId + ': ' + myError);
+                            }
+
+                            if (body.data === null) {
+                                this.log.error('Error (3) when fetching data for ' + this.config.systemId + ': Malformed or empty response!');
+                                this.handleError();
+                            }
+                        }
+                    }
+                    catch (e) {
+                        this.log.error('getData Exception occurred: ' + e);
+                    }
+
+                    resolve(body);
+                });
             });
         }
         catch (e) {
@@ -488,6 +852,29 @@ class AlphaEss extends utils.Adapter {
         }
     }
 
+    /**
+     * @param {string} Group
+     * @param {string} StateName
+     */
+    getStateInfo(Group, StateName) {
+        try {
+            const gidx = stateList.findIndex(i => i.Group == Group);
+            if (gidx >= 0) {
+                const currentList = stateList[gidx].states;
+                const sidx = currentList.findIndex(i => i.stateName == StateName);
+                if (sidx >= 0) {
+                    return currentList[sidx];
+                }
+            }
+            return null;
+        }
+        catch (e) {
+            this.log.error('handleError Exception occurred: ' + e);
+            this.log.info('Group: ' + Group);
+            this.log.info('Statename: ' + StateName);
+            return null;
+        }
+    }
 
     /** otimize statename (i.e. remove forbidden characters for state names)
      * @param {string} sn

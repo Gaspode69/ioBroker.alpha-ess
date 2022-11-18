@@ -4,5 +4,6 @@
     "Password": "Пароль",
     "Alpha ESS System ID": "Идентификатор системы Alpha ESS",
     "Interval to read realtime data": "Интервал для чтения данных в реальном времени [с]",
-    "Interval to read settings data": "Интервал чтения данных настроек [с]"
+    "Interval to read settings data": "Интервал чтения данных настроек [с]",
+    "Interval to read energy data": "Интервал для чтения данных об энергии [с]"
 }

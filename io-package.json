@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alpha-ess",
-        "version": "0.0.2",
+        "version": "0.0.3",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -15,6 +15,32 @@
                 "pl": "Pierwsze wydanie",
                 "zh-cn": "首次出版",
                 "uk": "початковий випуск"
+            },
+            "0.0.2": {
+                "en": "Corrected api call for realtime data",
+                "de": "API-Aufruf für Echtzeitdaten korrigiert",
+                "ru": "Исправлен вызов API для данных в реальном времени.",
+                "pt": "Chamada de API corrigida para dados em tempo real",
+                "nl": "Gecorrigeerde api-oproep voor realtime gegevens",
+                "fr": "Appel api corrigé pour les données en temps réel",
+                "it": "Corretta la chiamata API per i dati in tempo reale",
+                "es": "Llamada api corregida para datos en tiempo real",
+                "pl": "Poprawione wywołanie API dla danych w czasie rzeczywistym",
+                "uk": "Виправлений виклик API для даних у реальному часі",
+                "zh-cn": "更正了实时数据的 api 调用"
+            },
+            "0.0.3": {
+                "en": "Refactored API calls, added dayly energy values",
+                "de": "Überarbeitete API-Aufrufe, tägliche Energiewerte hinzugefügt",
+                "ru": "Рефакторинг вызовов API, добавлены ежедневные значения энергии",
+                "pt": "Chamadas de API refatoradas, valores diários de energia adicionados",
+                "nl": "API-oproepen aangepast, dagelijkse energiewaarden toegevoegd",
+                "fr": "Appels API refactorisés, valeurs énergétiques quotidiennes ajoutées",
+                "it": "Chiamate API refactoring, valori energetici giornalieri aggiunti",
+                "es": "Llamadas API refactorizadas, valores de energía diarios agregados",
+                "pl": "Zrefaktoryzowane wywołania API, dodane dzienne wartości energii",
+                "uk": "Перероблено виклики API, додано добові значення енергії",
+                "zh-cn": "重构 API 调用，添加每日能量值"
             }
         },
         "titleLang": {
@@ -89,6 +115,8 @@
         "systemId": "AL2002017100021",
         "enableRealtimedata": true,
         "intervalRealtimedata": 30,
+        "enableEnergydata": true,
+        "intervalEnergydata": 60,
         "enableSettingsdata": false,
         "intervalSettingsdata": 300
     },

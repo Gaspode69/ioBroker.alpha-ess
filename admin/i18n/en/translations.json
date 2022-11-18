@@ -4,5 +4,7 @@
     "Password": "Password",
     "Alpha ESS System ID": "Alpha ESS System ID",
     "Interval to read realtime data": "Interval to read realtime data [s]",
+    "Interval to read energy data": "Interval to read energy data [s]",
     "Interval to read settings data": "Interval to read settings data [s]"
+    
 }

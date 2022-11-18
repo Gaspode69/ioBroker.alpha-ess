@@ -40,6 +40,9 @@ The password is stored encrypted and must therefore be entered manually: demo
 ### 0.0.2
 * (Gaspode) corrected api call for realtime data
 
+### 0.0.2
+* (Gaspode) refactored API calls, added dayly energy values
+
 ## License
 MIT License
 

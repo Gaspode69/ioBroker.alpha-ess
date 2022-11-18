@@ -4,5 +4,6 @@
     "Password": "密码",
     "Alpha ESS System ID": "Alpha ESS 系统 ID",
     "Interval to read realtime data": "读取实时数据的间隔 [s]",
-    "Interval to read settings data": "读取设置数据的间隔 [s]"
+    "Interval to read settings data": "读取设置数据的间隔 [s]",
+    "Interval to read energy data": "读取能量数据的间隔[s]"
 }
