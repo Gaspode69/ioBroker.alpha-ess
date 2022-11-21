@@ -9,9 +9,7 @@
 const utils = require('@iobroker/adapter-core');
 
 const crypto = require('crypto');
-const request = require('request');
-
-/** @typedef {'Realtime'|'Settings'} FETCH_TYPES */
+const axios = require('axios');
 
 const AUTHPREFIX = 'al8e4s';
 const AUTHCONSTANT = 'LS885ZYDA95JVFQKUIUUUV7PQNODZRDZIS4ERREDS0EED8BCWSS';
@@ -320,7 +318,7 @@ class AlphaEss extends utils.Adapter {
     async onReady() {
         try {
             // Reset the connection indicator during startup
-            await this.setStateAsync('info.connection', false, true);
+            await this.setStateChangedAsync('info.connection', false, true);
 
             this.log.debug('config username:             ' + this.config.username);
             this.log.debug('config password:             ' + this.config.password);
@@ -329,6 +327,7 @@ class AlphaEss extends utils.Adapter {
             this.log.debug('config intervalSettingsdata: ' + this.config.intervalSettingsdata);
             this.log.debug('config enableRealtimedata:   ' + this.config.enableRealtimedata);
             this.log.debug('config enableSettingsdata:   ' + this.config.enableSettingsdata);
+            this.log.debug('config updateUnchangedStates:' + this.config.updateUnchangedStates);
 
             this.wrongCredentials = false;
 
@@ -478,77 +477,60 @@ class AlphaEss extends utils.Adapter {
      */
     async authenticate(refresh) {
         try {
-            return new Promise((resolve) => {
 
-                let LoginData = undefined;
+            let LoginData = undefined;
 
-                if (refresh) {
-                    this.log.info('Try to refresh authentication token');
-                    LoginData =
-                    {
-                        'username': this.Auth.username,
-                        'accesstoken': this.Auth.Token,
-                        'refreshtokenkey': this.Auth.RefreshToken
-                    };
+            if (refresh) {
+                this.log.info('Try to refresh authentication token');
+                LoginData =
+                {
+                    'username': this.Auth.username,
+                    'accesstoken': this.Auth.Token,
+                    'refreshtokenkey': this.Auth.RefreshToken
+                };
+            }
+            else {
+                this.log.info('Try to login');
+                LoginData =
+                {
+                    'username': this.Auth.username,
+                    'password': this.Auth.password
+                };
+            }
+
+            this.log.debug('Login data: ' + JSON.stringify(LoginData));
+
+            // @ts-ignore
+            const res = await axios.post(BaseURI + 'api/' + (refresh ? 'Account/RefreshToken' : 'Account/Login'),
+                JSON.stringify(LoginData),
+                { headers: this.headers(null) });
+
+            if (res.status == 200) {
+                if (res.data && res.data.code && res.data.code == 5) {
+                    this.log.error('Alpha ESS Api returns \'Invalid username or password\'! Adapter won\'t try again to fetch any data.');
+                    this.wrongCredentials = true;
+                    return false;
                 }
                 else {
-                    this.log.info('Try to login');
-                    LoginData =
-                    {
-                        'username': this.Auth.username,
-                        'password': this.Auth.password
-                    };
+                    this.Auth.Token = res.data.data.AccessToken;
+                    this.Auth.Expires = Date.now() + ((res.data.data.ExpiresIn - 3600) * 1000); // Set expire time one hour earlier to be sure
+                    this.Auth.RefreshToken = res.data.data.RefreshTokenKey;
+
+                    this.log.info(refresh ? 'Token succesfully refreshed' : 'Login succesful');
+                    this.log.debug('Auth.Token:        ' + this.Auth.Token);
+                    this.log.debug('Auth.RefreshToken: ' + this.Auth.RefreshToken);
+                    this.log.debug('Auth.Expires:      ' + new Date(this.Auth.Expires));
+                    return true;
                 }
-
-                this.log.debug('Login data: ' + JSON.stringify(LoginData));
-
-                request({
-                    gzip: true,
-                    method: 'POST',
-                    url: BaseURI + 'api/' + (refresh ? 'Account/RefreshToken' : 'Account/Login'
-                    ),
-                    headers: this.headers(null),
-                    body: JSON.stringify(LoginData)
-                }, async (myError, myResponse) => {
-                    if (myError) {
-                        this.log.warn('Error occurred during authentication: ' + myError);
-                        resolve(false);
-                    }
-                    else {
-                        let body;
-                        try {
-                            body = JSON.parse(myResponse.body);
-
-                            //log(body);
-
-                            this.Auth.Token = body.data.AccessToken;
-                            this.Auth.Expires = Date.now() + ((body.data.ExpiresIn - 3600) * 1000); // Set expire time one hour earlier to be sure
-                            this.Auth.RefreshToken = body.data.RefreshTokenKey;
-
-                            this.log.info(refresh ? 'Token succesfully refreshed' : 'Login succesful');
-                            this.log.debug('Auth.Token:        ' + this.Auth.Token);
-                            this.log.debug('Auth.RefreshToken: ' + this.Auth.RefreshToken);
-                            this.log.debug('Auth.Expires:      ' + new Date(this.Auth.Expires));
-                            resolve(true);
-                            return;
-                        }
-                        catch (myError) {
-                            if (body && body.code && body.code == 5) {
-                                this.log.error('Alpha ESS Api returns \'Invalid username or password\'! Adapter won\'t try again to fetch any data.');
-                                this.wrongCredentials = true;
-                            }
-                            else {
-                                this.log.warn('Error occurred during authentication: ' + myError);
-                                this.log.debug('Wrong authentication body returned: ' + myResponse.body);
-                            }
-                            resolve(false);
-                        }
-                    }
-                });
-            });
+            }
+            else {
+                this.log.info('Error during authentication, status: ' + res.status);
+                return false;
+            }
         }
         catch (e) {
             this.log.error('authenticate Exception occurred: ' + e);
+            return false;
         }
     }
 
@@ -666,7 +648,12 @@ class AlphaEss extends utils.Adapter {
                             value = rawValue;
                         }
                         this.log.silly(groupName + '.' + this.osn(stateInfo.name) + ':' + value);
-                        await this.setStateChangedAsync(groupName + '.' + this.osn(stateInfo.name), '' + stateInfo.type == 'number' ? Number.parseFloat(value) : value, true);
+                        if (this.config.updateUnchangedStates) {
+                            await this.setStateAsync(groupName + '.' + this.osn(stateInfo.name), '' + stateInfo.type == 'number' ? Number.parseFloat(value) : value, true);
+                        }
+                        else {
+                            await this.setStateChangedAsync(groupName + '.' + this.osn(stateInfo.name), '' + stateInfo.type == 'number' ? Number.parseFloat(value) : value, true);
+                        }
                     }
                     else {
                         if (!this.createdStates[groupName]) {
@@ -689,60 +676,38 @@ class AlphaEss extends utils.Adapter {
      * @param {string} uri
      */
     async getData(uri) {
+        const emptyBody = { data: null };
         try {
-            let body = { data: null };
-
             if (this.wrongCredentials) {
-                return body;
+                return emptyBody;
             }
             if (!await this.checkAuthentication()) {
                 this.log.warn('Error in Authorization');
-                this.resetAuth();
-                await this.setStateAsync('info.connection', false, true);
-                return body;
+                await this.resetAuth();
+                await this.setStateChangedAsync('info.connection', false, true);
+                return emptyBody;
             }
 
             this.log.debug('getData Uri: ' + uri);
 
-            return new Promise((resolve) => {
-                request({
-                    gzip: true,
-                    method: 'GET',
-                    url: uri,
-                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
-                }, (myError, myResponse) => {
-                    try {
-                        if (myError) {
-                            this.log.error('Error (1) when fetching data for ' + this.config.systemId + ': ' + myError);
-                            this.handleError();
-                        }
-                        else {
-                            try {
-                                this.log.debug('getData, body received: ' + myResponse.body);
+            // @ts-ignore
+            const res = await axios.get(uri,
+                { headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token }) });
 
-                                body = JSON.parse(myResponse.body);
-                                this.setStateAsync('info.connection', true, true);
-                            }
-                            catch (myError) {
-                                this.log.error('Error (1) when fetching data for ' + this.config.systemId + ': ' + myError);
-                            }
-
-                            if (body.data === null) {
-                                this.log.error('Error (3) when fetching data for ' + this.config.systemId + ': Malformed or empty response!');
-                                this.handleError();
-                            }
-                        }
-                    }
-                    catch (e) {
-                        this.log.error('getData Exception occurred: ' + e);
-                    }
-
-                    resolve(body);
-                });
-            });
+            if (res.status == 200) {
+                await this.setStateChangedAsync('info.connection', true, true);
+                return res.data;
+            }
+            else {
+                this.log.error('Error when fetching data for ' + this.config.systemId + ', status code: ' + res.status);
+                this.handleError();
+                return emptyBody;
+            }
         }
         catch (e) {
             this.log.error('fetchData Exception occurred: ' + e);
+            this.handleError();
+            return emptyBody;
         }
     }
 
@@ -751,67 +716,45 @@ class AlphaEss extends utils.Adapter {
     * @param {string} sndBody
     */
     async postData(uri, sndBody) {
+        const emptyBody = { data: null };
         try {
-            let body = { data: null };
-
             if (this.wrongCredentials) {
-                return body;
+                return emptyBody;
             }
             if (!await this.checkAuthentication()) {
                 this.log.warn('Error in Authorization');
-                this.resetAuth();
-                await this.setStateAsync('info.connection', false, true);
-                return body;
+                await this.resetAuth();
+                await this.setStateChangedAsync('info.connection', false, true);
+                return emptyBody;
             }
 
-            this.log.debug('getData Uri: ' + uri);
+            this.log.debug('postData Uri: ' + uri);
 
-            return new Promise((resolve) => {
-                request({
-                    gzip: true,
-                    method: 'POST',
-                    url: uri,
-                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token }),
-                    body: sndBody
-                }, (myError, myResponse) => {
-                    try {
-                        if (myError) {
-                            this.log.error('Error (1) when fetching data for ' + this.config.systemId + ': ' + myError);
-                            this.handleError();
-                        }
-                        else {
-                            try {
-                                this.log.debug('getData, body received: ' + myResponse.body);
+            // @ts-ignore
+            const res = await axios.post(uri,
+                sndBody,
+                { headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token }) });
 
-                                body = JSON.parse(myResponse.body);
-                                this.setStateAsync('info.connection', true, true);
-                            }
-                            catch (myError) {
-                                this.log.error('Error (1) when fetching data for ' + this.config.systemId + ': ' + myError);
-                            }
-
-                            if (body.data === null) {
-                                this.log.error('Error (3) when fetching data for ' + this.config.systemId + ': Malformed or empty response!');
-                                this.handleError();
-                            }
-                        }
-                    }
-                    catch (e) {
-                        this.log.error('getData Exception occurred: ' + e);
-                    }
-
-                    resolve(body);
-                });
-            });
+            if (res.status == 200) {
+                await this.setStateChangedAsync('info.connection', true, true);
+                return res.data;
+            }
+            else {
+                this.log.error('Error when fetching data for ' + this.config.systemId + ', status code: ' + res.status);
+                this.handleError();
+                return emptyBody;
+            }
         }
         catch (e) {
             this.log.error('fetchData Exception occurred: ' + e);
+            this.handleError();
+            return emptyBody;
         }
     }
 
     async resetAuth() {
         try {
-            await this.setStateAsync('info.connection', false, true);
+            await this.setStateChangedAsync('info.connection', false, true);
             return new Promise((resolve) => {
                 this.Auth =
                 {
@@ -827,6 +770,7 @@ class AlphaEss extends utils.Adapter {
         }
         catch (e) {
             this.log.error('resetAuth Exception occurred: ' + e);
+            return false;
         }
     }
 

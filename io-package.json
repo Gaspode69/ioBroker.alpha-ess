@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alpha-ess",
-        "version": "0.0.3",
+        "version": "0.0.4",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -41,6 +41,19 @@
                 "pl": "Zrefaktoryzowane wywołania API, dodane dzienne wartości energii",
                 "uk": "Перероблено виклики API, додано добові значення енергії",
                 "zh-cn": "重构 API 调用，添加每日能量值"
+            },
+            "0.0.4": {
+                "en": "Use axios to perform Alpha ESS API calls instead of deprecated request\nNew option \"Update unchanged states\"",
+                "de": "Verwenden von axios für Alpha-ESS-API-Aufrufe anstelle von veraltetem request\nNeue Option \"Unveränderte Zustände aktualisieren\"",
+                "ru": "Используйте axios для выполнения вызовов API Alpha ESS вместо устаревшего запроса\nНовая опция «Обновить неизмененные состояния»",
+                "pt": "Use axios para executar chamadas de API Alpha ESS em vez de solicitação obsoleta\nNova opção \"Atualizar estados inalterados\"",
+                "nl": "Gebruik axios om Alpha ESS API-aanroepen uit te voeren in plaats van verouderde verzoeken\nNieuwe optie \"Update ongewijzigde statussen\"",
+                "fr": "Utilisez axios pour effectuer des appels d'API Alpha ESS au lieu d'une requête obsolète\nNouvelle option \"Mettre à jour les états inchangés\"",
+                "it": "Usa axios per eseguire chiamate API Alpha ESS invece di richieste obsolete\nNuova opzione \"Aggiorna stati invariati\"",
+                "es": "Use axios para realizar llamadas API Alpha ESS en lugar de solicitudes obsoletas\nNueva opción \"Actualizar estados sin cambios\"",
+                "pl": "Użyj axios do wykonywania wywołań API Alpha ESS zamiast przestarzałych żądań\nNowa opcja „Aktualizuj niezmienione stany”",
+                "uk": "Використовуйте axios для виконання викликів API Alpha ESS замість застарілого запиту\nНова опція «Оновити незмінені стани»",
+                "zh-cn": "使用 axios 执行 Alpha ESS API 调用而不是弃用的请求\n新选项“更新未更改的状态”"
             }
         },
         "titleLang": {
@@ -118,7 +131,8 @@
         "enableEnergydata": true,
         "intervalEnergydata": 300,
         "enableSettingsdata": false,
-        "intervalSettingsdata": 300
+        "intervalSettingsdata": 300,
+        "updateUnchangedStates": false
     },
     "objects": [],
     "instanceObjects": [

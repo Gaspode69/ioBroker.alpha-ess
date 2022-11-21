@@ -5,5 +5,6 @@
     "Alpha ESS System ID": "ID sistema Alpha ESS",
     "Interval to read realtime data": "Intervallo per leggere i dati in tempo reale [s]",
     "Interval to read settings data": "Intervallo per leggere i dati delle impostazioni [s]",
-    "Interval to read energy data": "Intervallo di lettura dei dati energetici [s]"
+    "Interval to read energy data": "Intervallo di lettura dei dati energetici [s]",
+    "Update unchanged states": "Aggiorna stati invariati"
 }

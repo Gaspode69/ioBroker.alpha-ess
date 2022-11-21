@@ -45,6 +45,10 @@ The password is stored encrypted and must therefore be entered manually: demo
 ### 0.0.3
 * (Gaspode) refactored API calls, added daily energy values
 
+### 0.0.4
+* (Gaspode) use axios to perform Alpha ESS API calls instead of deprecated request
+* (Gaspode) New option "Update unchanged states" added
+
 ## License
 MIT License
 

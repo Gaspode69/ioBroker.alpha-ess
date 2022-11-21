@@ -52,6 +52,11 @@
             "type": "number",
             "label": "Interval to read settings data",
             "newLine": false
+        },
+        "updateUnchangedStates": {
+            "type": "checkbox",
+            "label": "Update unchanged states",
+            "newLine": true
         }
     }
 }

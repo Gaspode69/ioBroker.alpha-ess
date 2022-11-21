@@ -5,5 +5,6 @@
     "Alpha ESS System ID": "Alpha ESS-systeem-ID",
     "Interval to read realtime data": "Interval om realtime gegevens te lezen [s]",
     "Interval to read settings data": "Interval voor het lezen van instellingengegevens [s]",
-    "Interval to read energy data": "Interval om energiegegevens te lezen [s]"
+    "Interval to read energy data": "Interval om energiegegevens te lezen [s]",
+    "Update unchanged states": "Update ongewijzigde statussen"
 }
