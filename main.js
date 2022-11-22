@@ -21,6 +21,7 @@ const stateList = [{
     , states: [
         {
             stateName: 'createtime'
+            , role: 'date'
             , id: 'Last_update'
             , name: 'Last update'
             , type: 'string'
@@ -29,6 +30,7 @@ const stateList = [{
         }
         , {
             stateName: 'pbat'
+            , role: 'value.power'
             , id: 'Battery_power'
             , name: 'Battery power'
             , type: 'number'
@@ -37,6 +39,7 @@ const stateList = [{
         }
         , {
             stateName: 'pmeter_l1'
+            , role: 'value.power'
             , id: 'Grid_L1_power'
             , name: 'Grid L1 power'
             , type: 'number'
@@ -45,6 +48,7 @@ const stateList = [{
         }
         , {
             stateName: 'pmeter_l2'
+            , role: 'value.power'
             , id: 'Grid_L2_power'
             , name: 'Grid L2 power'
             , type: 'number'
@@ -53,6 +57,7 @@ const stateList = [{
         }
         , {
             stateName: 'pmeter_l3'
+            , role: 'value.power'
             , id: 'Grid_L3_power'
             , name: 'Grid L3 power'
             , type: 'number'
@@ -61,6 +66,7 @@ const stateList = [{
         }
         , {
             stateName: 'ppv1'
+            , role: 'value.power'
             , id: 'PV_string_1_power'
             , name: 'PV string 1 power'
             , type: 'number'
@@ -69,6 +75,7 @@ const stateList = [{
         }
         , {
             stateName: 'ppv2'
+            , role: 'value.power'
             , id: 'PV_string_2_power'
             , name: 'PV string 2 power'
             , type: 'number'
@@ -77,6 +84,7 @@ const stateList = [{
         }
         , {
             stateName: 'ppv3'
+            , role: 'value.power'
             , id: 'PV_string_3_power'
             , name: 'PV string 3 power'
             , type: 'number'
@@ -85,6 +93,7 @@ const stateList = [{
         }
         , {
             stateName: 'ppv4'
+            , role: 'value.power'
             , id: 'PV_string_4_power'
             , name: 'PV string 4 power'
             , type: 'number'
@@ -93,6 +102,7 @@ const stateList = [{
         }
         , {
             stateName: 'preal_l1'
+            , role: 'value.power'
             , id: 'Inverter_L1_power'
             , name: 'Inverter L1 power'
             , type: 'number'
@@ -101,6 +111,7 @@ const stateList = [{
         }
         , {
             stateName: 'preal_l2'
+            , role: 'value.power'
             , id: 'Inverter_L2_power'
             , name: 'Inverter L2 power'
             , type: 'number'
@@ -109,6 +120,7 @@ const stateList = [{
         }
         , {
             stateName: 'preal_l3'
+            , role: 'value.power'
             , id: 'Inverter_L3_power'
             , name: 'Inverter L3 power'
             , type: 'number'
@@ -117,6 +129,7 @@ const stateList = [{
         }
         , {
             stateName: 'soc'
+            , role: 'value.battery'
             , id: 'Bttery_SOC'
             , name: 'State of charge'
             , type: 'number'
@@ -129,14 +142,16 @@ const stateList = [{
     , states: [
         {
             stateName: 'ctr_dis'
+            , role: 'switch.enable'
             , id: 'Battery_Discharging_enabled'
             , name: 'Battery Discharging enabled'
-            , type: 'number'
+            , type: 'boolean'
             , unit: ''
             , dayIndex: false
         }
         , {
             stateName: 'time_disf1a'
+            , role: 'value'
             , id: 'Discharging_period_1_start'
             , name: 'Discharging period 1 start'
             , type: 'string'
@@ -145,6 +160,7 @@ const stateList = [{
         }
         , {
             stateName: 'time_dise1a'
+            , role: 'value'
             , id: 'Discharging_period_1_end'
             , name: 'Discharging period 1 end'
             , type: 'string'
@@ -153,6 +169,7 @@ const stateList = [{
         }
         , {
             stateName: 'time_disf2a'
+            , role: 'value'
             , id: 'Discharging_period_2_start'
             , name: 'Discharging period 2 start'
             , type: 'string'
@@ -161,6 +178,7 @@ const stateList = [{
         }
         , {
             stateName: 'time_dise2a'
+            , role: 'value'
             , id: 'Discharging_period_2_end'
             , name: 'Discharging period 2 end'
             , type: 'string'
@@ -169,6 +187,7 @@ const stateList = [{
         }
         , {
             stateName: 'bat_use_cap'
+            , role: 'value'
             , id: 'Discharging_Cutoff_SOC'
             , name: 'Discharging Cutoff SOC'
             , type: 'number'
@@ -177,14 +196,16 @@ const stateList = [{
         }
         , {
             stateName: 'grid_charge'
+            , role: 'switch.enable'
             , id: 'Battery_Charging_enabled'
             , name: 'Battery Charging enabled'
-            , type: 'number'
+            , type: 'boolean'
             , unit: ''
             , dayIndex: false
         }
         , {
             stateName: 'time_chaf1a'
+            , role: 'value'
             , id: 'Charging_period_1_start'
             , name: 'Charging period 1 start'
             , type: 'string'
@@ -193,6 +214,7 @@ const stateList = [{
         }
         , {
             stateName: 'time_chae1a'
+            , role: 'value'
             , id: 'Charging_period 1_end'
             , name: 'Charging period 1 end'
             , type: 'string'
@@ -201,6 +223,7 @@ const stateList = [{
         }
         , {
             stateName: 'time_chaf2a'
+            , role: 'value'
             , id: 'Charging_period_2_start'
             , name: 'Charging period 2 start'
             , type: 'string'
@@ -209,6 +232,7 @@ const stateList = [{
         }
         , {
             stateName: 'time_chae2a'
+            , role: 'value'
             , id: 'Charging_period_2_end'
             , name: 'Charging period 2 end'
             , type: 'string'
@@ -217,6 +241,7 @@ const stateList = [{
         }
         , {
             stateName: 'bat_high_cap'
+            , role: 'value'
             , id: 'Charging_stopps_at_SOC'
             , name: 'Charging stopps at SOC'
             , type: 'number'
@@ -229,6 +254,7 @@ const stateList = [{
     , states: [
         {
             stateName: 'Eloads'
+            , role: 'value.power.consumption '
             , id: 'Consumption_today'
             , name: 'Today\'s consumption'
             , type: 'number'
@@ -237,6 +263,7 @@ const stateList = [{
         }
         , {
             stateName: 'Epvs'
+            , role: 'value.power.consumption '
             , id: 'Generation_today'
             , name: 'Today\'s generation'
             , type: 'number'
@@ -245,6 +272,7 @@ const stateList = [{
         }
         , {
             stateName: 'Eoutputs'
+            , role: 'value.power.consumption '
             , id: 'Grid_feed_in_today'
             , name: 'Today\'s grid feed in'
             , type: 'number'
@@ -253,6 +281,7 @@ const stateList = [{
         }
         , {
             stateName: 'Einputs'
+            , role: 'value.power.consumption '
             , id: 'Grid_consumption_today'
             , name: 'Today\'s grid consumption'
             , type: 'number'
@@ -261,6 +290,7 @@ const stateList = [{
         }
         , {
             stateName: 'ECharge'
+            , role: 'value.power.consumption '
             , id: 'Battery_charge_today'
             , name: 'Today\'s battery charge'
             , type: 'number'
@@ -269,6 +299,7 @@ const stateList = [{
         }
         , {
             stateName: 'EDischarge'
+            , role: 'value.power.consumption '
             , id: 'Battery_discharge_today'
             , name: 'Today\'s battery discharge'
             , type: 'number'
@@ -629,14 +660,14 @@ class AlphaEss extends utils.Adapter {
                             await this.setObjectNotExistsAsync(groupName + '.' + this.osn(stateInfo.id), {
                                 type: 'state',
                                 common: {
-                                    name: stateInfo.name,
-                                    type: stateInfo.type,
-                                    role: 'state',
+                                    name: stateInfo.name
+                                    , type: stateInfo.type
+                                    , role: stateInfo.role
                                     // @ts-ignore
-                                    read: true,
-                                    write: false,
-                                    unit: stateInfo.unit,
-                                    desc: stateInfo.description,
+                                    , read: true
+                                    , write: false
+                                    , unit: stateInfo.unit
+                                    , desc: stateInfo.description
                                 },
                                 native: {},
                             });
@@ -649,11 +680,23 @@ class AlphaEss extends utils.Adapter {
                             value = rawValue;
                         }
                         this.log.silly(groupName + '.' + this.osn(stateInfo.id) + ':' + value);
+                        let tvalue;
+                        switch (stateInfo.type) {
+                            case 'number':
+                                tvalue = Number.parseFloat(value);
+                                break;
+                            case 'boolean':
+                                tvalue = Number.parseInt(value) != 0;
+                                break;
+                            default:
+                                tvalue = value;
+                        }
+
                         if (this.config.updateUnchangedStates) {
-                            await this.setStateAsync(groupName + '.' + this.osn(stateInfo.id), '' + stateInfo.type == 'number' ? Number.parseFloat(value) : value, true);
+                            await this.setStateAsync(groupName + '.' + this.osn(stateInfo.id), tvalue, true);
                         }
                         else {
-                            await this.setStateChangedAsync(groupName + '.' + this.osn(stateInfo.id), '' + stateInfo.type == 'number' ? Number.parseFloat(value) : value, true);
+                            await this.setStateChangedAsync(groupName + '.' + this.osn(stateInfo.id), tvalue, true);
                         }
                     }
                     else {
