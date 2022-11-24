@@ -49,6 +49,11 @@ The password is stored encrypted and must therefore be entered manually: demo
 * (Gaspode) use axios to perform Alpha ESS API calls instead of deprecated request
 * (Gaspode) New option "Update unchanged states" added
 
+### 0.0.5
+* (Gaspode) Use meaningful state names
+* (Gaspode) Use suitable state roles
+* (Gaspode) Added new state for Alpha ESS settings parameter 'upsReserve'
+
 ## License
 MIT License
 

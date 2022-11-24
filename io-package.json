@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alpha-ess",
-        "version": "0.0.4",
+        "version": "0.0.5",
         "news": {
             "0.0.1": {
                 "en": "initial release",
@@ -54,6 +54,19 @@
                 "pl": "Użyj axios do wykonywania wywołań API Alpha ESS zamiast przestarzałych żądań\nNowa opcja „Aktualizuj niezmienione stany”",
                 "uk": "Використовуйте axios для виконання викликів API Alpha ESS замість застарілого запиту\nНова опція «Оновити незмінені стани»",
                 "zh-cn": "使用 axios 执行 Alpha ESS API 调用而不是弃用的请求\n新选项“更新未更改的状态”"
+            },
+            "0.0.5": {
+                "en": "Use meaningful state names\nUse suitable state roles\nAdded new state for Alpha ESS settings parameter 'upsReserve'",
+                "de": "Verwenden aussagekräftiger Zustandsnamen\nVerwenden geeigneter Zustandsrollen\nNeuer Status für Alpha ESS-Einstellungsparameter „upsReserve“ hinzugefügt",
+                "ru": "Используйте осмысленные имена состояний\nИспользуйте подходящие государственные роли\nДобавлено новое состояние для параметра настроек Alpha ESS «upsReserve».",
+                "pt": "Use nomes de estado significativos\nUse funções de estado adequadas\nAdicionado novo estado para o parâmetro de configurações Alpha ESS 'upsReserve'",
+                "nl": "Gebruik betekenisvolle staatsnamen\nGebruik geschikte staatsrollen\nNieuwe status toegevoegd voor Alpha ESS-instellingenparameter 'upsReserve'",
+                "fr": "Utiliser des noms d'état significatifs\nUtiliser des rôles d'état appropriés\nAjout d'un nouvel état pour le paramètre de paramètres Alpha ESS 'upsReserve'",
+                "it": "Usa nomi di stato significativi\nUtilizzare ruoli statali adeguati\nAggiunto nuovo stato per il parametro delle impostazioni Alpha ESS 'upsReserve'",
+                "es": "Use nombres de estado significativos\nUsar roles de estado adecuados\nSe agregó un nuevo estado para el parámetro de configuración Alpha ESS 'upsReserve'",
+                "pl": "Używaj znaczących nazw stanów\nUżyj odpowiednich ról państwowych\nDodano nowy stan parametru ustawień Alpha ESS „upsReserve”",
+                "uk": "Використовуйте значущі назви держав\nВикористовуйте відповідні державні ролі\nДодано новий стан для параметра налаштувань Alpha ESS 'upsReserve'",
+                "zh-cn": "使用有意义的状态名称\n使用合适的状态角色\n为 Alpha ESS 设置参数“upsReserve”添加了新状态"
             }
         },
         "titleLang": {
