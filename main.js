@@ -247,6 +247,15 @@ const stateList = [{
             , type: 'number'
             , unit: '%'
             , dayIndex: false
+        }
+        , {
+            stateName: 'upsReserve'
+            , role: 'switch.enable'
+            , id: 'UPS_Reserve'
+            , name: 'Load to cut-off SOC from grid after power failure'
+            , type: 'boolean'
+            , unit: ''
+            , dayIndex: false
         }]
 },
 {
