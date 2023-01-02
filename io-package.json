@@ -1,174 +1,187 @@
 {
-    "common": {
-        "name": "alpha-ess",
-        "version": "0.0.5",
-        "news": {
-            "0.0.1": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "zh-cn": "首次出版",
-                "uk": "початковий випуск"
-            },
-            "0.0.2": {
-                "en": "Corrected api call for realtime data",
-                "de": "API-Aufruf für Echtzeitdaten korrigiert",
-                "ru": "Исправлен вызов API для данных в реальном времени.",
-                "pt": "Chamada de API corrigida para dados em tempo real",
-                "nl": "Gecorrigeerde api-oproep voor realtime gegevens",
-                "fr": "Appel api corrigé pour les données en temps réel",
-                "it": "Corretta la chiamata API per i dati in tempo reale",
-                "es": "Llamada api corregida para datos en tiempo real",
-                "pl": "Poprawione wywołanie API dla danych w czasie rzeczywistym",
-                "uk": "Виправлений виклик API для даних у реальному часі",
-                "zh-cn": "更正了实时数据的 api 调用"
-            },
-            "0.0.3": {
-                "en": "Refactored API calls, added dayly energy values",
-                "de": "Überarbeitete API-Aufrufe, tägliche Energiewerte hinzugefügt",
-                "ru": "Рефакторинг вызовов API, добавлены ежедневные значения энергии",
-                "pt": "Chamadas de API refatoradas, valores diários de energia adicionados",
-                "nl": "API-oproepen aangepast, dagelijkse energiewaarden toegevoegd",
-                "fr": "Appels API refactorisés, valeurs énergétiques quotidiennes ajoutées",
-                "it": "Chiamate API refactoring, valori energetici giornalieri aggiunti",
-                "es": "Llamadas API refactorizadas, valores de energía diarios agregados",
-                "pl": "Zrefaktoryzowane wywołania API, dodane dzienne wartości energii",
-                "uk": "Перероблено виклики API, додано добові значення енергії",
-                "zh-cn": "重构 API 调用，添加每日能量值"
-            },
-            "0.0.4": {
-                "en": "Use axios to perform Alpha ESS API calls instead of deprecated request\nNew option \"Update unchanged states\"",
-                "de": "Verwenden von axios für Alpha-ESS-API-Aufrufe anstelle von veraltetem request\nNeue Option \"Unveränderte Zustände aktualisieren\"",
-                "ru": "Используйте axios для выполнения вызовов API Alpha ESS вместо устаревшего запроса\nНовая опция «Обновить неизмененные состояния»",
-                "pt": "Use axios para executar chamadas de API Alpha ESS em vez de solicitação obsoleta\nNova opção \"Atualizar estados inalterados\"",
-                "nl": "Gebruik axios om Alpha ESS API-aanroepen uit te voeren in plaats van verouderde verzoeken\nNieuwe optie \"Update ongewijzigde statussen\"",
-                "fr": "Utilisez axios pour effectuer des appels d'API Alpha ESS au lieu d'une requête obsolète\nNouvelle option \"Mettre à jour les états inchangés\"",
-                "it": "Usa axios per eseguire chiamate API Alpha ESS invece di richieste obsolete\nNuova opzione \"Aggiorna stati invariati\"",
-                "es": "Use axios para realizar llamadas API Alpha ESS en lugar de solicitudes obsoletas\nNueva opción \"Actualizar estados sin cambios\"",
-                "pl": "Użyj axios do wykonywania wywołań API Alpha ESS zamiast przestarzałych żądań\nNowa opcja „Aktualizuj niezmienione stany”",
-                "uk": "Використовуйте axios для виконання викликів API Alpha ESS замість застарілого запиту\nНова опція «Оновити незмінені стани»",
-                "zh-cn": "使用 axios 执行 Alpha ESS API 调用而不是弃用的请求\n新选项“更新未更改的状态”"
-            },
-            "0.0.5": {
-                "en": "Use meaningful state names\nUse suitable state roles\nAdded new state for Alpha ESS settings parameter 'upsReserve'",
-                "de": "Verwenden aussagekräftiger Zustandsnamen\nVerwenden geeigneter Zustandsrollen\nNeuer Status für Alpha ESS-Einstellungsparameter „upsReserve“ hinzugefügt",
-                "ru": "Используйте осмысленные имена состояний\nИспользуйте подходящие государственные роли\nДобавлено новое состояние для параметра настроек Alpha ESS «upsReserve».",
-                "pt": "Use nomes de estado significativos\nUse funções de estado adequadas\nAdicionado novo estado para o parâmetro de configurações Alpha ESS 'upsReserve'",
-                "nl": "Gebruik betekenisvolle staatsnamen\nGebruik geschikte staatsrollen\nNieuwe status toegevoegd voor Alpha ESS-instellingenparameter 'upsReserve'",
-                "fr": "Utiliser des noms d'état significatifs\nUtiliser des rôles d'état appropriés\nAjout d'un nouvel état pour le paramètre de paramètres Alpha ESS 'upsReserve'",
-                "it": "Usa nomi di stato significativi\nUtilizzare ruoli statali adeguati\nAggiunto nuovo stato per il parametro delle impostazioni Alpha ESS 'upsReserve'",
-                "es": "Use nombres de estado significativos\nUsar roles de estado adecuados\nSe agregó un nuevo estado para el parámetro de configuración Alpha ESS 'upsReserve'",
-                "pl": "Używaj znaczących nazw stanów\nUżyj odpowiednich ról państwowych\nDodano nowy stan parametru ustawień Alpha ESS „upsReserve”",
-                "uk": "Використовуйте значущі назви держав\nВикористовуйте відповідні державні ролі\nДодано новий стан для параметра налаштувань Alpha ESS 'upsReserve'",
-                "zh-cn": "使用有意义的状态名称\n使用合适的状态角色\n为 Alpha ESS 设置参数“upsReserve”添加了新状态"
-            }
-        },
-        "titleLang": {
-            "en": "Alpha ESS",
-            "de": "Alpha-ESS",
-            "ru": "Альфа ЭСС",
-            "pt": "Alfa ESS",
-            "nl": "Alfa ESS",
-            "fr": "Alpha SSE",
-            "it": "Alfa ESS",
-            "es": "Alfa ESS",
-            "pl": "Alfa ESS",
-            "zh-cn": "阿尔法 ESS",
-            "uk": "Альфа ESS"
-        },
-        "desc": {
-            "en": "Read and write data from and to Alpha ESS systems.",
-            "de": "Lesen und schreiben Sie Daten von und zu Alpha ESS-Systemen.",
-            "ru": "Чтение и запись данных из и в системы Alpha ESS.",
-            "pt": "Ler e gravar dados de e para sistemas Alpha ESS.",
-            "nl": "Gegevens lezen en schrijven van en naar Alpha ESS-systemen.",
-            "fr": "Lire et écrire des données depuis et vers les systèmes Alpha ESS.",
-            "it": "Leggere e scrivere dati da e verso sistemi Alpha ESS.",
-            "es": "Lea y escriba datos desde y hacia los sistemas Alpha ESS.",
-            "pl": "Odczytywanie i zapisywanie danych zi do systemów Alpha ESS.",
-            "zh-cn": "在 Alpha ESS 系统中读取和写入数据。",
-            "uk": "Читання та запис даних із систем Alpha ESS і до них."
-        },
-        "authors": [
-            "Gaspode <gaspode69@online.de>"
-        ],
-        "keywords": [
-            "photovoltaik"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "main": "main.js",
-        "icon": "alpha-ess.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Gaspode69/ioBroker.alpha-ess/main/admin/alpha-ess.png",
-        "readme": "https://github.com/Gaspode69/ioBroker.alpha-ess/blob/main/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "metering",
-        "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "poll",
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=3.3.22"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=5.1.13"
-            }
-        ]
+  "common": {
+    "name": "alpha-ess",
+    "version": "0.0.6-beta.0",
+    "news": {
+      "0.0.6-beta.0": {
+        "en": "...",
+        "de": "...",
+        "ru": "...",
+        "pt": "...",
+        "nl": "...",
+        "fr": "...",
+        "it": "...",
+        "es": "...",
+        "pl": "...",
+        "uk": "...",
+        "zh-cn": "..."
+      },
+      "0.0.1": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "zh-cn": "首次出版",
+        "uk": "початковий випуск"
+      },
+      "0.0.2": {
+        "en": "Corrected api call for realtime data",
+        "de": "API-Aufruf für Echtzeitdaten korrigiert",
+        "ru": "Исправлен вызов API для данных в реальном времени.",
+        "pt": "Chamada de API corrigida para dados em tempo real",
+        "nl": "Gecorrigeerde api-oproep voor realtime gegevens",
+        "fr": "Appel api corrigé pour les données en temps réel",
+        "it": "Corretta la chiamata API per i dati in tempo reale",
+        "es": "Llamada api corregida para datos en tiempo real",
+        "pl": "Poprawione wywołanie API dla danych w czasie rzeczywistym",
+        "uk": "Виправлений виклик API для даних у реальному часі",
+        "zh-cn": "更正了实时数据的 api 调用"
+      },
+      "0.0.3": {
+        "en": "Refactored API calls, added dayly energy values",
+        "de": "Überarbeitete API-Aufrufe, tägliche Energiewerte hinzugefügt",
+        "ru": "Рефакторинг вызовов API, добавлены ежедневные значения энергии",
+        "pt": "Chamadas de API refatoradas, valores diários de energia adicionados",
+        "nl": "API-oproepen aangepast, dagelijkse energiewaarden toegevoegd",
+        "fr": "Appels API refactorisés, valeurs énergétiques quotidiennes ajoutées",
+        "it": "Chiamate API refactoring, valori energetici giornalieri aggiunti",
+        "es": "Llamadas API refactorizadas, valores de energía diarios agregados",
+        "pl": "Zrefaktoryzowane wywołania API, dodane dzienne wartości energii",
+        "uk": "Перероблено виклики API, додано добові значення енергії",
+        "zh-cn": "重构 API 调用，添加每日能量值"
+      },
+      "0.0.4": {
+        "en": "Use axios to perform Alpha ESS API calls instead of deprecated request\nNew option \"Update unchanged states\"",
+        "de": "Verwenden von axios für Alpha-ESS-API-Aufrufe anstelle von veraltetem request\nNeue Option \"Unveränderte Zustände aktualisieren\"",
+        "ru": "Используйте axios для выполнения вызовов API Alpha ESS вместо устаревшего запроса\nНовая опция «Обновить неизмененные состояния»",
+        "pt": "Use axios para executar chamadas de API Alpha ESS em vez de solicitação obsoleta\nNova opção \"Atualizar estados inalterados\"",
+        "nl": "Gebruik axios om Alpha ESS API-aanroepen uit te voeren in plaats van verouderde verzoeken\nNieuwe optie \"Update ongewijzigde statussen\"",
+        "fr": "Utilisez axios pour effectuer des appels d'API Alpha ESS au lieu d'une requête obsolète\nNouvelle option \"Mettre à jour les états inchangés\"",
+        "it": "Usa axios per eseguire chiamate API Alpha ESS invece di richieste obsolete\nNuova opzione \"Aggiorna stati invariati\"",
+        "es": "Use axios para realizar llamadas API Alpha ESS en lugar de solicitudes obsoletas\nNueva opción \"Actualizar estados sin cambios\"",
+        "pl": "Użyj axios do wykonywania wywołań API Alpha ESS zamiast przestarzałych żądań\nNowa opcja „Aktualizuj niezmienione stany”",
+        "uk": "Використовуйте axios для виконання викликів API Alpha ESS замість застарілого запиту\nНова опція «Оновити незмінені стани»",
+        "zh-cn": "使用 axios 执行 Alpha ESS API 调用而不是弃用的请求\n新选项“更新未更改的状态”"
+      },
+      "0.0.5": {
+        "en": "Use meaningful state names\nUse suitable state roles\nAdded new state for Alpha ESS settings parameter 'upsReserve'",
+        "de": "Verwenden aussagekräftiger Zustandsnamen\nVerwenden geeigneter Zustandsrollen\nNeuer Status für Alpha ESS-Einstellungsparameter „upsReserve“ hinzugefügt",
+        "ru": "Используйте осмысленные имена состояний\nИспользуйте подходящие государственные роли\nДобавлено новое состояние для параметра настроек Alpha ESS «upsReserve».",
+        "pt": "Use nomes de estado significativos\nUse funções de estado adequadas\nAdicionado novo estado para o parâmetro de configurações Alpha ESS 'upsReserve'",
+        "nl": "Gebruik betekenisvolle staatsnamen\nGebruik geschikte staatsrollen\nNieuwe status toegevoegd voor Alpha ESS-instellingenparameter 'upsReserve'",
+        "fr": "Utiliser des noms d'état significatifs\nUtiliser des rôles d'état appropriés\nAjout d'un nouvel état pour le paramètre de paramètres Alpha ESS 'upsReserve'",
+        "it": "Usa nomi di stato significativi\nUtilizzare ruoli statali adeguati\nAggiunto nuovo stato per il parametro delle impostazioni Alpha ESS 'upsReserve'",
+        "es": "Use nombres de estado significativos\nUsar roles de estado adecuados\nSe agregó un nuevo estado para el parámetro de configuración Alpha ESS 'upsReserve'",
+        "pl": "Używaj znaczących nazw stanów\nUżyj odpowiednich ról państwowych\nDodano nowy stan parametru ustawień Alpha ESS „upsReserve”",
+        "uk": "Використовуйте значущі назви держав\nВикористовуйте відповідні державні ролі\nДодано новий стан для параметра налаштувань Alpha ESS 'upsReserve'",
+        "zh-cn": "使用有意义的状态名称\n使用合适的状态角色\n为 Alpha ESS 设置参数“upsReserve”添加了新状态"
+      }
     },
-    "encryptedNative": [
-        "password"
-    ],
-    "protectedNative": [
-        "username",
-        "password"
-    ],
-    "native": {
-        "username": "demo",
-        "password": "",
-        "systemId": "AL2002017100021",
-        "enableRealtimedata": true,
-        "intervalRealtimedata": 30,
-        "enableEnergydata": true,
-        "intervalEnergydata": 300,
-        "enableSettingsdata": false,
-        "intervalSettingsdata": 300,
-        "updateUnchangedStates": false
+    "titleLang": {
+      "en": "Alpha ESS",
+      "de": "Alpha-ESS",
+      "ru": "Альфа ЭСС",
+      "pt": "Alfa ESS",
+      "nl": "Alfa ESS",
+      "fr": "Alpha SSE",
+      "it": "Alfa ESS",
+      "es": "Alfa ESS",
+      "pl": "Alfa ESS",
+      "zh-cn": "阿尔法 ESS",
+      "uk": "Альфа ESS"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "Device or service connected",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "Read and write data from and to Alpha ESS systems.",
+      "de": "Lesen und schreiben Sie Daten von und zu Alpha ESS-Systemen.",
+      "ru": "Чтение и запись данных из и в системы Alpha ESS.",
+      "pt": "Ler e gravar dados de e para sistemas Alpha ESS.",
+      "nl": "Gegevens lezen en schrijven van en naar Alpha ESS-systemen.",
+      "fr": "Lire et écrire des données depuis et vers les systèmes Alpha ESS.",
+      "it": "Leggere e scrivere dati da e verso sistemi Alpha ESS.",
+      "es": "Lea y escriba datos desde y hacia los sistemas Alpha ESS.",
+      "pl": "Odczytywanie i zapisywanie danych zi do systemów Alpha ESS.",
+      "zh-cn": "在 Alpha ESS 系统中读取和写入数据。",
+      "uk": "Читання та запис даних із систем Alpha ESS і до них."
+    },
+    "authors": [
+      "Gaspode <gaspode69@online.de>"
+    ],
+    "keywords": [
+      "photovoltaik"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "alpha-ess.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Gaspode69/ioBroker.alpha-ess/main/admin/alpha-ess.png",
+    "readme": "https://github.com/Gaspode69/ioBroker.alpha-ess/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "metering",
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=3.3.22"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.1.13"
+      }
     ]
+  },
+  "encryptedNative": [
+    "password"
+  ],
+  "protectedNative": [
+    "username",
+    "password"
+  ],
+  "native": {
+    "username": "demo",
+    "password": "",
+    "systemId": "AL2002017100021",
+    "enableRealtimedata": true,
+    "intervalRealtimedata": 30,
+    "enableEnergydata": true,
+    "intervalEnergydata": 300,
+    "enableSettingsdata": false,
+    "intervalSettingsdata": 300,
+    "updateUnchangedStates": false
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "Device or service connected",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
