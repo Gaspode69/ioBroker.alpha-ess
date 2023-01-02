@@ -54,6 +54,8 @@ The password is stored encrypted and must therefore be entered manually: demo
 * (Gaspode) Use suitable state roles
 * (Gaspode) Added new state for Alpha ESS settings parameter 'upsReserve'
 
+### **WORK IN PROGRESS**
+
 ## License
 MIT License
 
