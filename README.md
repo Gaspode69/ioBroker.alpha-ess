@@ -35,29 +35,28 @@ The password is stored encrypted and must therefore be entered manually: demo
 **All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
 
 ## Changelog
-### 0.0.6-beta.1 (2023-01-02)
-* (Gaspode) ...
 
-### 0.0.6-beta.0 (2023-01-02)
-* (Gaspode) ...
-
-### 0.0.1
-* (Gaspode) initial release
-
-### 0.0.2
-* (Gaspode) corrected api call for realtime data
-
-### 0.0.3
-* (Gaspode) refactored API calls, added daily energy values
-
-### 0.0.4
-* (Gaspode) use axios to perform Alpha ESS API calls instead of deprecated request
-* (Gaspode) New option "Update unchanged states" added
+### **WORK IN PROGRESS**
+* (Gaspode) Enable NPM
 
 ### 0.0.5
 * (Gaspode) Use meaningful state names
 * (Gaspode) Use suitable state roles
 * (Gaspode) Added new state for Alpha ESS settings parameter 'upsReserve'
+
+### 0.0.4
+* (Gaspode) use axios to perform Alpha ESS API calls instead of deprecated request
+* (Gaspode) New option "Update unchanged states" added
+
+### 0.0.3
+* (Gaspode) refactored API calls, added daily energy values
+
+### 0.0.2
+* (Gaspode) corrected api call for realtime data
+
+### 0.0.1
+* (Gaspode) initial release
+
 
 ## License
 MIT License
