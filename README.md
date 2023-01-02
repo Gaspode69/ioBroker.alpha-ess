@@ -60,7 +60,7 @@ The password is stored encrypted and must therefore be entered manually: demo
 ## License
 MIT License
 
-Copyright (c) 2022 Gaspode <gaspode69@online.de>
+Copyright (c) 2023 Gaspode <gaspode69@online.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
