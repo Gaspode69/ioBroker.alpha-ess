@@ -136,7 +136,7 @@
     "readme": "https://github.com/Gaspode69/ioBroker.alpha-ess/blob/main/README.md",
     "loglevel": "info",
     "mode": "daemon",
-    "type": "metering",
+    "type": "energy",
     "compact": true,
     "connectionType": "cloud",
     "dataSource": "poll",
