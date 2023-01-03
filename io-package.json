@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "0.0.6-beta.3",
+    "version": "0.0.6-beta.4",
     "news": {
+      "0.0.6-beta.4": {
+        "en": "Changed adapter type from metering to energy",
+        "de": "Geänderter Adaptertyp von der Dosierung bis zur Energie",
+        "ru": "Измененный тип адаптера от измерения до энергии",
+        "pt": "Tipo de adaptador alterado de medição para energia",
+        "nl": "Veranderde adapter type van meting naar energie",
+        "fr": "Type d'adaptateur modifié de mesure à énergie",
+        "it": "Tipo di adattatore modificato dalla misurazione all'energia",
+        "es": "Tipo de adaptador cambiado de medición a energía",
+        "pl": "Zmienił adapter typu z metrowania do energii",
+        "uk": "Змінений тип адаптера від вимірювальної енергії",
+        "zh-cn": "能源参数的变量"
+      },
       "0.0.6-beta.3": {
         "en": "Correction for NPM",
         "de": "Korrektur für NPM",
@@ -80,19 +93,6 @@
         "pl": "Poprawione wywołanie API dla danych w czasie rzeczywistym",
         "uk": "Виправлений виклик API для даних у реальному часі",
         "zh-cn": "更正了实时数据的 api 调用"
-      },
-      "0.0.3": {
-        "en": "Refactored API calls, added dayly energy values",
-        "de": "Überarbeitete API-Aufrufe, tägliche Energiewerte hinzugefügt",
-        "ru": "Рефакторинг вызовов API, добавлены ежедневные значения энергии",
-        "pt": "Chamadas de API refatoradas, valores diários de energia adicionados",
-        "nl": "API-oproepen aangepast, dagelijkse energiewaarden toegevoegd",
-        "fr": "Appels API refactorisés, valeurs énergétiques quotidiennes ajoutées",
-        "it": "Chiamate API refactoring, valori energetici giornalieri aggiunti",
-        "es": "Llamadas API refactorizadas, valores de energía diarios agregados",
-        "pl": "Zrefaktoryzowane wywołania API, dodane dzienne wartości energii",
-        "uk": "Перероблено виклики API, додано добові значення енергії",
-        "zh-cn": "重构 API 调用，添加每日能量值"
       }
     },
     "titleLang": {
