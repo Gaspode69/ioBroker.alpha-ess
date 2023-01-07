@@ -35,8 +35,7 @@ The password is stored encrypted and must therefore be entered manually: demo
 **All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 0.0.6-beta.5 (2023-01-07)
 * (Gaspode) Slow down requests in case of permanent errors
 
 ### 0.0.6-beta.4 (2023-01-03)

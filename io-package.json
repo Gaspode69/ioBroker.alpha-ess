@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "0.0.6-beta.4",
+    "version": "0.0.6-beta.5",
     "news": {
+      "0.0.6-beta.5": {
+        "en": "Slow down requests in case of permanent errors",
+        "de": "Langsame Anträge bei dauerhaften Fehlern",
+        "ru": "Замедлить запросы в случае постоянных ошибок",
+        "pt": "Reduzir pedidos em caso de erros permanentes",
+        "nl": "Langzamer verzoeken in geval van permanente fouten",
+        "fr": "Ralentissez les demandes en cas d'erreurs permanentes",
+        "it": "Rallentare le richieste in caso di errori permanenti",
+        "es": "Reduzca las solicitudes en caso de errores permanentes",
+        "pl": "Zmniejszenie żądań dotyczących trwałych błędów",
+        "uk": "Повільні запити у разі постійних помилок",
+        "zh-cn": "长期错误请求下降"
+      },
       "0.0.6-beta.4": {
         "en": "Changed adapter type from metering to energy",
         "de": "Geänderter Adaptertyp von der Dosierung bis zur Energie",
@@ -80,19 +93,6 @@
         "pl": "Pierwsze wydanie",
         "zh-cn": "首次出版",
         "uk": "початковий випуск"
-      },
-      "0.0.2": {
-        "en": "Corrected api call for realtime data",
-        "de": "API-Aufruf für Echtzeitdaten korrigiert",
-        "ru": "Исправлен вызов API для данных в реальном времени.",
-        "pt": "Chamada de API corrigida para dados em tempo real",
-        "nl": "Gecorrigeerde api-oproep voor realtime gegevens",
-        "fr": "Appel api corrigé pour les données en temps réel",
-        "it": "Corretta la chiamata API per i dati in tempo reale",
-        "es": "Llamada api corregida para datos en tiempo real",
-        "pl": "Poprawione wywołanie API dla danych w czasie rzeczywistym",
-        "uk": "Виправлений виклик API для даних у реальному часі",
-        "zh-cn": "更正了实时数据的 api 调用"
       }
     },
     "titleLang": {
