@@ -333,6 +333,7 @@ class AlphaEss extends utils.Adapter {
         this.energyDataTimeoutHandle = null;
         this.settingsDataTimeoutHandle = null;
         this.wrongCredentials = false;
+        this.errorCount = 0;
 
         this.Auth =
         {
@@ -561,6 +562,7 @@ class AlphaEss extends utils.Adapter {
                     this.log.debug('Auth.Token:        ' + this.Auth.Token);
                     this.log.debug('Auth.RefreshToken: ' + this.Auth.RefreshToken);
                     this.log.debug('Auth.Expires:      ' + new Date(this.Auth.Expires));
+                    this.errorCount = 0;
                     return true;
                 }
             }
@@ -590,7 +592,7 @@ class AlphaEss extends utils.Adapter {
 
             if (!this.realtimeDataTimeoutHandle) {
                 const _this = this;
-                this.realtimeDataTimeoutHandle = setTimeout(function () { _this.fetchRealtimeData(); }, this.config.intervalRealtimedata * 1000);
+                this.realtimeDataTimeoutHandle = setTimeout(function () { _this.fetchRealtimeData(); }, this.calculateIntervalInMs(this.config.intervalRealtimedata, groupName));
             }
         }
         catch (e) {
@@ -622,7 +624,7 @@ class AlphaEss extends utils.Adapter {
 
             if (!this.energyDataTimeoutHandle) {
                 const _this = this;
-                this.energyDataTimeoutHandle = setTimeout(function () { _this.fetchEnergyData(); }, this.config.intervalEnergydata * 1000);
+                this.energyDataTimeoutHandle = setTimeout(function () { _this.fetchEnergyData(); }, this.calculateIntervalInMs(this.config.intervalEnergydata, groupName));
             }
         }
         catch (e) {
@@ -645,7 +647,7 @@ class AlphaEss extends utils.Adapter {
 
             if (!this.settingsDataTimeoutHandle) {
                 const _this = this;
-                this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, this.config.intervalSettingsdata * 1000);
+                this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, this.calculateIntervalInMs(this.config.intervalSettingsdata, groupName));
             }
         }
         catch (e) {
@@ -735,8 +737,8 @@ class AlphaEss extends utils.Adapter {
                 return emptyBody;
             }
             if (!await this.checkAuthentication()) {
-                this.log.warn('Error in Authorization');
-                await this.resetAuth();
+                await this.handleError();
+                this.log.warn('Error in Authorization (error count: ' + this.errorCount + ')');
                 await this.setStateChangedAsync('info.connection', false, true);
                 return emptyBody;
             }
@@ -752,14 +754,14 @@ class AlphaEss extends utils.Adapter {
                 return res.data;
             }
             else {
-                this.log.error('Error when fetching data for ' + this.config.systemId + ', status code: ' + res.status);
-                this.handleError();
+                await this.handleError();
+                this.log.error('Error when fetching data for ' + this.config.systemId + ', status code: ' + res.status + ' (error count: ' + this.errorCount + ')');
                 return emptyBody;
             }
         }
         catch (e) {
-            this.log.error('fetchData Exception occurred: ' + e);
-            this.handleError();
+            await this.handleError();
+            this.log.error('fetchData Exception occurred: ' + e + ' (error count: ' + this.errorCount + ')');
             return emptyBody;
         }
     }
@@ -775,8 +777,8 @@ class AlphaEss extends utils.Adapter {
                 return emptyBody;
             }
             if (!await this.checkAuthentication()) {
-                this.log.warn('Error in Authorization');
-                await this.resetAuth();
+                await this.handleError();
+                this.log.warn('Error in Authorization (error count: ' + this.errorCount + ')');
                 await this.setStateChangedAsync('info.connection', false, true);
                 return emptyBody;
             }
@@ -793,14 +795,14 @@ class AlphaEss extends utils.Adapter {
                 return res.data;
             }
             else {
-                this.log.error('Error when fetching data for ' + this.config.systemId + ', status code: ' + res.status);
-                this.handleError();
+                await this.handleError();
+                this.log.error('Error when fetching data for ' + this.config.systemId + ', status code: ' + res.status + ' (error count: ' + this.errorCount + ')');
                 return emptyBody;
             }
         }
         catch (e) {
-            this.log.error('fetchData Exception occurred: ' + e);
-            this.handleError();
+            await this.handleError();
+            this.log.error('fetchData Exception occurred: ' + e + ' (error count: ' + this.errorCount + ')');
             return emptyBody;
         }
     }
@@ -850,8 +852,8 @@ class AlphaEss extends utils.Adapter {
 
     async handleError() {
         try {
-
-            // Probably to be improved with a retry stategy ...
+            // Increase error count, will be reset with the next successful connection
+            this.errorCount++;
             await this.resetAuth();
         }
         catch (e) {
@@ -876,7 +878,7 @@ class AlphaEss extends utils.Adapter {
             return null;
         }
         catch (e) {
-            this.log.error('handleError Exception occurred: ' + e);
+            this.log.error('getStateInfo Exception occurred: ' + e);
             this.log.info('Group: ' + Group);
             this.log.info('Statename: ' + StateName);
             return null;
@@ -888,6 +890,26 @@ class AlphaEss extends utils.Adapter {
      */
     osn(sn) {
         return sn.replace(/[*,?,",',[,\]]/g, '_');
+    }
+
+    /**
+     * calculate interval time in dependency of error count.
+     * This is to avoid too many requests and flooding the ioBroker log file with messages
+     * @param {number} timeInS
+     */
+    calculateIntervalInMs(timeInS, txt) {
+        if (this.errorCount < 5) {
+            return timeInS * 1000;
+        }
+        else {
+            if (timeInS < 300000) { // 5 minutes
+                this.log.warn(txt + ': Five or more errors occurred, next request in 5 minutes.');
+                return 300000;
+            }
+            else {
+                return timeInS * 1000;
+            }
+        }
     }
 }
 
