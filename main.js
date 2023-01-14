@@ -378,23 +378,21 @@ class AlphaEss extends utils.Adapter {
 
             if (this.config.password && this.config.username && this.config.systemId) {
                 if (this.config.enableRealtimedata) {
-                    this.fetchRealtimeData();
+                    await this.fetchRealtimeData();
                 }
                 else {
                     this.log.info('Realtime data disabled! Adapter won\'t fetch realtime data.');
                 }
 
                 if (this.config.enableEnergydata) {
-                    // We delay the first start for 3 seconds
-                    this.settingsDataTimeoutHandle = setTimeout(() => this.fetchEnergyData(), 3000);
+                    await this.fetchEnergyData();
                 }
                 else {
                     this.log.info('Energydata data disabled! Adapter won\'t fetch energy data.');
                 }
 
                 if (this.config.enableSettingsdata) {
-                    // We delay the first start for 6 seconds
-                    this.settingsDataTimeoutHandle = setTimeout(() => this.fetchSettingsData(), 6000);
+                    await this.fetchSettingsData();
                 }
                 else {
                     this.log.info('Settings data disabled! Adapter won\'t fetch settings data.');
