@@ -130,7 +130,7 @@ const stateList = [{
         , {
             stateName: 'soc'
             , role: 'value.battery'
-            , id: 'Bttery_SOC'
+            , id: 'Battery_SOC'
             , name: 'State of charge'
             , type: 'number'
             , unit: '%'
