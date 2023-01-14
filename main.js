@@ -16,6 +16,8 @@ const AUTHCONSTANT = 'LS885ZYDA95JVFQKUIUUUV7PQNODZRDZIS4ERREDS0EED8BCWSS';
 const AUTHSUFFIX = 'ui893ed';
 const BaseURI = 'https://cloud.alphaess.com/';
 
+const REQUEST_TIMEOUT = 10000;
+
 const stateList = [{
     Group: 'Realtime'
     , states: [
@@ -363,7 +365,6 @@ class AlphaEss extends utils.Adapter {
             await this.setStateChangedAsync('info.connection', false, true);
 
             this.log.debug('config username:             ' + this.config.username);
-            this.log.debug('config password:             ' + this.config.password);
             this.log.debug('config systemId:             ' + this.config.systemId);
             this.log.debug('config intervalRealtimedata: ' + this.config.intervalRealtimedata);
             this.log.debug('config intervalSettingsdata: ' + this.config.intervalSettingsdata);
@@ -385,8 +386,7 @@ class AlphaEss extends utils.Adapter {
 
                 if (this.config.enableEnergydata) {
                     // We delay the first start for 3 seconds
-                    const _this = this;
-                    this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchEnergyData(); }, 3000);
+                    this.settingsDataTimeoutHandle = setTimeout(() => this.fetchEnergyData(), 3000);
                 }
                 else {
                     this.log.info('Energydata data disabled! Adapter won\'t fetch energy data.');
@@ -394,8 +394,7 @@ class AlphaEss extends utils.Adapter {
 
                 if (this.config.enableSettingsdata) {
                     // We delay the first start for 6 seconds
-                    const _this = this;
-                    this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, 6000);
+                    this.settingsDataTimeoutHandle = setTimeout(() => this.fetchSettingsData(), 6000);
                 }
                 else {
                     this.log.info('Settings data disabled! Adapter won\'t fetch settings data.');
@@ -540,12 +539,13 @@ class AlphaEss extends utils.Adapter {
                 };
             }
 
-            this.log.debug('Login data: ' + JSON.stringify(LoginData));
-
             // @ts-ignore
             const res = await axios.post(BaseURI + 'api/' + (refresh ? 'Account/RefreshToken' : 'Account/Login'),
                 JSON.stringify(LoginData),
-                { headers: this.headers(null) });
+                {
+                    timeout: REQUEST_TIMEOUT,
+                    headers: this.headers(null)
+                });
 
             if (res.status == 200) {
                 if (res.data && res.data.code && res.data.code == 5) {
@@ -591,8 +591,7 @@ class AlphaEss extends utils.Adapter {
             this.createAndUpdateStates(groupName, body.data);
 
             if (!this.realtimeDataTimeoutHandle) {
-                const _this = this;
-                this.realtimeDataTimeoutHandle = setTimeout(function () { _this.fetchRealtimeData(); }, this.calculateIntervalInMs(this.config.intervalRealtimedata, groupName));
+                this.realtimeDataTimeoutHandle = setTimeout(() => this.fetchRealtimeData(), this.calculateIntervalInMs(this.config.intervalRealtimedata, groupName));
             }
         }
         catch (e) {
@@ -623,8 +622,7 @@ class AlphaEss extends utils.Adapter {
             this.createAndUpdateStates(groupName, body.data);
 
             if (!this.energyDataTimeoutHandle) {
-                const _this = this;
-                this.energyDataTimeoutHandle = setTimeout(function () { _this.fetchEnergyData(); }, this.calculateIntervalInMs(this.config.intervalEnergydata, groupName));
+                this.energyDataTimeoutHandle = setTimeout(() => this.fetchEnergyData(), this.calculateIntervalInMs(this.config.intervalEnergydata, groupName));
             }
         }
         catch (e) {
@@ -646,8 +644,7 @@ class AlphaEss extends utils.Adapter {
             this.createAndUpdateStates(groupName, body.data);
 
             if (!this.settingsDataTimeoutHandle) {
-                const _this = this;
-                this.settingsDataTimeoutHandle = setTimeout(function () { _this.fetchSettingsData(); }, this.calculateIntervalInMs(this.config.intervalSettingsdata, groupName));
+                this.settingsDataTimeoutHandle = setTimeout(() => this.fetchSettingsData(), this.calculateIntervalInMs(this.config.intervalSettingsdata, groupName));
             }
         }
         catch (e) {
@@ -747,7 +744,10 @@ class AlphaEss extends utils.Adapter {
 
             // @ts-ignore
             const res = await axios.get(uri,
-                { headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token }) });
+                {
+                    timeout: REQUEST_TIMEOUT,
+                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
+                });
 
             if (res.status == 200) {
                 await this.setStateChangedAsync('info.connection', true, true);
@@ -788,7 +788,10 @@ class AlphaEss extends utils.Adapter {
             // @ts-ignore
             const res = await axios.post(uri,
                 sndBody,
-                { headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token }) });
+                {
+                    timeout: REQUEST_TIMEOUT,
+                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
+                });
 
             if (res.status == 200) {
                 await this.setStateChangedAsync('info.connection', true, true);
