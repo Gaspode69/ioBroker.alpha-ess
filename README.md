@@ -37,6 +37,7 @@ The password is stored encrypted and must therefore be entered manually: demo
 ## Changelog
 
 ### **WORK IN PROGRESS**
+* (Gaspode) First release for Latest repository
 * (Gaspode) Corrected typo in state ID Battery_SOC
 * (Gaspode) Implemented improvements as suggested in code review
 
