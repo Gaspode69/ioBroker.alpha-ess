@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "0.0.6-beta.5",
+    "version": "0.1.0",
     "news": {
+      "0.1.0": {
+        "en": "First release for Latest repository\nCorrected typo in state ID Battery_SOC\nImplemented improvements as suggested in code review",
+        "de": "Erste Veröffentlichung für Neueste Repository\nKorrigierte Typo im Zustand ID Battery_SOC\nImplementierte Verbesserungen wie in der Code-Review vorgeschlagen",
+        "ru": "Первый выпуск для последней репозитории\nИсправлена опечатка в штате ID Батарея_SOC\nВнедренные улучшения, как предлагается в обзоре кода",
+        "pt": "Primeiro lançamento para o repositório mais recente\nTipo corrigido no estado ID Battery_SOC\nMelhorias implementadas conforme sugerido na revisão de código",
+        "nl": "Eerste vrijlating voor Latest\nQuality over Quantity (QoQ) Releases Vertaling: ID Battery\nVerbeteringen zoals geadviseerd in codereview",
+        "fr": "Première version pour Dernier dépôt\nTypo corrigé en état ID Battery_SOC\nAméliorations mises en œuvre comme suggéré dans l ' examen des codes",
+        "it": "Prima release per gli ultimi repository\nTipo corretto in stato ID Battery_SOC\nMiglioramenti attuati come suggerito nella revisione del codice",
+        "es": "Primer lanzamiento para el repositorio más reciente\nTypo corregido en estado ID Battery_SOC\nMejoras aplicadas como se sugiere en el examen del código",
+        "pl": "Pierwsze wydanie repozytorium Latest\nKary w państwie Bateria IDSOC\nImplementacja poprawek, jak zasugerowano w przegląd kodowy",
+        "uk": "Перший реліз для останніх репозиторій\nВиправлено типо в стані Акумулятор ID_SOC\nРеалізовані вдосконалення, як пропонуються в перегляді коду",
+        "zh-cn": "第一批La证存放处的释放\n州的打字 ID Battery_SOC\n实施守则审查建议的改进"
+      },
       "0.0.6-beta.5": {
         "en": "Slow down requests in case of permanent errors",
         "de": "Langsame Anträge bei dauerhaften Fehlern",
@@ -80,19 +93,6 @@
         "pl": "...",
         "uk": "...",
         "zh-cn": "..."
-      },
-      "0.0.1": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版",
-        "uk": "початковий випуск"
       }
     },
     "titleLang": {
