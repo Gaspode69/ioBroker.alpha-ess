@@ -130,6 +130,42 @@ const stateList = [{
             , dayIndex: false
         }
         , {
+            stateName: 'ev1_power'
+            , role: 'value.power'
+            , id: 'EV1_power'
+            , name: 'Wallbox Power 1'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'ev2_power'
+            , role: 'value.power'
+            , id: 'EV2_power'
+            , name: 'Wallbox Power 2'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'ev3_power'
+            , role: 'value.power'
+            , id: 'EV3_power'
+            , name: 'Wallbox Power 3'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
+            stateName: 'ev4_power'
+            , role: 'value.power'
+            , id: 'EV4_power'
+            , name: 'Wallbox Power 4'
+            , type: 'number'
+            , unit: 'W'
+            , dayIndex: false
+        }
+        , {
             stateName: 'soc'
             , role: 'value.battery'
             , id: 'Battery_SOC'
