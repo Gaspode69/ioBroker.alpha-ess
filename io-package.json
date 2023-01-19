@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "0.1.0",
+    "version": "0.2.0",
     "news": {
+      "0.2.0": {
+        "en": "Added states EV1_power, EV2_power, EV3_power and EV4_power to Realtime folder",
+        "de": "EV1_power, EV2_power, EV3_power und EV4_power in Echtzeit-Ordner",
+        "ru": "Добавлены состояния EV1_power, EV2_power, EV3_power и EV4_power в папку Realtime",
+        "pt": "Estados adicionados EV1_power, EV2_power, EV3_power e EV4_power para pasta em tempo real",
+        "nl": "Vertaling:",
+        "fr": "Ajout des états EV1_power, EV2_power, EV3_power et EV4_power dans le dossier Realtime",
+        "it": "Aggiunti stati EV1_power, EV2_power, EV3_power e EV4_power nella cartella in tempo reale",
+        "es": "Estados adicionales EV1_power, EV2_power, EV3_power y EV4_power a carpeta en tiempo real",
+        "pl": "EV1_power, EV2_power, EV3_power i EV4_power do Realtime folder",
+        "uk": "Додано стани EV1_power, EV2_power, EV3_power і EV4_power до папки реального часу",
+        "zh-cn": "增加国家EV1:能力,EV2_ 能力, EV3_ 权力和EV4_ 实际工作时间的能力"
+      },
       "0.1.0": {
         "en": "First release for Latest repository\nCorrected typo in state ID Battery_SOC\nImplemented improvements as suggested in code review",
         "de": "Erste Veröffentlichung für Neueste Repository\nKorrigierte Typo im Zustand ID Battery_SOC\nImplementierte Verbesserungen wie in der Code-Review vorgeschlagen",
@@ -69,19 +82,6 @@
         "zh-cn": "国家预防机制"
       },
       "0.0.6-beta.1": {
-        "en": "...",
-        "de": "...",
-        "ru": "...",
-        "pt": "...",
-        "nl": "...",
-        "fr": "...",
-        "it": "...",
-        "es": "...",
-        "pl": "...",
-        "uk": "...",
-        "zh-cn": "..."
-      },
-      "0.0.6-beta.0": {
         "en": "...",
         "de": "...",
         "ru": "...",
