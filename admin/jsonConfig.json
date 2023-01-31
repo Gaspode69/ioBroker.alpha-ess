@@ -26,7 +26,7 @@
         },
         "intervalRealtimedata": {
             "sm": 5,
-            "min":10,
+            "min": 10,
             "type": "number",
             "label": "Interval to read realtime data",
             "newLine": false
@@ -37,7 +37,7 @@
         },
         "intervalEnergydata": {
             "sm": 5,
-            "min":60,
+            "min": 60,
             "type": "number",
             "label": "Interval to read energy data",
             "newLine": false
@@ -48,9 +48,20 @@
         },
         "intervalSettingsdata": {
             "sm": 5,
-            "min":60,
+            "min": 60,
             "type": "number",
             "label": "Interval to read settings data",
+            "newLine": false
+        },
+        "enableStatisticaldata": {
+            "type": "checkbox",
+            "newLine": true
+        },
+        "intervalStatisticaldata": {
+            "sm": 5,
+            "min": 60,
+            "type": "number",
+            "label": "Interval to read statistical data",
             "newLine": false
         },
         "updateUnchangedStates": {

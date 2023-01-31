@@ -27,6 +27,7 @@ Basically, it is possible to change selected configuration settings using the Al
 **Interval to read realtime data:** Unit: seconds.\
 **Interval to read energy data:** Unit: seconds.\
 **Interval to read settings data:** Unit: seconds.
+**Interval to read statistical data:** Unit: seconds.
 
 It is possible to use a demo account provided by Alpha ESS. The credentials (user name, system id) are set as default values within the adapter.
 The password is stored encrypted and must therefore be entered manually: demo
@@ -35,6 +36,9 @@ The password is stored encrypted and must therefore be entered manually: demo
 **All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
 
 ## Changelog
+### **WORK IN PROGRESS**
+* (Gaspode) Read selected statistical data
+
 ### 0.2.0 (2023-01-19)
 * (Gaspode) Added states EV1_power, EV2_power, EV3_power and EV4_power to Realtime folder
 

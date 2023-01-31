@@ -353,6 +353,32 @@ const stateList = [{
             , unit: 'kWh'
             , dayIndex: true
         }]
+},
+{
+    Group: 'Statistics'
+    , states: [
+        {
+            stateName: 'EselfSufficiency'
+            , role: 'value'
+            , id: 'Self_sufficiency_today'
+            , name: 'Self sufficiency today'
+            , type: 'number'
+            , unit: '%'
+            , factor: 100
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'EselfConsumption'
+            , role: 'value'
+            , id: 'Self_consumption_today'
+            , name: 'Self consumption today'
+            , type: 'number'
+            , unit: '%'
+            , factor: 100
+            , round: 1
+            , dayIndex: false
+        }]
 }];
 
 class AlphaEss extends utils.Adapter {
@@ -370,6 +396,7 @@ class AlphaEss extends utils.Adapter {
         this.realtimeDataTimeoutHandle = null;
         this.energyDataTimeoutHandle = null;
         this.settingsDataTimeoutHandle = null;
+        this.statisticalDataTimeoutHandle = null;
         this.wrongCredentials = false;
         this.errorCount = 0;
 
@@ -400,13 +427,17 @@ class AlphaEss extends utils.Adapter {
             // Reset the connection indicator during startup
             await this.setStateChangedAsync('info.connection', false, true);
 
-            this.log.debug('config username:             ' + this.config.username);
-            this.log.debug('config systemId:             ' + this.config.systemId);
-            this.log.debug('config intervalRealtimedata: ' + this.config.intervalRealtimedata);
-            this.log.debug('config intervalSettingsdata: ' + this.config.intervalSettingsdata);
-            this.log.debug('config enableRealtimedata:   ' + this.config.enableRealtimedata);
-            this.log.debug('config enableSettingsdata:   ' + this.config.enableSettingsdata);
-            this.log.debug('config updateUnchangedStates:' + this.config.updateUnchangedStates);
+            this.log.debug('config username:                ' + this.config.username);
+            this.log.debug('config systemId:                ' + this.config.systemId);
+            this.log.debug('config intervalRealtimedata:    ' + this.config.intervalRealtimedata);
+            this.log.debug('config intervalSettingsdata:    ' + this.config.intervalSettingsdata);
+            this.log.debug('config intervalEnergydata:      ' + this.config.intervalEnergydata);
+            this.log.debug('config intervalStatisticaldata: ' + this.config.intervalStatisticaldata);
+            this.log.debug('config enableRealtimedata:      ' + this.config.enableRealtimedata);
+            this.log.debug('config enableSettingsdata:      ' + this.config.enableSettingsdata);
+            this.log.debug('config enableEnergydata:        ' + this.config.enableEnergydata);
+            this.log.debug('config enableStatisticaldata:   ' + this.config.enableStatisticaldata);
+            this.log.debug('config updateUnchangedStates:   ' + this.config.updateUnchangedStates);
 
             this.wrongCredentials = false;
 
@@ -432,6 +463,12 @@ class AlphaEss extends utils.Adapter {
                 }
                 else {
                     this.log.info('Settings data disabled! Adapter won\'t fetch settings data.');
+                }
+                if (this.config.enableStatisticaldata) {
+                    await this.fetchStatisticalData();
+                }
+                else {
+                    this.log.info('Settings data disabled! Adapter won\'t fetch statistical data.');
                 }
             }
             else {
@@ -460,6 +497,10 @@ class AlphaEss extends utils.Adapter {
             if (this.settingsDataTimeoutHandle) {
                 clearTimeout(this.settingsDataTimeoutHandle);
                 this.settingsDataTimeoutHandle = null;
+            }
+            if (this.statisticalDataTimeoutHandle) {
+                clearTimeout(this.statisticalDataTimeoutHandle);
+                this.statisticalDataTimeoutHandle = null;
             }
             this.resetAuth();
 
@@ -644,7 +685,7 @@ class AlphaEss extends utils.Adapter {
             this.log.debug('Fetching energy data...');
 
             const dt = new Date();
-            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-01');
+            const dts = (dt.getFullYear() + '-0' + (dt.getMonth() + 1) + '-01');
             const json = {
                 'statisticBy': 'month',
                 'sDate': dts,
@@ -683,6 +724,33 @@ class AlphaEss extends utils.Adapter {
         }
         catch (e) {
             this.log.error('fetchSettingsData Exception occurred: ' + e);
+        }
+    }
+
+    async fetchStatisticalData() {
+        try {
+            if (this.statisticalDataTimeoutHandle) {
+                clearTimeout(this.statisticalDataTimeoutHandle);
+                this.statisticalDataTimeoutHandle = null;
+            }
+            const groupName = 'Statistics';
+
+            this.log.debug('Fetching statistical data...');
+
+            const dt = new Date();
+            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
+
+            const body = await this.getData(BaseURI + 'api/Power/SticsByPeriod?beginDay=' + dts + '&endDay=' + dts +
+                '&tDay=' + dts + '&isOEM=0&SN=' + this.config.systemId + '&userID=&noLoading=true');
+
+            this.createAndUpdateStates(groupName, body.data);
+
+            if (!this.statisticalDataTimeoutHandle) {
+                this.statisticalDataTimeoutHandle = setTimeout(() => this.fetchStatisticalData(), this.calculateIntervalInMs(this.config.intervalStatisticaldata, groupName));
+            }
+        }
+        catch (e) {
+            this.log.error('fetchStatisticalData Exception occurred: ' + e);
         }
     }
 
@@ -726,6 +794,12 @@ class AlphaEss extends utils.Adapter {
                         switch (stateInfo.type) {
                             case 'number':
                                 tvalue = Number.parseFloat(value);
+                                if (stateInfo.factor) {
+                                    tvalue *= stateInfo.factor;
+                                }
+                                if (stateInfo.round) {
+                                    tvalue = (Math.round(tvalue * (10 ** stateInfo.round))) / (10 ** stateInfo.round);
+                                }
                                 break;
                             case 'boolean':
                                 tvalue = Number.parseInt(value) != 0;

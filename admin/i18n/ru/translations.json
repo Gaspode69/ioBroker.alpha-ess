@@ -6,5 +6,6 @@
     "Interval to read realtime data": "Интервал для чтения данных в реальном времени [с]",
     "Interval to read settings data": "Интервал чтения данных настроек [с]",
     "Interval to read energy data": "Интервал для чтения данных об энергии [с]",
-    "Update unchanged states": "Обновить неизмененные состояния"
+    "Update unchanged states": "Обновить неизмененные состояния",
+    "Interval to read statistical data": "Интервал чтения статистических данных [с]"
 }

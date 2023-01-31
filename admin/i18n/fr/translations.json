@@ -6,5 +6,6 @@
     "Interval to read realtime data": "Intervalle pour lire les données en temps réel [s]",
     "Interval to read settings data": "Intervalle pour lire les données de réglage [s]",
     "Interval to read energy data": "Intervalle pour lire les données énergétiques [s]",
-    "Update unchanged states": "Mettre à jour les états inchangés"
+    "Update unchanged states": "Mettre à jour les états inchangés",
+    "Interval to read statistical data": "Intervalle pour lire les données statistiques [s]"
 }

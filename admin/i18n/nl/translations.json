@@ -6,5 +6,6 @@
     "Interval to read realtime data": "Interval om realtime gegevens te lezen [s]",
     "Interval to read settings data": "Interval voor het lezen van instellingengegevens [s]",
     "Interval to read energy data": "Interval om energiegegevens te lezen [s]",
-    "Update unchanged states": "Update ongewijzigde statussen"
+    "Update unchanged states": "Update ongewijzigde statussen",
+    "Interval to read statistical data": "Interval om statistische gegevens te lezen [s]"
 }
