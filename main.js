@@ -355,7 +355,7 @@ const stateList = [{
         }]
 },
 {
-    Group: 'Statistics'
+    Group: 'StatisticsToday'
     , states: [
         {
             stateName: 'EselfSufficiency'
@@ -393,12 +393,7 @@ class AlphaEss extends utils.Adapter {
             name: 'alpha-ess',
         });
 
-        this.realtimeDataTimeoutHandle = null;
-        this.energyDataTimeoutHandle = null;
-        this.settingsDataTimeoutHandle = null;
-        this.statisticalDataTimeoutHandle = null;
-        this.wrongCredentials = false;
-        this.errorCount = 0;
+        this.timeoutHandles = {};
 
         this.Auth =
         {
@@ -411,6 +406,8 @@ class AlphaEss extends utils.Adapter {
 
         this.createdStates = [];
         this.results = {};
+
+        this.errorCount = 0;
 
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
@@ -427,17 +424,17 @@ class AlphaEss extends utils.Adapter {
             // Reset the connection indicator during startup
             await this.setStateChangedAsync('info.connection', false, true);
 
-            this.log.debug('config username:                ' + this.config.username);
-            this.log.debug('config systemId:                ' + this.config.systemId);
-            this.log.debug('config intervalRealtimedata:    ' + this.config.intervalRealtimedata);
-            this.log.debug('config intervalSettingsdata:    ' + this.config.intervalSettingsdata);
-            this.log.debug('config intervalEnergydata:      ' + this.config.intervalEnergydata);
-            this.log.debug('config intervalStatisticaldata: ' + this.config.intervalStatisticaldata);
-            this.log.debug('config enableRealtimedata:      ' + this.config.enableRealtimedata);
-            this.log.debug('config enableSettingsdata:      ' + this.config.enableSettingsdata);
-            this.log.debug('config enableEnergydata:        ' + this.config.enableEnergydata);
-            this.log.debug('config enableStatisticaldata:   ' + this.config.enableStatisticaldata);
-            this.log.debug('config updateUnchangedStates:   ' + this.config.updateUnchangedStates);
+            this.log.debug('config username:                     ' + this.config.username);
+            this.log.debug('config systemId:                     ' + this.config.systemId);
+            this.log.debug('config intervalRealtimedata:         ' + this.config.intervalRealtimedata);
+            this.log.debug('config intervalSettingsdata:         ' + this.config.intervalSettingsdata);
+            this.log.debug('config intervalEnergydata:           ' + this.config.intervalEnergydata);
+            this.log.debug('config intervalStatisticalTodaydata: ' + this.config.intervalStatisticalTodaydata);
+            this.log.debug('config enableRealtimedata:           ' + this.config.enableRealtimedata);
+            this.log.debug('config enableSettingsdata:           ' + this.config.enableSettingsdata);
+            this.log.debug('config enableEnergydata:             ' + this.config.enableEnergydata);
+            this.log.debug('config enableStatisticalTodaydata:   ' + this.config.enableStatisticalTodaydata);
+            this.log.debug('config updateUnchangedStates:        ' + this.config.updateUnchangedStates);
 
             this.wrongCredentials = false;
 
@@ -464,8 +461,8 @@ class AlphaEss extends utils.Adapter {
                 else {
                     this.log.info('Settings data disabled! Adapter won\'t fetch settings data.');
                 }
-                if (this.config.enableStatisticaldata) {
-                    await this.fetchStatisticalData();
+                if (this.config.enableStatisticalTodaydata) {
+                    await this.fetchStatisticalTodayData();
                 }
                 else {
                     this.log.info('Settings data disabled! Adapter won\'t fetch statistical data.');
@@ -486,22 +483,11 @@ class AlphaEss extends utils.Adapter {
      */
     onUnload(callback) {
         try {
-            if (this.realtimeDataTimeoutHandle) {
-                clearTimeout(this.realtimeDataTimeoutHandle);
-                this.realtimeDataTimeoutHandle = null;
+            // Clear all timers
+            for (const group in this.timeoutHandles) {
+                this.stopGroupTimeout(group);
             }
-            if (this.energyDataTimeoutHandle) {
-                clearTimeout(this.energyDataTimeoutHandle);
-                this.energyDataTimeoutHandle = null;
-            }
-            if (this.settingsDataTimeoutHandle) {
-                clearTimeout(this.settingsDataTimeoutHandle);
-                this.settingsDataTimeoutHandle = null;
-            }
-            if (this.statisticalDataTimeoutHandle) {
-                clearTimeout(this.statisticalDataTimeoutHandle);
-                this.statisticalDataTimeoutHandle = null;
-            }
+
             this.resetAuth();
 
             callback();
@@ -559,6 +545,33 @@ class AlphaEss extends utils.Adapter {
     //         }
     //     }
     // }
+
+    /** Stop a timer for a given group
+     *
+     * @param {string} group
+     */
+    stopGroupTimeout(group) {
+        if (this.timeoutHandles[group]) {
+            this.log.debug('Timeout cleared for group ' + group);
+            clearTimeout(this.timeoutHandles[group]);
+            this.timeoutHandles[group] = null;
+        }
+    }
+
+    /**
+     * Start a timer for a given group
+     * @param {number} intervalInS
+     * @param {string} group
+     * @param {{ (): Promise<void>; (): Promise<void>; (): Promise<void>; (): Promise<void>; (): void; }} fnct
+     */
+    startGroupTimeout(fnct, intervalInS, group) {
+        if (!this.timeoutHandles[group]) {
+            const interval = this.calculateIntervalInMs(intervalInS, group);
+            this.log.debug('Timeout with interval ' + interval + ' ms started for group ' + group);
+            this.timeoutHandles[group] = setTimeout(() => fnct(), interval);
+        }
+    }
+
 
     async checkAuthentication() {
         try {
@@ -654,20 +667,15 @@ class AlphaEss extends utils.Adapter {
 
     async fetchRealtimeData() {
         try {
-            if (this.realtimeDataTimeoutHandle) {
-                clearTimeout(this.realtimeDataTimeoutHandle);
-                this.realtimeDataTimeoutHandle = null;
-            }
-
             const groupName = 'Realtime';
+
+            this.stopGroupTimeout(groupName);
 
             this.log.debug('Fetching realtime data...');
             const body = await this.getData(BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.config.systemId + '&noLoading=true');
-            this.createAndUpdateStates(groupName, body.data);
+            await this.createAndUpdateStates(groupName, body.data);
 
-            if (!this.realtimeDataTimeoutHandle) {
-                this.realtimeDataTimeoutHandle = setTimeout(() => this.fetchRealtimeData(), this.calculateIntervalInMs(this.config.intervalRealtimedata, groupName));
-            }
+            this.startGroupTimeout(() => this.fetchRealtimeData(), this.config.intervalRealtimedata, groupName);
         }
         catch (e) {
             this.log.error('fetchRealtimeData Exception occurred: ' + e);
@@ -676,11 +684,9 @@ class AlphaEss extends utils.Adapter {
 
     async fetchEnergyData() {
         try {
-            if (this.energyDataTimeoutHandle) {
-                clearTimeout(this.energyDataTimeoutHandle);
-                this.energyDataTimeoutHandle = null;
-            }
             const groupName = 'Energy';
+
+            this.stopGroupTimeout(groupName);
 
             this.log.debug('Fetching energy data...');
 
@@ -694,11 +700,9 @@ class AlphaEss extends utils.Adapter {
                 'userId': '',
             };
             const body = await this.postData(BaseURI + 'api/Statistic/SystemStatistic', JSON.stringify(json));
-            this.createAndUpdateStates(groupName, body.data);
+            await this.createAndUpdateStates(groupName, body.data);
 
-            if (!this.energyDataTimeoutHandle) {
-                this.energyDataTimeoutHandle = setTimeout(() => this.fetchEnergyData(), this.calculateIntervalInMs(this.config.intervalEnergydata, groupName));
-            }
+            this.startGroupTimeout(() => this.fetchEnergyData(), this.config.intervalEnergydata, groupName);
         }
         catch (e) {
             this.log.error('fetchEnergyData Exception occurred: ' + e);
@@ -707,33 +711,26 @@ class AlphaEss extends utils.Adapter {
 
     async fetchSettingsData() {
         try {
-            if (this.settingsDataTimeoutHandle) {
-                clearTimeout(this.settingsDataTimeoutHandle);
-                this.settingsDataTimeoutHandle = null;
-            }
-
             const groupName = 'Settings';
+
+            this.stopGroupTimeout(groupName);
 
             this.log.debug('Fetching settings data...');
             const body = await this.getData(BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.config.systemId + '&noLoading=true');
-            this.createAndUpdateStates(groupName, body.data);
+            await this.createAndUpdateStates(groupName, body.data);
 
-            if (!this.settingsDataTimeoutHandle) {
-                this.settingsDataTimeoutHandle = setTimeout(() => this.fetchSettingsData(), this.calculateIntervalInMs(this.config.intervalSettingsdata, groupName));
-            }
+            this.startGroupTimeout(() => this.fetchSettingsData(), this.config.intervalSettingsdata, groupName);
         }
         catch (e) {
             this.log.error('fetchSettingsData Exception occurred: ' + e);
         }
     }
 
-    async fetchStatisticalData() {
+    async fetchStatisticalTodayData() {
         try {
-            if (this.statisticalDataTimeoutHandle) {
-                clearTimeout(this.statisticalDataTimeoutHandle);
-                this.statisticalDataTimeoutHandle = null;
-            }
-            const groupName = 'Statistics';
+            const groupName = 'StatisticsToday';
+
+            this.stopGroupTimeout(groupName);
 
             this.log.debug('Fetching statistical data...');
 
@@ -743,14 +740,12 @@ class AlphaEss extends utils.Adapter {
             const body = await this.getData(BaseURI + 'api/Power/SticsByPeriod?beginDay=' + dts + '&endDay=' + dts +
                 '&tDay=' + dts + '&isOEM=0&SN=' + this.config.systemId + '&userID=&noLoading=true');
 
-            this.createAndUpdateStates(groupName, body.data);
+            await this.createAndUpdateStates(groupName, body.data);
 
-            if (!this.statisticalDataTimeoutHandle) {
-                this.statisticalDataTimeoutHandle = setTimeout(() => this.fetchStatisticalData(), this.calculateIntervalInMs(this.config.intervalStatisticaldata, groupName));
-            }
+            this.startGroupTimeout(() => this.fetchStatisticalTodayData(), this.config.intervalStatisticalTodaydata, groupName);
         }
         catch (e) {
-            this.log.error('fetchStatisticalData Exception occurred: ' + e);
+            this.log.error('fetchStatisticalTodayData Exception occurred: ' + e);
         }
     }
 
@@ -1007,6 +1002,7 @@ class AlphaEss extends utils.Adapter {
      * calculate interval time in dependency of error count.
      * This is to avoid too many requests and flooding the ioBroker log file with messages
      * @param {number} timeInS
+     * @param {string} txt
      */
     calculateIntervalInMs(timeInS, txt) {
         if (this.errorCount < 5) {

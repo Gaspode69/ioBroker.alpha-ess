@@ -53,15 +53,15 @@
             "label": "Interval to read settings data",
             "newLine": false
         },
-        "enableStatisticaldata": {
+        "enableStatisticalTodaydata": {
             "type": "checkbox",
             "newLine": true
         },
-        "intervalStatisticaldata": {
+        "intervalStatisticalTodaydata": {
             "sm": 5,
             "min": 60,
             "type": "number",
-            "label": "Interval to read statistical data",
+            "label": "Interval to read statistical data (today)",
             "newLine": false
         },
         "updateUnchangedStates": {

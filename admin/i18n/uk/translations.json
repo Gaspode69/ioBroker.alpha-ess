@@ -7,5 +7,5 @@
     "Interval to read settings data": "Інтервал читання даних налаштувань [с]",
     "Interval to read energy data": "Інтервал зчитування даних про енергію [с]",
     "Update unchanged states": "Оновити незмінні стани",
-    "Interval to read statistical data": "Інтервал читання статистичних даних [с]"
+    "Interval to read statistical data (today)": "Інтервал читання статистичних даних (сьогодні) [с]"
 }

@@ -36,6 +36,10 @@ The password is stored encrypted and must therefore be entered manually: demo
 **All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
 
 ## Changelog
+### **WORK IN PROGRESS**
+* (Gaspode) Rearranged statistical data and added more values. If updated from 0.2.1-beta.0, the folder "Statistics" must be removed manually.
+* (Gaspode) Refactored timeout handling
+
 ### 0.2.1-beta.0 (2023-01-31)
 * (Gaspode) Read selected statistical data
 
