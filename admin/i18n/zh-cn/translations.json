@@ -3,10 +3,10 @@
     "Username": "用户名",
     "Password": "密码",
     "Alpha ESS System ID": "Alpha ESS 系统 ID",
-    "Interval to read realtime data": "读取实时数据的间隔 [s]",
-    "Interval to read settings data": "读取设置数据的间隔 [s]",
-    "Interval to read energy data": "读取能量数据的间隔[s]",
-    "Update unchanged states": "更新未改变的状态",
-    "Interval to read statistical data (today)": "读取统计数据的间隔（今天）[s]",
-    "Interval to read summary data": "读取摘要数据的间隔[分钟]"
+    "Interval to read realtime data": "读取实时数据的间隔[s]",
+    "Interval to read energy data": "读取能源数据的间隔[分钟]",
+    "Interval to read settings data": "读取设置数据的间隔[分钟]",
+    "Interval to read statistical data (today)": "读取统计数据的间隔（今天）[min]",
+    "Interval to read summary data": "读取摘要数据的间隔[分钟]",
+    "Update unchanged states": "更新未改变的状态"
 }

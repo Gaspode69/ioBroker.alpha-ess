@@ -4,9 +4,9 @@
     "Password": "Mot de passe",
     "Alpha ESS System ID": "ID du système Alpha ESS",
     "Interval to read realtime data": "Intervalle pour lire les données en temps réel [s]",
-    "Interval to read settings data": "Intervalle pour lire les données de réglage [s]",
-    "Interval to read energy data": "Intervalle pour lire les données énergétiques [s]",
-    "Update unchanged states": "Mettre à jour les états inchangés",
-    "Interval to read statistical data (today)": "Intervalle pour lire les données statistiques (aujourd'hui) [s]",
-    "Interval to read summary data": "Intervalle pour lire les données récapitulatives [min]"
+    "Interval to read energy data": "Intervalle pour lire les données énergétiques [min]",
+    "Interval to read settings data": "Intervalle pour lire les données de paramètres [min]",
+    "Interval to read statistical data (today)": "Intervalle pour lire les données statistiques (aujourd'hui) [min]",
+    "Interval to read summary data": "Intervalle pour lire les données récapitulatives [min]",
+    "Update unchanged states": "Mettre à jour les états inchangés"
 }

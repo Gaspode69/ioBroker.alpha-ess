@@ -35,9 +35,9 @@
             "type": "checkbox",
             "newLine": true
         },
-        "intervalEnergydata": {
+        "intervalEnergydataMins": {
             "sm": 5,
-            "min": 60,
+            "min": 1,
             "type": "number",
             "label": "Interval to read energy data",
             "newLine": false
@@ -46,9 +46,9 @@
             "type": "checkbox",
             "newLine": true
         },
-        "intervalSettingsdata": {
+        "intervalSettingsdataMins": {
             "sm": 5,
-            "min": 60,
+            "min": 1,
             "type": "number",
             "label": "Interval to read settings data",
             "newLine": false
@@ -57,9 +57,9 @@
             "type": "checkbox",
             "newLine": true
         },
-        "intervalStatisticalTodaydata": {
+        "intervalStatisticalTodaydataMins": {
             "sm": 5,
-            "min": 60,
+            "min": 1,
             "type": "number",
             "label": "Interval to read statistical data (today)",
             "newLine": false
@@ -68,7 +68,7 @@
             "type": "checkbox",
             "newLine": true
         },
-        "intervalSummarydata": {
+        "intervalSummarydataMins": {
             "sm": 5,
             "min": 5,
             "type": "number",

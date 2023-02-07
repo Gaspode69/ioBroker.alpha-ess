@@ -1,7 +1,7 @@
 {
     "common": {
         "name": "alpha-ess",
-        "version": "0.2.1-beta.0",
+        "version": "0.2.1-beta.1",
         "news": {
             "0.2.1-beta.0": {
                 "en": "Read selected statistical data",
@@ -121,12 +121,8 @@
             "zh-cn": "在 Alpha ESS 系统中读取和写入数据。",
             "uk": "Читання та запис даних із систем Alpha ESS і до них."
         },
-        "authors": [
-            "Gaspode <gaspode69@online.de>"
-        ],
-        "keywords": [
-            "photovoltaik"
-        ],
+        "authors": ["Gaspode <gaspode69@online.de>"],
+        "keywords": ["photovoltaik"],
         "license": "MIT",
         "platform": "Javascript/Node.js",
         "main": "main.js",
@@ -154,13 +150,8 @@
             }
         ]
     },
-    "encryptedNative": [
-        "password"
-    ],
-    "protectedNative": [
-        "username",
-        "password"
-    ],
+    "encryptedNative": ["password"],
+    "protectedNative": ["username", "password"],
     "native": {
         "username": "demo",
         "password": "",
@@ -168,14 +159,18 @@
         "enableRealtimedata": true,
         "intervalRealtimedata": 30,
         "enableEnergydata": true,
-        "intervalEnergydata": 300,
+        "intervalEnergydata": 0,
+        "intervalEnergydataMins": 5,
         "enableSettingsdata": false,
-        "intervalSettingsdata": 300,
+        "intervalSettingsdata": 0,
+        "intervalSettingsdataMins": 5,
         "enableStatisticalTodaydata": false,
-        "intervalStatisticalTodaydata": 300,
+        "intervalStatisticalTodaydata": 0,
+        "intervalStatisticalTodaydataMins": 5,
         "enableSummarydata": false,
-        "intervalSummarydata": 5,
-        "updateUnchangedStates": false
+        "intervalSummarydataMins": 5,
+        "updateUnchangedStates": false,
+        "migrationToMinutesDone": false
     },
     "objects": [],
     "instanceObjects": [

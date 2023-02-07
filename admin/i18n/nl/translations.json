@@ -1,12 +1,12 @@
 {
     "alpha-ess adapter settings": "Adapterinstellingen voor alpha-ess",
-    "Username": "gebruikersnaam",
+    "Username": "Gebruikersnaam",
     "Password": "Wachtwoord",
     "Alpha ESS System ID": "Alpha ESS-systeem-ID",
     "Interval to read realtime data": "Interval om realtime gegevens te lezen [s]",
-    "Interval to read settings data": "Interval voor het lezen van instellingengegevens [s]",
-    "Interval to read energy data": "Interval om energiegegevens te lezen [s]",
-    "Update unchanged states": "Update ongewijzigde statussen",
-    "Interval to read statistical data (today)": "Interval om statistische gegevens te lezen (vandaag) [s]",
-    "Interval to read summary data": "Interval om samenvattingsgegevens te lezen [min]"
+    "Interval to read energy data": "Interval om energiegegevens te lezen [min]",
+    "Interval to read settings data": "Interval om instellingsgegevens te lezen [min]",
+    "Interval to read statistical data (today)": "Interval om statistische gegevens te lezen (vandaag) [min]",
+    "Interval to read summary data": "Interval om samenvattingsgegevens te lezen [min]",
+    "Update unchanged states": "Update ongewijzigde statussen"
 }

@@ -37,10 +37,13 @@ The password is stored encrypted and must therefore be entered manually: demo
 
 ## Changelog
 ### **WORK IN PROGRESS**
+
+### 0.2.1-beta.1 (2023-02-07)
+* Many thanks to [Thorsten](https://github.com/ThorstenBoettler) for his input and suggestions
 * (Gaspode) Rearranged statistical data and added more values. If updated from 0.2.1-beta.0, the folder "Statistics" must be removed manually.
 * (Gaspode) Added Summary data 
 * (Gaspode) Refactored timeout handling
-* (Gaspode) Breaking change: 
+* (Gaspode) Changed the unit for all intervals except of realtime data to minutes. It might be necessary to refresh the web page by pressing F5 in the admin dialog to get correct texts.
 
 ### 0.2.1-beta.0 (2023-01-31)
 * (Gaspode) Read selected statistical data

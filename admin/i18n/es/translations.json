@@ -1,12 +1,12 @@
 {
     "alpha-ess adapter settings": "Configuración del adaptador para alpha-ess",
     "Username": "Nombre de usuario",
-    "Password": "Clave",
+    "Password": "Contraseña",
     "Alpha ESS System ID": "Identificación del sistema Alpha ESS",
     "Interval to read realtime data": "Intervalo para leer datos en tiempo real [s]",
-    "Interval to read settings data": "Intervalo para leer los datos de configuración [s]",
-    "Interval to read energy data": "Intervalo para leer datos de energía [s]",
-    "Update unchanged states": "Actualizar estados sin cambios",
-    "Interval to read statistical data (today)": "Intervalo para leer datos estadísticos (hoy) [s]",
-    "Interval to read summary data": "Intervalo para leer datos de resumen [min]"
+    "Interval to read energy data": "Intervalo para leer datos de energía [min]",
+    "Interval to read settings data": "Intervalo para leer los datos de configuración [min]",
+    "Interval to read statistical data (today)": "Intervalo para leer datos estadísticos (hoy) [min]",
+    "Interval to read summary data": "Intervalo para leer datos de resumen [min]",
+    "Update unchanged states": "Actualizar estados sin cambios"
 }

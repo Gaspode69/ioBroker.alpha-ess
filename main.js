@@ -635,6 +635,7 @@ class AlphaEss extends utils.Adapter {
         this.on('unload', this.onUnload.bind(this));
     }
 
+
     /**
      * Is called when databases are connected and adapter received configuration.
      */
@@ -643,19 +644,54 @@ class AlphaEss extends utils.Adapter {
             // Reset the connection indicator during startup
             await this.setStateChangedAsync('info.connection', false, true);
 
-            this.log.debug('config username:                     ' + this.config.username);
-            this.log.debug('config systemId:                     ' + this.config.systemId);
-            this.log.debug('config intervalRealtimedata:         ' + this.config.intervalRealtimedata);
-            this.log.debug('config intervalSettingsdata:         ' + this.config.intervalSettingsdata);
-            this.log.debug('config intervalEnergydata:           ' + this.config.intervalEnergydata);
-            this.log.debug('config intervalSummarydata:          ' + this.config.intervalSummarydata);
-            this.log.debug('config intervalStatisticalTodaydata: ' + this.config.intervalStatisticalTodaydata);
-            this.log.debug('config enableRealtimedata:           ' + this.config.enableRealtimedata);
-            this.log.debug('config enableSettingsdata:           ' + this.config.enableSettingsdata);
-            this.log.debug('config enableEnergydata:             ' + this.config.enableEnergydata);
-            this.log.debug('config enableStatisticalTodaydata:   ' + this.config.enableStatisticalTodaydata);
-            this.log.debug('config enableSummarydata:            ' + this.config.enableSummarydata);
-            this.log.debug('config updateUnchangedStates:        ' + this.config.updateUnchangedStates);
+            // Migrate old settings in seconds to minutes
+            if (!this.config.migrationToMinutesDone) {
+                if (this.config.intervalEnergydata != 0) {
+                    // Old settings in seconds exist, set minute values
+                    const intervalSettingsdataMins = Math.round(this.config.intervalSettingsdata / 60);
+                    const intervalEnergydataMins = Math.round(this.config.intervalEnergydata / 60);
+                    const intervalStatisticalTodaydataMins = Math.round(this.config.intervalStatisticalTodaydata / 60);
+
+                    this.log.info('Migrate intervalSettingsdata: ' + this.config.intervalSettingsdata + ' -> ' + intervalSettingsdataMins);
+                    this.log.info('Migrate intervalEnergydataMins: ' + this.config.intervalEnergydata + ' -> ' + intervalEnergydataMins);
+                    this.log.info('Migrate intervalStatisticalTodaydataMins: ' + this.config.intervalStatisticalTodaydata + ' -> ' + intervalStatisticalTodaydataMins);
+
+                    this.log.info('migrated');
+                    this.updateConfig({
+                        migrationToMinutesDone: true,
+                        intervalSettingsdataMins: intervalSettingsdataMins,
+                        intervalEnergydataMins: intervalEnergydataMins,
+                        intervalStatisticalTodaydataMins: intervalStatisticalTodaydataMins
+                    });
+                }
+                else {
+                    // No old settings in seconds exist, set them to default values to be backward compatible
+                    // in case somebody installs an older version in the future
+                    this.log.info('Set old settings in seconds to default values to be backward compatible!');
+                    this.updateConfig({
+                        migrationToMinutesDone: true,
+                        intervalSettingsdata: 300,
+                        intervalEnergydata: 300,
+                        intervalStatisticalTodaydata: 300
+                    });
+                }
+                return;
+            }
+            this.log.debug('No migration of minute values necessary!');
+
+            this.log.debug('config username:                         ' + this.config.username);
+            this.log.debug('config systemId:                         ' + this.config.systemId);
+            this.log.debug('config intervalRealtimedata:             ' + this.config.intervalRealtimedata);
+            this.log.debug('config intervalSettingsdataMins          ' + this.config.intervalSettingsdataMins);
+            this.log.debug('config intervalEnergydataMins:           ' + this.config.intervalEnergydataMins);
+            this.log.debug('config intervalStatisticalTodaydataMins: ' + this.config.intervalStatisticalTodaydataMins);
+            this.log.debug('config intervalSummarydataMins:          ' + this.config.intervalSummarydataMins);
+            this.log.debug('config enableRealtimedata:               ' + this.config.enableRealtimedata);
+            this.log.debug('config enableSettingsdata:               ' + this.config.enableSettingsdata);
+            this.log.debug('config enableEnergydata:                 ' + this.config.enableEnergydata);
+            this.log.debug('config enableStatisticalTodaydata:       ' + this.config.enableStatisticalTodaydata);
+            this.log.debug('config enableSummarydata:                ' + this.config.enableSummarydata);
+            this.log.debug('config updateUnchangedStates:            ' + this.config.updateUnchangedStates);
 
             this.wrongCredentials = false;
 
@@ -929,7 +965,7 @@ class AlphaEss extends utils.Adapter {
             const body = await this.postData(BaseURI + 'api/Statistic/SystemStatistic', JSON.stringify(json));
             await this.createAndUpdateStates(groupName, body.data);
 
-            this.startGroupTimeout(() => this.fetchEnergyData(), this.config.intervalEnergydata, groupName);
+            this.startGroupTimeout(() => this.fetchEnergyData(), this.config.intervalEnergydataMins * 60, groupName);
         }
         catch (e) {
             this.log.error('fetchEnergyData Exception occurred: ' + e);
@@ -946,7 +982,7 @@ class AlphaEss extends utils.Adapter {
             const body = await this.getData(BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.config.systemId + '&noLoading=true');
             await this.createAndUpdateStates(groupName, body.data);
 
-            this.startGroupTimeout(() => this.fetchSettingsData(), this.config.intervalSettingsdata, groupName);
+            this.startGroupTimeout(() => this.fetchSettingsData(), this.config.intervalSettingsdataMins * 60, groupName);
         }
         catch (e) {
             this.log.error('fetchSettingsData Exception occurred: ' + e);
@@ -969,7 +1005,7 @@ class AlphaEss extends utils.Adapter {
 
             await this.createAndUpdateStates(groupName, body.data);
 
-            this.startGroupTimeout(() => this.fetchStatisticalTodayData(), this.config.intervalStatisticalTodaydata, groupName);
+            this.startGroupTimeout(() => this.fetchStatisticalTodayData(), this.config.intervalStatisticalTodaydataMins * 60, groupName);
         }
         catch (e) {
             this.log.error('fetchStatisticalTodayData Exception occurred: ' + e);
@@ -993,7 +1029,7 @@ class AlphaEss extends utils.Adapter {
             await this.createAndUpdateStates(groupName, body.data);
 
             // Configuration is in minutes, so multiply with 60
-            this.startGroupTimeout(() => this.fetchSummaryData(), this.config.intervalSummarydata * 60, groupName);
+            this.startGroupTimeout(() => this.fetchSummaryData(), this.config.intervalSummarydataMins * 60, groupName);
         }
         catch (e) {
             this.log.error('fetchSummaryData Exception occurred: ' + e);
