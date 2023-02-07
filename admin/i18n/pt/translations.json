@@ -7,5 +7,6 @@
     "Interval to read settings data": "Intervalo para ler os dados de configurações [s]",
     "Interval to read energy data": "Intervalo para ler dados de energia [s]",
     "Update unchanged states": "Atualizar estados inalterados",
-    "Interval to read statistical data (today)": "Intervalo para ler dados estatísticos (hoje) [s]"
+    "Interval to read statistical data (today)": "Intervalo para ler dados estatísticos (hoje) [s]",
+    "Interval to read summary data": "Intervalo para ler os dados resumidos [min]"
 }

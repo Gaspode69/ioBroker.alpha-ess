@@ -64,6 +64,17 @@
             "label": "Interval to read statistical data (today)",
             "newLine": false
         },
+        "enableSummarydata": {
+            "type": "checkbox",
+            "newLine": true
+        },
+        "intervalSummarydata": {
+            "sm": 5,
+            "min": 5,
+            "type": "number",
+            "label": "Interval to read summary data",
+            "newLine": false
+        },
         "updateUnchangedStates": {
             "type": "checkbox",
             "label": "Update unchanged states",

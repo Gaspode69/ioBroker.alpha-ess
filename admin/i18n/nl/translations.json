@@ -7,5 +7,6 @@
     "Interval to read settings data": "Interval voor het lezen van instellingengegevens [s]",
     "Interval to read energy data": "Interval om energiegegevens te lezen [s]",
     "Update unchanged states": "Update ongewijzigde statussen",
-    "Interval to read statistical data (today)": "Interval om statistische gegevens te lezen (vandaag) [s]"
+    "Interval to read statistical data (today)": "Interval om statistische gegevens te lezen (vandaag) [s]",
+    "Interval to read summary data": "Interval om samenvattingsgegevens te lezen [min]"
 }

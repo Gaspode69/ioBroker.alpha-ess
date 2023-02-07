@@ -173,6 +173,8 @@
         "intervalSettingsdata": 300,
         "enableStatisticalTodaydata": false,
         "intervalStatisticalTodaydata": 300,
+        "enableSummarydata": false,
+        "intervalSummarydata": 5,
         "updateUnchangedStates": false
     },
     "objects": [],

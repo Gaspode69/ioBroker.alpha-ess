@@ -301,7 +301,7 @@ const stateList = [{
     , states: [
         {
             stateName: 'Eloads'
-            , role: 'value.power.consumption '
+            , role: 'value.power.consumption'
             , id: 'Consumption_today'
             , name: 'Today\'s consumption'
             , type: 'number'
@@ -310,7 +310,7 @@ const stateList = [{
         }
         , {
             stateName: 'Epvs'
-            , role: 'value.power.consumption '
+            , role: 'value.power.consumption'
             , id: 'Generation_today'
             , name: 'Today\'s generation'
             , type: 'number'
@@ -319,7 +319,7 @@ const stateList = [{
         }
         , {
             stateName: 'Eoutputs'
-            , role: 'value.power.consumption '
+            , role: 'value.power.consumption'
             , id: 'Grid_feed_in_today'
             , name: 'Today\'s grid feed in'
             , type: 'number'
@@ -328,7 +328,7 @@ const stateList = [{
         }
         , {
             stateName: 'Einputs'
-            , role: 'value.power.consumption '
+            , role: 'value.power.consumption'
             , id: 'Grid_consumption_today'
             , name: 'Today\'s grid consumption'
             , type: 'number'
@@ -337,7 +337,7 @@ const stateList = [{
         }
         , {
             stateName: 'ECharge'
-            , role: 'value.power.consumption '
+            , role: 'value.power.consumption'
             , id: 'Battery_charge_today'
             , name: 'Today\'s battery charge'
             , type: 'number'
@@ -346,7 +346,7 @@ const stateList = [{
         }
         , {
             stateName: 'EDischarge'
-            , role: 'value.power.consumption '
+            , role: 'value.power.consumption'
             , id: 'Battery_discharge_today'
             , name: 'Today\'s battery discharge'
             , type: 'number'
@@ -358,10 +358,130 @@ const stateList = [{
     Group: 'StatisticsToday'
     , states: [
         {
+            stateName: 'EpvT'
+            , role: 'value.power.consumption'
+            , id: 'PV_power_generation'
+            , name: 'PV power generation'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'Eout'
+            , role: 'value.power.consumption'
+            , id: 'Feed_in'
+            , name: 'Feed in'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'Echarge'
+            , role: 'value.power.consumption'
+            , id: 'Charge'
+            , name: 'Charge'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'Epv2load'
+            , role: 'value.power.consumption'
+            , id: 'PV_charging_the_loads'
+            , name: 'PV charging the loads'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'Epvcharge'
+            , role: 'value.power.consumption'
+            , id: 'PV_charging_the_the_storage_system'
+            , name: 'PV charging the the storage system'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'Eload'
+            , role: 'value.power.consumption'
+            , id: 'Other_load_cosumption'
+            , name: 'Other load cosumption'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'EHomeLoad'
+            , role: 'value.power.consumption'
+            , id: 'Home_load_cosumption'
+            , name: 'Home load cosumption'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'EChargingPile'
+            , role: 'value.power.consumption'
+            , id: 'EV_charger_consumption'
+            , name: 'EV-charger consumption (Wallbox)'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'EGridCharge'
+            , role: 'value.power.consumption'
+            , id: 'Grid_connection_battery_charging/discharging'
+            , name: 'Grid connection-battery charging/discharging'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'EGrid2Load'
+            , role: 'value.power.consumption'
+            , id: 'Grid_charging_the_loads'
+            , name: 'Grid charging the loads'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'Einput'
+            , role: 'value.power.consumption'
+            , id: 'Grid_consumption'
+            , name: 'Grid consumption'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'hasChargingPile'
+            , role: 'value'
+            , id: 'Charging pile'
+            , name: 'Charging pile (Wallbox)'
+            , type: 'boolean'
+            , unit: ''
+            , round: 1
+            , dayIndex: false
+        }
+        , {
             stateName: 'EselfSufficiency'
             , role: 'value'
-            , id: 'Self_sufficiency_today'
-            , name: 'Self sufficiency today'
+            , id: 'Self_sufficiency'
+            , name: 'Self sufficiency'
             , type: 'number'
             , unit: '%'
             , factor: 100
@@ -371,15 +491,114 @@ const stateList = [{
         , {
             stateName: 'EselfConsumption'
             , role: 'value'
-            , id: 'Self_consumption_today'
-            , name: 'Self consumption today'
+            , id: 'Self_consumption'
+            , name: 'Self consumption'
             , type: 'number'
             , unit: '%'
             , factor: 100
             , round: 1
             , dayIndex: false
         }]
+},
+{
+    Group: 'Summary'
+    , states: [
+        {
+            stateName: 'Epvtoday'
+            , role: 'value.power.consumption'
+            , id: 'Generation_today'
+            , name: 'Today\'s Generation'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'Epvtotal'
+            , role: 'value.power.consumption'
+            , id: 'Generation_total'
+            , name: 'Total Generation'
+            , type: 'number'
+            , unit: 'kWh'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'TodayIncome'
+            , role: 'value'
+            , id: 'Income_today'
+            , name: 'Today\'s Income'
+            , type: 'number'
+            , unit: '{money_type}'
+            , round: 2
+            , dayIndex: false
+        }
+        , {
+            stateName: 'ToalIncome'
+            , role: 'value'
+            , id: 'Income_total'
+            , name: 'Total Profit'
+            , type: 'number'
+            , unit: '{money_type}'
+            , round: 2
+            , dayIndex: false
+        }
+        , {
+            stateName: 'EselfConsumption'
+            , role: 'value'
+            , id: 'Self_consumption_total'
+            , name: 'Total Self Consumption'
+            , type: 'number'
+            , unit: '%'
+            , factor: 100
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'EselfSufficiency'
+            , role: 'value'
+            , id: 'Self_sufficiency_total'
+            , name: 'Total Self Sufficiency'
+            , type: 'number'
+            , unit: '%'
+            , factor: 100
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'TreeNum'
+            , role: 'value'
+            , id: 'Trees_plantet_total'
+            , name: 'Total Trees planted'
+            , type: 'number'
+            , unit: '🌳'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'CarbonNum'
+            , role: 'value'
+            , id: 'CO2_reduction_total'
+            , name: 'Total CO₂ reduction'
+            , type: 'number'
+            , unit: 'kg'
+            , round: 1
+            , dayIndex: false
+        }
+        , {
+            stateName: 'money_type'
+            , role: 'value'
+            , id: 'Currency'
+            , name: 'Currency'
+            , type: 'string'
+            , unit: ''
+            , dayIndex: false
+        }]
 }];
+
+
+
+
 
 class AlphaEss extends utils.Adapter {
 
@@ -429,11 +648,13 @@ class AlphaEss extends utils.Adapter {
             this.log.debug('config intervalRealtimedata:         ' + this.config.intervalRealtimedata);
             this.log.debug('config intervalSettingsdata:         ' + this.config.intervalSettingsdata);
             this.log.debug('config intervalEnergydata:           ' + this.config.intervalEnergydata);
+            this.log.debug('config intervalSummarydata:          ' + this.config.intervalSummarydata);
             this.log.debug('config intervalStatisticalTodaydata: ' + this.config.intervalStatisticalTodaydata);
             this.log.debug('config enableRealtimedata:           ' + this.config.enableRealtimedata);
             this.log.debug('config enableSettingsdata:           ' + this.config.enableSettingsdata);
             this.log.debug('config enableEnergydata:             ' + this.config.enableEnergydata);
             this.log.debug('config enableStatisticalTodaydata:   ' + this.config.enableStatisticalTodaydata);
+            this.log.debug('config enableSummarydata:            ' + this.config.enableSummarydata);
             this.log.debug('config updateUnchangedStates:        ' + this.config.updateUnchangedStates);
 
             this.wrongCredentials = false;
@@ -465,7 +686,13 @@ class AlphaEss extends utils.Adapter {
                     await this.fetchStatisticalTodayData();
                 }
                 else {
-                    this.log.info('Settings data disabled! Adapter won\'t fetch statistical data.');
+                    this.log.info('Statistical today data disabled! Adapter won\'t fetch statistical today data.');
+                }
+                if (this.config.enableSummarydata) {
+                    await this.fetchSummaryData();
+                }
+                else {
+                    this.log.info('Summary data disabled! Adapter won\'t fetch summary data.');
                 }
             }
             else {
@@ -738,7 +965,7 @@ class AlphaEss extends utils.Adapter {
             const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
 
             const body = await this.getData(BaseURI + 'api/Power/SticsByPeriod?beginDay=' + dts + '&endDay=' + dts +
-                '&tDay=' + dts + '&isOEM=0&SN=' + this.config.systemId + '&userID=&noLoading=true');
+                '&tDay=' + dts + '&SN=' + this.config.systemId + '&noLoading=true');
 
             await this.createAndUpdateStates(groupName, body.data);
 
@@ -746,6 +973,30 @@ class AlphaEss extends utils.Adapter {
         }
         catch (e) {
             this.log.error('fetchStatisticalTodayData Exception occurred: ' + e);
+        }
+    }
+
+    async fetchSummaryData() {
+        try {
+            const groupName = 'Summary';
+
+            this.stopGroupTimeout(groupName);
+
+            this.log.debug('Fetching summary data...');
+
+            const dt = new Date();
+            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
+
+            const body = await this.getData(BaseURI + 'api/ESS/SticsSummeryDataForCustomer?sn=' + this.config.systemId +
+                '&tday=' + dts + '&noLoading=true');
+
+            await this.createAndUpdateStates(groupName, body.data);
+
+            // Configuration is in minutes, so multiply with 60
+            this.startGroupTimeout(() => this.fetchSummaryData(), this.config.intervalSummarydata * 60, groupName);
+        }
+        catch (e) {
+            this.log.error('fetchSummaryData Exception occurred: ' + e);
         }
     }
 
@@ -771,7 +1022,7 @@ class AlphaEss extends utils.Adapter {
                                     // @ts-ignore
                                     , read: true
                                     , write: false
-                                    , unit: stateInfo.unit
+                                    , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit
                                     , desc: stateInfo.description
                                 },
                                 native: {},
@@ -797,7 +1048,15 @@ class AlphaEss extends utils.Adapter {
                                 }
                                 break;
                             case 'boolean':
-                                tvalue = Number.parseInt(value) != 0;
+                                if (value.toString().toLowerCase() === 'true') {
+                                    tvalue = true;
+                                }
+                                else if (value.toString().toLowerCase() === 'false') {
+                                    tvalue = false;
+                                }
+                                else {
+                                    tvalue = Number.parseInt(value) != 0;
+                                }
                                 break;
                             default:
                                 tvalue = value;
@@ -809,6 +1068,7 @@ class AlphaEss extends utils.Adapter {
                         else {
                             await this.setStateChangedAsync(groupName + '.' + this.osn(stateInfo.id), tvalue, true);
                         }
+                        this.log.debug('Received object ' + groupName + '.' + this.osn(stateInfo.stateName) + ' with value ' + rawValue);
                     }
                     else {
                         if (!this.createdStates[groupName]) {

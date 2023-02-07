@@ -7,5 +7,6 @@
     "Interval to read settings data": "读取设置数据的间隔 [s]",
     "Interval to read energy data": "读取能量数据的间隔[s]",
     "Update unchanged states": "更新未改变的状态",
-    "Interval to read statistical data (today)": "读取统计数据的间隔（今天）[s]"
+    "Interval to read statistical data (today)": "读取统计数据的间隔（今天）[s]",
+    "Interval to read summary data": "读取摘要数据的间隔[分钟]"
 }
