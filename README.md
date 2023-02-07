@@ -25,9 +25,10 @@ Basically, it is possible to change selected configuration settings using the Al
 **Password:** The password of your Alpha ESS Account\
 **Alpha ESS System ID:** The system Identifier of your Alpha ESS equipment\
 **Interval to read realtime data:** Unit: seconds.\
-**Interval to read energy data:** Unit: seconds.\
-**Interval to read settings data:** Unit: seconds.
-**Interval to read statistical data:** Unit: seconds.
+**Interval to read energy data:** Unit: minutes.\
+**Interval to read settings data:** Unit: minutes.
+**Interval to read statistical data for the current day:** Unit: minutes.
+**Interval to read summary data:** Unit: minutes.
 
 It is possible to use a demo account provided by Alpha ESS. The credentials (user name, system id) are set as default values within the adapter.
 The password is stored encrypted and must therefore be entered manually: demo
