@@ -1012,7 +1012,7 @@ class AlphaEss extends utils.Adapter {
                     const stateInfo = this.getStateInfo(groupName, stateName);
                     if (stateInfo) {
                         if (!this.createdStates[groupName]) {
-                            await this.setObjectNotExistsAsync(groupName + '.' + this.osn(stateInfo.id), {
+                            await this.setObjectAsync(groupName + '.' + this.osn(stateInfo.id), {
                                 type: 'state',
                                 common: {
                                     name: stateInfo.name + ' [' + stateInfo.stateName + ']'
