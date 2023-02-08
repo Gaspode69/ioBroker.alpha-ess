@@ -364,7 +364,7 @@ const stateList = [{
             , name: 'PV power generation'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
@@ -374,7 +374,7 @@ const stateList = [{
             , name: 'Feed in'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
@@ -384,7 +384,7 @@ const stateList = [{
             , name: 'Charge'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
@@ -394,7 +394,7 @@ const stateList = [{
             , name: 'PV charging the loads'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
@@ -404,27 +404,27 @@ const stateList = [{
             , name: 'PV charging the the storage system'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
             stateName: 'Eload'
             , role: 'value.power.consumption'
-            , id: 'Other_load_cosumption'
-            , name: 'Other load cosumption'
+            , id: 'Load'
+            , name: 'Load'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
             stateName: 'EHomeLoad'
             , role: 'value.power.consumption'
-            , id: 'Home_load_cosumption'
-            , name: 'Home load cosumption'
+            , id: 'Other_load_cosumption'
+            , name: 'Other load cosumption'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
@@ -434,7 +434,7 @@ const stateList = [{
             , name: 'EV-charger consumption (Wallbox)'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
@@ -444,7 +444,7 @@ const stateList = [{
             , name: 'Grid connection-battery charging/discharging'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
@@ -454,7 +454,7 @@ const stateList = [{
             , name: 'Grid charging the loads'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
@@ -464,7 +464,7 @@ const stateList = [{
             , name: 'Grid consumption'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
@@ -474,7 +474,6 @@ const stateList = [{
             , name: 'Charging pile (Wallbox)'
             , type: 'boolean'
             , unit: ''
-            , round: 1
             , dayIndex: false
         }
         , {
@@ -510,7 +509,7 @@ const stateList = [{
             , name: 'Today\'s Generation'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
@@ -520,7 +519,7 @@ const stateList = [{
             , name: 'Total Generation'
             , type: 'number'
             , unit: 'kWh'
-            , round: 1
+            , round: 3
             , dayIndex: false
         }
         , {
@@ -635,7 +634,6 @@ class AlphaEss extends utils.Adapter {
         this.on('unload', this.onUnload.bind(this));
     }
 
-
     /**
      * Is called when databases are connected and adapter received configuration.
      */
@@ -643,41 +641,6 @@ class AlphaEss extends utils.Adapter {
         try {
             // Reset the connection indicator during startup
             await this.setStateChangedAsync('info.connection', false, true);
-
-            // Migrate old settings in seconds to minutes
-            if (!this.config.migrationToMinutesDone) {
-                if (this.config.intervalEnergydata != 0) {
-                    // Old settings in seconds exist, set minute values
-                    const intervalSettingsdataMins = Math.round(this.config.intervalSettingsdata / 60);
-                    const intervalEnergydataMins = Math.round(this.config.intervalEnergydata / 60);
-                    const intervalStatisticalTodaydataMins = Math.round(this.config.intervalStatisticalTodaydata / 60);
-
-                    this.log.info('Migrate intervalSettingsdata: ' + this.config.intervalSettingsdata + ' -> ' + intervalSettingsdataMins);
-                    this.log.info('Migrate intervalEnergydataMins: ' + this.config.intervalEnergydata + ' -> ' + intervalEnergydataMins);
-                    this.log.info('Migrate intervalStatisticalTodaydataMins: ' + this.config.intervalStatisticalTodaydata + ' -> ' + intervalStatisticalTodaydataMins);
-
-                    this.log.info('migrated');
-                    this.updateConfig({
-                        migrationToMinutesDone: true,
-                        intervalSettingsdataMins: intervalSettingsdataMins,
-                        intervalEnergydataMins: intervalEnergydataMins,
-                        intervalStatisticalTodaydataMins: intervalStatisticalTodaydataMins
-                    });
-                }
-                else {
-                    // No old settings in seconds exist, set them to default values to be backward compatible
-                    // in case somebody installs an older version in the future
-                    this.log.info('Set old settings in seconds to default values to be backward compatible!');
-                    this.updateConfig({
-                        migrationToMinutesDone: true,
-                        intervalSettingsdata: 300,
-                        intervalEnergydata: 300,
-                        intervalStatisticalTodaydata: 300
-                    });
-                }
-                return;
-            }
-            this.log.debug('No migration of minute values necessary!');
 
             this.log.debug('config username:                         ' + this.config.username);
             this.log.debug('config systemId:                         ' + this.config.systemId);
@@ -1052,14 +1015,14 @@ class AlphaEss extends utils.Adapter {
                             await this.setObjectNotExistsAsync(groupName + '.' + this.osn(stateInfo.id), {
                                 type: 'state',
                                 common: {
-                                    name: stateInfo.name
+                                    name: stateInfo.name + ' [' + stateInfo.stateName + ']'
                                     , type: stateInfo.type
                                     , role: stateInfo.role
                                     // @ts-ignore
                                     , read: true
                                     , write: false
                                     , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit
-                                    , desc: stateInfo.description
+                                    , desc: stateInfo.stateName
                                 },
                                 native: {},
                             });

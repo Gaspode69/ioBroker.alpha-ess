@@ -159,18 +159,14 @@
         "enableRealtimedata": true,
         "intervalRealtimedata": 30,
         "enableEnergydata": true,
-        "intervalEnergydata": 0,
         "intervalEnergydataMins": 5,
         "enableSettingsdata": false,
-        "intervalSettingsdata": 0,
         "intervalSettingsdataMins": 5,
         "enableStatisticalTodaydata": false,
-        "intervalStatisticalTodaydata": 0,
         "intervalStatisticalTodaydataMins": 5,
         "enableSummarydata": false,
         "intervalSummarydataMins": 5,
-        "updateUnchangedStates": false,
-        "migrationToMinutesDone": false
+        "updateUnchangedStates": false
     },
     "objects": [],
     "instanceObjects": [

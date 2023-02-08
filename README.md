@@ -28,7 +28,7 @@ Basically, it is possible to change selected configuration settings using the Al
 **Interval to read energy data:** Unit: minutes.\
 **Interval to read settings data:** Unit: minutes.\
 **Interval to read statistical data for the current day:** Unit: minutes.\
-**Interval to read summary data:** Unit: minutes.\
+**Interval to read summary data:** Unit: minutes.
 
 It is possible to use a demo account provided by Alpha ESS. The credentials (user name, system id) are set as default values within the adapter.
 The password is stored encrypted and must therefore be entered manually: demo
@@ -38,11 +38,14 @@ The password is stored encrypted and must therefore be entered manually: demo
 
 ## Changelog
 ### **WORK IN PROGRESS**
+**Caution:**
+The intervals for energy data, settings data and statistical data will be reset to default values with this version.\
+Furthermore, it might be necessary to refresh the configuration web page by pressing F5 in the admin dialog to get correct headlines.
 * Many thanks to [Thorsten](https://github.com/ThorstenBoettler) for his input and suggestions
 * (Gaspode) Rearranged statistical data and added more values. If updated from 0.2.1-beta.0, the folder "Statistics" must be removed manually.
 * (Gaspode) Added Summary data 
 * (Gaspode) Refactored timeout handling
-* (Gaspode) Changed the unit for all intervals except of realtime data to minutes. It might be necessary to refresh the web page by pressing F5 in the admin dialog to get correct texts.
+* (Gaspode) Changed the unit for all intervals, except of realtime data, to minutes. 
 
 ### 0.2.1-beta.0 (2023-01-31)
 * (Gaspode) Read selected statistical data
