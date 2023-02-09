@@ -18,588 +18,585 @@ const BaseURI = 'https://cloud.alphaess.com/';
 
 const REQUEST_TIMEOUT = 10000;
 
-const stateList = [{
-    Group: 'Realtime'
-    , states: [
-        {
-            stateName: 'createtime'
-            , role: 'date'
-            , id: 'Last_update'
-            , name: 'Last update'
-            , type: 'string'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'pbat'
-            , role: 'value.power'
-            , id: 'Battery_power'
-            , name: 'Battery power'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'pmeter_l1'
-            , role: 'value.power'
-            , id: 'Grid_L1_power'
-            , name: 'Grid L1 power'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'pmeter_l2'
-            , role: 'value.power'
-            , id: 'Grid_L2_power'
-            , name: 'Grid L2 power'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'pmeter_l3'
-            , role: 'value.power'
-            , id: 'Grid_L3_power'
-            , name: 'Grid L3 power'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'ppv1'
-            , role: 'value.power'
-            , id: 'PV_string_1_power'
-            , name: 'PV string 1 power'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'ppv2'
-            , role: 'value.power'
-            , id: 'PV_string_2_power'
-            , name: 'PV string 2 power'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'ppv3'
-            , role: 'value.power'
-            , id: 'PV_string_3_power'
-            , name: 'PV string 3 power'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'ppv4'
-            , role: 'value.power'
-            , id: 'PV_string_4_power'
-            , name: 'PV string 4 power'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'preal_l1'
-            , role: 'value.power'
-            , id: 'Inverter_L1_power'
-            , name: 'Inverter L1 power'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'preal_l2'
-            , role: 'value.power'
-            , id: 'Inverter_L2_power'
-            , name: 'Inverter L2 power'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'preal_l3'
-            , role: 'value.power'
-            , id: 'Inverter_L3_power'
-            , name: 'Inverter L3 power'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'ev1_power'
-            , role: 'value.power'
-            , id: 'EV1_power'
-            , name: 'Wallbox Power 1'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'ev2_power'
-            , role: 'value.power'
-            , id: 'EV2_power'
-            , name: 'Wallbox Power 2'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'ev3_power'
-            , role: 'value.power'
-            , id: 'EV3_power'
-            , name: 'Wallbox Power 3'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'ev4_power'
-            , role: 'value.power'
-            , id: 'EV4_power'
-            , name: 'Wallbox Power 4'
-            , type: 'number'
-            , unit: 'W'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'soc'
-            , role: 'value.battery'
-            , id: 'Battery_SOC'
-            , name: 'State of charge'
-            , type: 'number'
-            , unit: '%'
-            , dayIndex: false
-        }]
-},
-{
-    Group: 'Settings'
-    , states: [
-        {
-            stateName: 'ctr_dis'
-            , role: 'switch.enable'
-            , id: 'Battery_Discharging_enabled'
-            , name: 'Battery Discharging enabled'
-            , type: 'boolean'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'time_disf1a'
-            , role: 'value'
-            , id: 'Discharging_period_1_start'
-            , name: 'Discharging period 1 start'
-            , type: 'string'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'time_dise1a'
-            , role: 'value'
-            , id: 'Discharging_period_1_end'
-            , name: 'Discharging period 1 end'
-            , type: 'string'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'time_disf2a'
-            , role: 'value'
-            , id: 'Discharging_period_2_start'
-            , name: 'Discharging period 2 start'
-            , type: 'string'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'time_dise2a'
-            , role: 'value'
-            , id: 'Discharging_period_2_end'
-            , name: 'Discharging period 2 end'
-            , type: 'string'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'bat_use_cap'
-            , role: 'value'
-            , id: 'Discharging_Cutoff_SOC'
-            , name: 'Discharging Cutoff SOC'
-            , type: 'number'
-            , unit: '%'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'grid_charge'
-            , role: 'switch.enable'
-            , id: 'Battery_Charging_enabled'
-            , name: 'Battery Charging enabled'
-            , type: 'boolean'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'time_chaf1a'
-            , role: 'value'
-            , id: 'Charging_period_1_start'
-            , name: 'Charging period 1 start'
-            , type: 'string'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'time_chae1a'
-            , role: 'value'
-            , id: 'Charging_period 1_end'
-            , name: 'Charging period 1 end'
-            , type: 'string'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'time_chaf2a'
-            , role: 'value'
-            , id: 'Charging_period_2_start'
-            , name: 'Charging period 2 start'
-            , type: 'string'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'time_chae2a'
-            , role: 'value'
-            , id: 'Charging_period_2_end'
-            , name: 'Charging period 2 end'
-            , type: 'string'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'bat_high_cap'
-            , role: 'value'
-            , id: 'Charging_stopps_at_SOC'
-            , name: 'Charging stopps at SOC'
-            , type: 'number'
-            , unit: '%'
-            , dayIndex: false
-        }
-        , {
-            stateName: 'upsReserve'
-            , role: 'switch.enable'
-            , id: 'UPS_Reserve'
-            , name: 'Load to cut-off SOC from grid after power failure'
-            , type: 'boolean'
-            , unit: ''
-            , dayIndex: false
-        }]
-},
-{
-    Group: 'Energy'
-    , states: [
-        {
-            stateName: 'Eloads'
-            , role: 'value.power.consumption'
-            , id: 'Consumption_today'
-            , name: 'Today\'s consumption'
-            , type: 'number'
-            , unit: 'kWh'
-            , dayIndex: true
-        }
-        , {
-            stateName: 'Epvs'
-            , role: 'value.power.consumption'
-            , id: 'Generation_today'
-            , name: 'Today\'s generation'
-            , type: 'number'
-            , unit: 'kWh'
-            , dayIndex: true
-        }
-        , {
-            stateName: 'Eoutputs'
-            , role: 'value.power.consumption'
-            , id: 'Grid_feed_in_today'
-            , name: 'Today\'s grid feed in'
-            , type: 'number'
-            , unit: 'kWh'
-            , dayIndex: true
-        }
-        , {
-            stateName: 'Einputs'
-            , role: 'value.power.consumption'
-            , id: 'Grid_consumption_today'
-            , name: 'Today\'s grid consumption'
-            , type: 'number'
-            , unit: 'kWh'
-            , dayIndex: true
-        }
-        , {
-            stateName: 'ECharge'
-            , role: 'value.power.consumption'
-            , id: 'Battery_charge_today'
-            , name: 'Today\'s battery charge'
-            , type: 'number'
-            , unit: 'kWh'
-            , dayIndex: true
-        }
-        , {
-            stateName: 'EDischarge'
-            , role: 'value.power.consumption'
-            , id: 'Battery_discharge_today'
-            , name: 'Today\'s battery discharge'
-            , type: 'number'
-            , unit: 'kWh'
-            , dayIndex: true
-        }]
-},
-{
-    Group: 'StatisticsToday'
-    , states: [
-        {
-            stateName: 'EpvT'
-            , role: 'value.power.consumption'
-            , id: 'PV_power_generation'
-            , name: 'PV power generation'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'Eout'
-            , role: 'value.power.consumption'
-            , id: 'Feed_in'
-            , name: 'Feed in'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'Echarge'
-            , role: 'value.power.consumption'
-            , id: 'Charge'
-            , name: 'Charge'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'Epv2load'
-            , role: 'value.power.consumption'
-            , id: 'PV_charging_the_loads'
-            , name: 'PV charging the loads'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'Epvcharge'
-            , role: 'value.power.consumption'
-            , id: 'PV_charging_the_the_storage_system'
-            , name: 'PV charging the the storage system'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'Eload'
-            , role: 'value.power.consumption'
-            , id: 'Load'
-            , name: 'Load'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'EHomeLoad'
-            , role: 'value.power.consumption'
-            , id: 'Other_load_cosumption'
-            , name: 'Other load cosumption'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'EChargingPile'
-            , role: 'value.power.consumption'
-            , id: 'EV_charger_consumption'
-            , name: 'EV-charger consumption (Wallbox)'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'EGridCharge'
-            , role: 'value.power.consumption'
-            , id: 'Grid_connection_battery_charging/discharging'
-            , name: 'Grid connection-battery charging/discharging'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'EGrid2Load'
-            , role: 'value.power.consumption'
-            , id: 'Grid_charging_the_loads'
-            , name: 'Grid charging the loads'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'Einput'
-            , role: 'value.power.consumption'
-            , id: 'Grid_consumption'
-            , name: 'Grid consumption'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'hasChargingPile'
-            , role: 'value'
-            , id: 'Charging pile'
-            , name: 'Charging pile (Wallbox)'
-            , type: 'boolean'
-            , unit: ''
-            , dayIndex: false
-        }
-        , {
-            stateName: 'EselfSufficiency'
-            , role: 'value'
-            , id: 'Self_sufficiency'
-            , name: 'Self sufficiency'
-            , type: 'number'
-            , unit: '%'
-            , factor: 100
-            , round: 1
-            , dayIndex: false
-        }
-        , {
-            stateName: 'EselfConsumption'
-            , role: 'value'
-            , id: 'Self_consumption'
-            , name: 'Self consumption'
-            , type: 'number'
-            , unit: '%'
-            , factor: 100
-            , round: 1
-            , dayIndex: false
-        }]
-},
-{
-    Group: 'Summary'
-    , states: [
-        {
-            stateName: 'Epvtoday'
-            , role: 'value.power.consumption'
-            , id: 'Generation_today'
-            , name: 'Today\'s Generation'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'Epvtotal'
-            , role: 'value.power.consumption'
-            , id: 'Generation_total'
-            , name: 'Total Generation'
-            , type: 'number'
-            , unit: 'kWh'
-            , round: 3
-            , dayIndex: false
-        }
-        , {
-            stateName: 'TodayIncome'
-            , role: 'value'
-            , id: 'Income_today'
-            , name: 'Today\'s Income'
-            , type: 'number'
-            , unit: '{money_type}'
-            , round: 2
-            , dayIndex: false
-        }
-        , {
-            stateName: 'ToalIncome'
-            , role: 'value'
-            , id: 'Income_total'
-            , name: 'Total Profit'
-            , type: 'number'
-            , unit: '{money_type}'
-            , round: 2
-            , dayIndex: false
-        }
-        , {
-            stateName: 'EselfConsumption'
-            , role: 'value'
-            , id: 'Self_consumption_total'
-            , name: 'Total Self Consumption'
-            , type: 'number'
-            , unit: '%'
-            , factor: 100
-            , round: 1
-            , dayIndex: false
-        }
-        , {
-            stateName: 'EselfSufficiency'
-            , role: 'value'
-            , id: 'Self_sufficiency_total'
-            , name: 'Total Self Sufficiency'
-            , type: 'number'
-            , unit: '%'
-            , factor: 100
-            , round: 1
-            , dayIndex: false
-        }
-        , {
-            stateName: 'TreeNum'
-            , role: 'value'
-            , id: 'Trees_plantet_total'
-            , name: 'Total Trees planted'
-            , type: 'number'
-            , unit: '🌳'
-            , round: 1
-            , dayIndex: false
-        }
-        , {
-            stateName: 'CarbonNum'
-            , role: 'value'
-            , id: 'CO2_reduction_total'
-            , name: 'Total CO₂ reduction'
-            , type: 'number'
-            , unit: 'kg'
-            , round: 1
-            , dayIndex: false
-        }
-        , {
-            stateName: 'money_type'
-            , role: 'value'
-            , id: 'Currency'
-            , name: 'Currency'
-            , type: 'string'
-            , unit: ''
-            , dayIndex: false
-        }]
-}];
-
-
-
-
-
 class AlphaEss extends utils.Adapter {
+
+    stateInfoList = [{
+        Group: 'Realtime'
+        , fnct: this.fetchRealtimeData.bind(this)
+        , enabledName: 'enableRealtimedata'
+        , states: [
+            {
+                alphaAttrName: 'pbat'
+                , role: 'value.power'
+                , id: 'Battery_power'
+                , name: 'Battery power'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'pmeter_l1'
+                , role: 'value.power'
+                , id: 'Grid_L1_power'
+                , name: 'Grid L1 power'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'pmeter_l2'
+                , role: 'value.power'
+                , id: 'Grid_L2_power'
+                , name: 'Grid L2 power'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'pmeter_l3'
+                , role: 'value.power'
+                , id: 'Grid_L3_power'
+                , name: 'Grid L3 power'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'ppv1'
+                , role: 'value.power'
+                , id: 'PV_string_1_power'
+                , name: 'PV string 1 power'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'ppv2'
+                , role: 'value.power'
+                , id: 'PV_string_2_power'
+                , name: 'PV string 2 power'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'ppv3'
+                , role: 'value.power'
+                , id: 'PV_string_3_power'
+                , name: 'PV string 3 power'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'ppv4'
+                , role: 'value.power'
+                , id: 'PV_string_4_power'
+                , name: 'PV string 4 power'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'preal_l1'
+                , role: 'value.power'
+                , id: 'Inverter_L1_power'
+                , name: 'Inverter L1 power'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'preal_l2'
+                , role: 'value.power'
+                , id: 'Inverter_L2_power'
+                , name: 'Inverter L2 power'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'preal_l3'
+                , role: 'value.power'
+                , id: 'Inverter_L3_power'
+                , name: 'Inverter L3 power'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'ev1_power'
+                , role: 'value.power'
+                , id: 'EV1_power'
+                , name: 'Wallbox Power 1'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'ev2_power'
+                , role: 'value.power'
+                , id: 'EV2_power'
+                , name: 'Wallbox Power 2'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'ev3_power'
+                , role: 'value.power'
+                , id: 'EV3_power'
+                , name: 'Wallbox Power 3'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'ev4_power'
+                , role: 'value.power'
+                , id: 'EV4_power'
+                , name: 'Wallbox Power 4'
+                , type: 'number'
+                , unit: 'W'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'soc'
+                , role: 'value.battery'
+                , id: 'Battery_SOC'
+                , name: 'State of charge'
+                , type: 'number'
+                , unit: '%'
+                , dayIndex: false
+            }]
+    },
+    {
+        Group: 'Settings'
+        , fnct: this.fetchSettingsData.bind(this)
+        , enabledName: 'enableSettingsdata'
+        , states: [
+            {
+                alphaAttrName: 'ctr_dis'
+                , role: 'switch.enable'
+                , id: 'Battery_Discharging_enabled'
+                , name: 'Battery Discharging enabled'
+                , type: 'boolean'
+                , unit: ''
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'time_disf1a'
+                , role: 'value'
+                , id: 'Discharging_period_1_start'
+                , name: 'Discharging period 1 start'
+                , type: 'string'
+                , unit: ''
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'time_dise1a'
+                , role: 'value'
+                , id: 'Discharging_period_1_end'
+                , name: 'Discharging period 1 end'
+                , type: 'string'
+                , unit: ''
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'time_disf2a'
+                , role: 'value'
+                , id: 'Discharging_period_2_start'
+                , name: 'Discharging period 2 start'
+                , type: 'string'
+                , unit: ''
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'time_dise2a'
+                , role: 'value'
+                , id: 'Discharging_period_2_end'
+                , name: 'Discharging period 2 end'
+                , type: 'string'
+                , unit: ''
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'bat_use_cap'
+                , role: 'value'
+                , id: 'Discharging_Cutoff_SOC'
+                , name: 'Discharging Cutoff SOC'
+                , type: 'number'
+                , unit: '%'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'grid_charge'
+                , role: 'switch.enable'
+                , id: 'Battery_Charging_enabled'
+                , name: 'Battery Charging enabled'
+                , type: 'boolean'
+                , unit: ''
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'time_chaf1a'
+                , role: 'value'
+                , id: 'Charging_period_1_start'
+                , name: 'Charging period 1 start'
+                , type: 'string'
+                , unit: ''
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'time_chae1a'
+                , role: 'value'
+                , id: 'Charging_period 1_end'
+                , name: 'Charging period 1 end'
+                , type: 'string'
+                , unit: ''
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'time_chaf2a'
+                , role: 'value'
+                , id: 'Charging_period_2_start'
+                , name: 'Charging period 2 start'
+                , type: 'string'
+                , unit: ''
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'time_chae2a'
+                , role: 'value'
+                , id: 'Charging_period_2_end'
+                , name: 'Charging period 2 end'
+                , type: 'string'
+                , unit: ''
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'bat_high_cap'
+                , role: 'value'
+                , id: 'Charging_stopps_at_SOC'
+                , name: 'Charging stopps at SOC'
+                , type: 'number'
+                , unit: '%'
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'upsReserve'
+                , role: 'switch.enable'
+                , id: 'UPS_Reserve'
+                , name: 'Load to cut-off SOC from grid after power failure'
+                , type: 'boolean'
+                , unit: ''
+                , dayIndex: false
+            }]
+    },
+    {
+        Group: 'Energy'
+        , fnct: this.fetchEnergyData.bind(this)
+        , enabledName: 'enableEnergydata'
+        , states: [
+            {
+                alphaAttrName: 'Eloads'
+                , role: 'value.power.consumption'
+                , id: 'Consumption_today'
+                , name: 'Today\'s consumption'
+                , type: 'number'
+                , unit: 'kWh'
+                , dayIndex: true
+            }
+            , {
+                alphaAttrName: 'Epvs'
+                , role: 'value.power.consumption'
+                , id: 'Generation_today'
+                , name: 'Today\'s generation'
+                , type: 'number'
+                , unit: 'kWh'
+                , dayIndex: true
+            }
+            , {
+                alphaAttrName: 'Eoutputs'
+                , role: 'value.power.consumption'
+                , id: 'Grid_feed_in_today'
+                , name: 'Today\'s grid feed in'
+                , type: 'number'
+                , unit: 'kWh'
+                , dayIndex: true
+            }
+            , {
+                alphaAttrName: 'Einputs'
+                , role: 'value.power.consumption'
+                , id: 'Grid_consumption_today'
+                , name: 'Today\'s grid consumption'
+                , type: 'number'
+                , unit: 'kWh'
+                , dayIndex: true
+            }
+            , {
+                alphaAttrName: 'ECharge'
+                , role: 'value.power.consumption'
+                , id: 'Battery_charge_today'
+                , name: 'Today\'s battery charge'
+                , type: 'number'
+                , unit: 'kWh'
+                , dayIndex: true
+            }
+            , {
+                alphaAttrName: 'EDischarge'
+                , role: 'value.power.consumption'
+                , id: 'Battery_discharge_today'
+                , name: 'Today\'s battery discharge'
+                , type: 'number'
+                , unit: 'kWh'
+                , dayIndex: true
+            }]
+    },
+    {
+        Group: 'StatisticsToday'
+        , fnct: this.fetchStatisticalTodayData.bind(this)
+        , enabledName: 'enableStatisticalTodaydata'
+        , states: [
+            {
+                alphaAttrName: 'EpvT'
+                , role: 'value.power.consumption'
+                , id: 'PV_power_generation'
+                , name: 'PV power generation'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'Eout'
+                , role: 'value.power.consumption'
+                , id: 'Feed_in'
+                , name: 'Feed in'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'Echarge'
+                , role: 'value.power.consumption'
+                , id: 'Charge'
+                , name: 'Charge'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'Epv2load'
+                , role: 'value.power.consumption'
+                , id: 'PV_charging_the_loads'
+                , name: 'PV charging the loads'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'Epvcharge'
+                , role: 'value.power.consumption'
+                , id: 'PV_charging_the_the_storage_system'
+                , name: 'PV charging the the storage system'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'Eload'
+                , role: 'value.power.consumption'
+                , id: 'Load'
+                , name: 'Load'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'EHomeLoad'
+                , role: 'value.power.consumption'
+                , id: 'Other_load_cosumption'
+                , name: 'Other load cosumption'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'EChargingPile'
+                , role: 'value.power.consumption'
+                , id: 'EV_charger_consumption'
+                , name: 'EV-charger consumption (Wallbox)'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'EGridCharge'
+                , role: 'value.power.consumption'
+                , id: 'Grid_connection_battery_charging/discharging'
+                , name: 'Grid connection-battery charging/discharging'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'EGrid2Load'
+                , role: 'value.power.consumption'
+                , id: 'Grid_charging_the_loads'
+                , name: 'Grid charging the loads'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'Einput'
+                , role: 'value.power.consumption'
+                , id: 'Grid_consumption'
+                , name: 'Grid consumption'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'hasChargingPile'
+                , role: 'value'
+                , id: 'Charging pile'
+                , name: 'Charging pile (Wallbox)'
+                , type: 'boolean'
+                , unit: ''
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'EselfSufficiency'
+                , role: 'value'
+                , id: 'Self_sufficiency'
+                , name: 'Self sufficiency'
+                , type: 'number'
+                , unit: '%'
+                , factor: 100
+                , round: 1
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'EselfConsumption'
+                , role: 'value'
+                , id: 'Self_consumption'
+                , name: 'Self consumption'
+                , type: 'number'
+                , unit: '%'
+                , factor: 100
+                , round: 1
+                , dayIndex: false
+            }]
+    },
+    {
+        Group: 'Summary'
+        , fnct: this.fetchSummaryData.bind(this)
+        , enabledName: 'enableSummarydata'
+        , states: [
+            {
+                alphaAttrName: 'Epvtoday'
+                , role: 'value.power.consumption'
+                , id: 'Generation_today'
+                , name: 'Today\'s Generation'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'Epvtotal'
+                , role: 'value.power.consumption'
+                , id: 'Generation_total'
+                , name: 'Total Generation'
+                , type: 'number'
+                , unit: 'kWh'
+                , round: 3
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'TodayIncome'
+                , role: 'value'
+                , id: 'Income_today'
+                , name: 'Today\'s Income'
+                , type: 'number'
+                , unit: '{money_type}'
+                , round: 2
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'ToalIncome'
+                , role: 'value'
+                , id: 'Income_total'
+                , name: 'Total Profit'
+                , type: 'number'
+                , unit: '{money_type}'
+                , round: 2
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'EselfConsumption'
+                , role: 'value'
+                , id: 'Self_consumption_total'
+                , name: 'Total Self Consumption'
+                , type: 'number'
+                , unit: '%'
+                , factor: 100
+                , round: 1
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'EselfSufficiency'
+                , role: 'value'
+                , id: 'Self_sufficiency_total'
+                , name: 'Total Self Sufficiency'
+                , type: 'number'
+                , unit: '%'
+                , factor: 100
+                , round: 1
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'TreeNum'
+                , role: 'value'
+                , id: 'Trees_plantet_total'
+                , name: 'Total Trees planted'
+                , type: 'number'
+                , unit: '🌳'
+                , round: 1
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'CarbonNum'
+                , role: 'value'
+                , id: 'CO2_reduction_total'
+                , name: 'Total CO₂ reduction'
+                , type: 'number'
+                , unit: 'kg'
+                , round: 1
+                , dayIndex: false
+            }
+            , {
+                alphaAttrName: 'money_type'
+                , role: 'value'
+                , id: 'Currency'
+                , name: 'Currency'
+                , type: 'string'
+                , unit: ''
+                , dayIndex: false
+            }]
+    }];
 
     /**
      * @param {Partial<utils.AdapterOptions>} [options={}]
@@ -611,8 +608,6 @@ class AlphaEss extends utils.Adapter {
             name: 'alpha-ess',
         });
 
-        this.timeoutHandles = {};
-
         this.Auth =
         {
             username: '',
@@ -623,14 +618,11 @@ class AlphaEss extends utils.Adapter {
         };
 
         this.createdStates = [];
-        this.results = {};
 
         this.errorCount = 0;
 
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
-        // this.on('objectChange', this.onObjectChange.bind(this));
-        // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
     }
 
@@ -661,37 +653,16 @@ class AlphaEss extends utils.Adapter {
             await this.resetAuth();
 
             if (this.config.password && this.config.username && this.config.systemId) {
-                if (this.config.enableRealtimedata) {
-                    await this.fetchRealtimeData();
-                }
-                else {
-                    this.log.info('Realtime data disabled! Adapter won\'t fetch realtime data.');
-                }
 
-                if (this.config.enableEnergydata) {
-                    await this.fetchEnergyData();
-                }
-                else {
-                    this.log.info('Energydata data disabled! Adapter won\'t fetch energy data.');
-                }
-
-                if (this.config.enableSettingsdata) {
-                    await this.fetchSettingsData();
-                }
-                else {
-                    this.log.info('Settings data disabled! Adapter won\'t fetch settings data.');
-                }
-                if (this.config.enableStatisticalTodaydata) {
-                    await this.fetchStatisticalTodayData();
-                }
-                else {
-                    this.log.info('Statistical today data disabled! Adapter won\'t fetch statistical today data.');
-                }
-                if (this.config.enableSummarydata) {
-                    await this.fetchSummaryData();
-                }
-                else {
-                    this.log.info('Summary data disabled! Adapter won\'t fetch summary data.');
+                for (const gidx of Object.keys(this.stateInfoList)) {
+                    const group = this.stateInfoList[gidx];
+                    if (this.config[group.enabledName]) {
+                        await group.fnct(group.Group);
+                    }
+                    else {
+                        this.log.info(group.Group + ' data disabled! Adapter won\'t fetch ' + group.Group + ' data. According states deleted.');
+                        await this.deleteStatesForGroup(group.Group);
+                    }
                 }
             }
             else {
@@ -710,8 +681,8 @@ class AlphaEss extends utils.Adapter {
     onUnload(callback) {
         try {
             // Clear all timers
-            for (const group in this.timeoutHandles) {
-                this.stopGroupTimeout(group);
+            for (const gidx of Object.keys(this.stateInfoList)) {
+                this.stopGroupTimeout(this.stateInfoList[gidx].Group);
             }
 
             this.resetAuth();
@@ -721,23 +692,6 @@ class AlphaEss extends utils.Adapter {
             callback();
         }
     }
-
-    // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-    // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-    // /**
-    //  * Is called if a subscribed object changes
-    //  * @param {string} id
-    //  * @param {ioBroker.Object | null | undefined} obj
-    //  */
-    // onObjectChange(id, obj) {
-    //     if (obj) {
-    //         // The object was changed
-    //         this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-    //     } else {
-    //         // The object was deleted
-    //         this.log.info(`object ${id} deleted`);
-    //     }
-    // }
 
     /**
      * Is called if a subscribed state changes
@@ -753,34 +707,31 @@ class AlphaEss extends utils.Adapter {
             this.log.info(`state ${id} deleted`);
         }
     }
-
-    // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
-    // /**
-    //  * Some message was sent to this instance over message box. Used by email, pushover, text2speech, ...
-    //  * Using this method requires "common.messagebox" property to be set to true in io-package.json
-    //  * @param {ioBroker.Message} obj
-    //  */
-    // onMessage(obj) {
-    //     if (typeof obj === 'object' && obj.message) {
-    //         if (obj.command === 'send') {
-    //             // e.g. send email or pushover or whatever
-    //             this.log.info('send command');
-
-    //             // Send response in callback if required
-    //             if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
-    //         }
-    //     }
-    // }
+    /**
+     * Delete all states for a given group
+     * @param {string} group 
+     */
+    async deleteStatesForGroup(group) {
+        return new Promise(async (resolve) => {
+            let states = await this.getStatesAsync(group + '.*');
+            for (let id in states) {
+                this.log.info(id + ': ' + JSON.stringify(states[id]));
+                await this.delObjectAsync(id);
+            }
+            resolve(true);
+        });
+    }
 
     /** Stop a timer for a given group
      *
      * @param {string} group
      */
     stopGroupTimeout(group) {
-        if (this.timeoutHandles[group]) {
+        const gidx = this.stateInfoList.findIndex(i => i.Group == group);
+        if (this.stateInfoList[gidx].timeoutHandle) {
             this.log.debug('Timeout cleared for group ' + group);
-            clearTimeout(this.timeoutHandles[group]);
-            this.timeoutHandles[group] = null;
+            clearTimeout(this.stateInfoList[gidx].timeoutHandle);
+            this.stateInfoList[gidx].timeoutHandle = 0;
         }
     }
 
@@ -788,17 +739,20 @@ class AlphaEss extends utils.Adapter {
      * Start a timer for a given group
      * @param {number} intervalInS
      * @param {string} group
-     * @param {{ (): Promise<void>; (): Promise<void>; (): Promise<void>; (): Promise<void>; (): void; }} fnct
      */
-    startGroupTimeout(fnct, intervalInS, group) {
-        if (!this.timeoutHandles[group]) {
+    startGroupTimeout(intervalInS, group) {
+        const gidx = this.stateInfoList.findIndex(i => i.Group == group);
+        if (!this.stateInfoList[gidx].timeoutHandle) {
             const interval = this.calculateIntervalInMs(intervalInS, group);
             this.log.debug('Timeout with interval ' + interval + ' ms started for group ' + group);
-            this.timeoutHandles[group] = setTimeout(() => fnct(), interval);
+            this.stateInfoList[gidx].timeoutHandle = setTimeout(() => { this.stateInfoList[gidx].fnct(group); }, interval);
         }
     }
 
-
+    /**
+     * Check alpha-ess authentcation. Decides if login or refresh has to be performed
+     * @returns true in case of success, otherwise false
+     */
     async checkAuthentication() {
         try {
             if (this.Auth.Token && this.Auth.RefreshToken && this.Auth.Expires) {
@@ -828,6 +782,7 @@ class AlphaEss extends utils.Adapter {
 
 
     /**
+     * Perform alpha-ess authentication
      * @param {boolean} [refresh]
      */
     async authenticate(refresh) {
@@ -891,28 +846,33 @@ class AlphaEss extends utils.Adapter {
         }
     }
 
-    async fetchRealtimeData() {
+    /**
+     * Get realtime data from alpha-ess and start timer for next execution
+     * @param {string} group 
+     */
+    async fetchRealtimeData(group) {
         try {
-            const groupName = 'Realtime';
-
-            this.stopGroupTimeout(groupName);
+            this.stopGroupTimeout(group);
 
             this.log.debug('Fetching realtime data...');
-            const body = await this.getData(BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.config.systemId + '&noLoading=true');
-            await this.createAndUpdateStates(groupName, body.data);
 
-            this.startGroupTimeout(() => this.fetchRealtimeData(), this.config.intervalRealtimedata, groupName);
+            const body = await this.getData(BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.config.systemId + '&noLoading=true');
+            await this.createAndUpdateStates(group, body.data);
+
+            this.startGroupTimeout(this.config.intervalRealtimedata, group);
         }
         catch (e) {
             this.log.error('fetchRealtimeData Exception occurred: ' + e);
         }
     }
 
-    async fetchEnergyData() {
+    /**
+     * Get energy data from alpha-ess and start timer for next execution
+     * @param {string} group 
+     */
+    async fetchEnergyData(group) {
         try {
-            const groupName = 'Energy';
-
-            this.stopGroupTimeout(groupName);
+            this.stopGroupTimeout(group);
 
             this.log.debug('Fetching energy data...');
 
@@ -926,37 +886,42 @@ class AlphaEss extends utils.Adapter {
                 'userId': '',
             };
             const body = await this.postData(BaseURI + 'api/Statistic/SystemStatistic', JSON.stringify(json));
-            await this.createAndUpdateStates(groupName, body.data);
+            await this.createAndUpdateStates(group, body.data);
 
-            this.startGroupTimeout(() => this.fetchEnergyData(), this.config.intervalEnergydataMins * 60, groupName);
+            this.startGroupTimeout(this.config.intervalEnergydataMins * 60, group);
         }
         catch (e) {
             this.log.error('fetchEnergyData Exception occurred: ' + e);
         }
     }
 
-    async fetchSettingsData() {
+    /**
+     * Get settings data from alpha-ess and start timer for next execution
+     * @param {string} group 
+     */
+    async fetchSettingsData(group) {
         try {
-            const groupName = 'Settings';
-
-            this.stopGroupTimeout(groupName);
+            this.stopGroupTimeout(group);
 
             this.log.debug('Fetching settings data...');
-            const body = await this.getData(BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.config.systemId + '&noLoading=true');
-            await this.createAndUpdateStates(groupName, body.data);
 
-            this.startGroupTimeout(() => this.fetchSettingsData(), this.config.intervalSettingsdataMins * 60, groupName);
+            const body = await this.getData(BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.config.systemId + '&noLoading=true');
+            await this.createAndUpdateStates(group, body.data);
+
+            this.startGroupTimeout(this.config.intervalSettingsdataMins * 60, group);
         }
         catch (e) {
             this.log.error('fetchSettingsData Exception occurred: ' + e);
         }
     }
 
-    async fetchStatisticalTodayData() {
+    /**
+     * Get statistical data for today from alpha-ess and start timer for next execution
+     * @param {string} group 
+     */
+    async fetchStatisticalTodayData(group) {
         try {
-            const groupName = 'StatisticsToday';
-
-            this.stopGroupTimeout(groupName);
+            this.stopGroupTimeout(group);
 
             this.log.debug('Fetching statistical data...');
 
@@ -966,20 +931,22 @@ class AlphaEss extends utils.Adapter {
             const body = await this.getData(BaseURI + 'api/Power/SticsByPeriod?beginDay=' + dts + '&endDay=' + dts +
                 '&tDay=' + dts + '&SN=' + this.config.systemId + '&noLoading=true');
 
-            await this.createAndUpdateStates(groupName, body.data);
+            await this.createAndUpdateStates(group, body.data);
 
-            this.startGroupTimeout(() => this.fetchStatisticalTodayData(), this.config.intervalStatisticalTodaydataMins * 60, groupName);
+            this.startGroupTimeout(this.config.intervalStatisticalTodaydataMins * 60, group);
         }
         catch (e) {
             this.log.error('fetchStatisticalTodayData Exception occurred: ' + e);
         }
     }
 
-    async fetchSummaryData() {
+    /**
+     * Get summary data for today from alpha-ess and start timer for next execution
+     * @param {string} group 
+     */
+    async fetchSummaryData(group) {
         try {
-            const groupName = 'Summary';
-
-            this.stopGroupTimeout(groupName);
+            this.stopGroupTimeout(group);
 
             this.log.debug('Fetching summary data...');
 
@@ -989,10 +956,10 @@ class AlphaEss extends utils.Adapter {
             const body = await this.getData(BaseURI + 'api/ESS/SticsSummeryDataForCustomer?sn=' + this.config.systemId +
                 '&tday=' + dts + '&noLoading=true');
 
-            await this.createAndUpdateStates(groupName, body.data);
+            await this.createAndUpdateStates(group, body.data);
 
             // Configuration is in minutes, so multiply with 60
-            this.startGroupTimeout(() => this.fetchSummaryData(), this.config.intervalSummarydataMins * 60, groupName);
+            this.startGroupTimeout(this.config.intervalSummarydataMins * 60, group);
         }
         catch (e) {
             this.log.error('fetchSummaryData Exception occurred: ' + e);
@@ -1000,29 +967,30 @@ class AlphaEss extends utils.Adapter {
     }
 
     /**
+     * Create states when called the first time, update state values in each call
      * @param {string} groupName
      * @param {{ [s: string]: any; }} data
      */
-    async createAndUpdateStates(groupName, data,) {
+    async createAndUpdateStates(groupName, data) {
         try {
             if (data) {
                 const idx = new Date().getDate() - 1;
 
-                for (const [stateName, rawValue] of Object.entries(data)) {
-                    const stateInfo = this.getStateInfo(groupName, stateName);
+                for (const [alphaAttrName, rawValue] of Object.entries(data)) {
+                    const stateInfo = this.getStateInfo(groupName, alphaAttrName);
                     if (stateInfo) {
                         if (!this.createdStates[groupName]) {
-                            await this.setObjectAsync(groupName + '.' + this.osn(stateInfo.id), {
+                            await this.setObjectNotExistsAsync(groupName + '.' + this.osn(stateInfo.id), {
                                 type: 'state',
                                 common: {
-                                    name: stateInfo.name + ' [' + stateInfo.stateName + ']'
+                                    name: stateInfo.name + ' [' + stateInfo.alphaAttrName + ']'
                                     , type: stateInfo.type
                                     , role: stateInfo.role
                                     // @ts-ignore
                                     , read: true
                                     , write: false
                                     , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit
-                                    , desc: stateInfo.stateName
+                                    , desc: stateInfo.alphaAttrName
                                 },
                                 native: {},
                             });
@@ -1067,11 +1035,11 @@ class AlphaEss extends utils.Adapter {
                         else {
                             await this.setStateChangedAsync(groupName + '.' + this.osn(stateInfo.id), tvalue, true);
                         }
-                        this.log.debug('Received object ' + groupName + '.' + this.osn(stateInfo.stateName) + ' with value ' + rawValue);
+                        this.log.debug('Received object ' + groupName + '.' + this.osn(stateInfo.alphaAttrName) + ' with value ' + rawValue);
                     }
                     else {
                         if (!this.createdStates[groupName]) {
-                            this.log.info('Skipped object ' + groupName + '.' + stateName + ' with value ' + rawValue);
+                            this.log.info('Skipped object ' + groupName + '.' + alphaAttrName + ' with value ' + rawValue);
                         }
                     }
                 }
@@ -1087,6 +1055,7 @@ class AlphaEss extends utils.Adapter {
     }
 
     /**
+     * Perform a get request and return the received body.
      * @param {string} uri
      */
     async getData(uri) {
@@ -1129,6 +1098,7 @@ class AlphaEss extends utils.Adapter {
     }
 
     /**
+     * Perform a post request and return the received body.
     * @param {string} uri
     * @param {string} sndBody
     */
@@ -1172,6 +1142,10 @@ class AlphaEss extends utils.Adapter {
         }
     }
 
+    /**
+     * Reset authentication data to defaults. Login must be performed afterwards.
+     * @returns 
+     */
     async resetAuth() {
         try {
             await this.setStateChangedAsync('info.connection', false, true);
@@ -1195,6 +1169,7 @@ class AlphaEss extends utils.Adapter {
     }
 
     /**
+     * Answer alpha-ess specific headers for web requests
      * @param {any} extraHeaders
      */
     headers(extraHeaders) {
@@ -1215,6 +1190,9 @@ class AlphaEss extends utils.Adapter {
         return Object.assign({}, stdHeaders, extraHeaders);
     }
 
+    /**
+     * Will be called if during any request an error occurs
+     */
     async handleError() {
         try {
             // Increase error count, will be reset with the next successful connection
@@ -1227,15 +1205,16 @@ class AlphaEss extends utils.Adapter {
     }
 
     /**
+     * Answer the state description object for a given group and alpha-ess attribute name
      * @param {string} Group
-     * @param {string} StateName
+     * @param {string} alphaAttrName
      */
-    getStateInfo(Group, StateName) {
+    getStateInfo(Group, alphaAttrName) {
         try {
-            const gidx = stateList.findIndex(i => i.Group == Group);
+            const gidx = this.stateInfoList.findIndex(i => i.Group == Group);
             if (gidx >= 0) {
-                const currentList = stateList[gidx].states;
-                const sidx = currentList.findIndex(i => i.stateName == StateName);
+                const currentList = this.stateInfoList[gidx].states;
+                const sidx = currentList.findIndex(i => i.alphaAttrName == alphaAttrName);
                 if (sidx >= 0) {
                     return currentList[sidx];
                 }
@@ -1245,12 +1224,13 @@ class AlphaEss extends utils.Adapter {
         catch (e) {
             this.log.error('getStateInfo Exception occurred: ' + e);
             this.log.info('Group: ' + Group);
-            this.log.info('Statename: ' + StateName);
+            this.log.info('alphaAttrName: ' + alphaAttrName);
             return null;
         }
     }
 
-    /** otimize statename (i.e. remove forbidden characters for state names)
+    /**
+     *  otimize state name (i.e. remove forbidden characters for ioBroker state names)
      * @param {string} sn
      */
     osn(sn) {

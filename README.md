@@ -40,12 +40,17 @@ The password is stored encrypted and must therefore be entered manually: demo
 ### **WORK IN PROGRESS**
 **Caution:**
 The intervals for energy data, settings data and statistical data will be reset to default values with this version.\
+Please remove the folder "Statistics" manually, if you had already installed 0.2.1-beta.0.\
+State ID Realtime.Last_update is no longer delivered by Alphe-ESS. Please remove manually.\
 Furthermore, it might be necessary to refresh the configuration web page by pressing F5 in the admin dialog to get correct headlines.
-* Many thanks to [Thorsten](https://github.com/ThorstenBoettler) for his input and suggestions
-* (Gaspode) Rearranged statistical data and added more values. If updated from 0.2.1-beta.0, the folder "Statistics" must be removed manually.
+Many thanks to [Thorsten](https://github.com/ThorstenBoettler) for his input and suggestions!
+* (Gaspode) Rearranged statistical data and added more values. 
 * (Gaspode) Added Summary data 
-* (Gaspode) Refactored timeout handling
-* (Gaspode) Changed the unit for all intervals, except of realtime data, to minutes. 
+* (Gaspode) Refactored complete implementation
+* (Gaspode) Changed the unit of settings for all intervals, except of realtime data, to minutes
+* (Gaspode) Remove disabled states at adapter startup
+* (Gaspode) Removed no more supported value 'createtime' (state ID Realtime.Last_update). 
+* (Gaspode) Optimized rounding for selected values
 
 ### 0.2.1-beta.0 (2023-01-31)
 * (Gaspode) Read selected statistical data
