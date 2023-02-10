@@ -709,7 +709,7 @@ class AlphaEss extends utils.Adapter {
     }
 
     /**
-     * Delete all states for a given group (async, so it can be used in a Promise
+     * Delete all states for a given group (async, so it can be used in a Promise)
      * @param {string} group
      */
     async deleteStatesForGroupAsync(group) {

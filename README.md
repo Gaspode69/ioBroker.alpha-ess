@@ -42,8 +42,8 @@ The password is stored encrypted and must therefore be entered manually: demo
 The intervals for energy data, settings data and statistical data will be reset to default values with this version.\
 Please remove the folder "Statistics" manually, if you had already installed 0.2.1-beta.0.\
 State ID Realtime.Last_update is no longer delivered by Alphe-ESS. Please remove manually.\
-Furthermore, it might be necessary to refresh the configuration web page by pressing F5 in the admin dialog to get correct headlines.
-Many thanks to [Thorsten](https://github.com/ThorstenBoettler) for his input and suggestions!
+Furthermore, it might be necessary to refresh the configuration web page by pressing F5 in the admin dialog to get correct headlines.\
+Many thanks to [Thorsten](https://github.com/ThorstenBoettler) for his valuable contribution in testing the early alpha versions of this release and providing informative suggestions and recommendations for new data points.
 * (Gaspode) Rearranged statistical data and added more values. 
 * (Gaspode) Added Summary data 
 * (Gaspode) Refactored complete implementation
