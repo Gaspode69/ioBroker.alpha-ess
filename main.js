@@ -647,7 +647,6 @@ class AlphaEss extends utils.Adapter {
             this.log.debug('config enableStatisticalTodaydata:       ' + this.config.enableStatisticalTodaydata);
             this.log.debug('config enableSummarydata:                ' + this.config.enableSummarydata);
             this.log.debug('config updateUnchangedStates:            ' + this.config.updateUnchangedStates);
-
             this.wrongCredentials = false;
 
             await this.resetAuth();
@@ -867,7 +866,7 @@ class AlphaEss extends utils.Adapter {
         try {
             this.stopGroupTimeout(group);
 
-            this.log.debug('Fetching realtime data...');
+            this.log.debug('Fetching ' + group + ' data...');
 
             const body = await this.getData(BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.config.systemId + '&noLoading=true');
             await this.createAndUpdateStates(group, body.data);
@@ -887,7 +886,7 @@ class AlphaEss extends utils.Adapter {
         try {
             this.stopGroupTimeout(group);
 
-            this.log.debug('Fetching energy data...');
+            this.log.debug('Fetching ' + group + ' data...');
 
             const dt = new Date();
             const dts = (dt.getFullYear() + '-0' + (dt.getMonth() + 1) + '-01');
@@ -916,7 +915,7 @@ class AlphaEss extends utils.Adapter {
         try {
             this.stopGroupTimeout(group);
 
-            this.log.debug('Fetching settings data...');
+            this.log.debug('Fetching ' + group + ' data...');
 
             const body = await this.getData(BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.config.systemId + '&noLoading=true');
             await this.createAndUpdateStates(group, body.data);
@@ -936,7 +935,7 @@ class AlphaEss extends utils.Adapter {
         try {
             this.stopGroupTimeout(group);
 
-            this.log.debug('Fetching statistical data...');
+            this.log.debug('Fetching ' + group + ' data...');
 
             const dt = new Date();
             const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
