@@ -108,6 +108,15 @@ class AlphaEss extends utils.Adapter {
                     , dayIndex: false
                 }
                 , {
+                    alphaAttrName: 'pmeter_dc'
+                    , role: 'value.power'
+                    , id: 'PV_meter_power'
+                    , name: 'PV meter power'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                }
+                , {
                     alphaAttrName: 'preal_l1'
                     , role: 'value.power'
                     , id: 'Inverter_L1_power'
@@ -654,13 +663,13 @@ class AlphaEss extends utils.Adapter {
             if (this.config.password && this.config.username && this.config.systemId) {
 
                 for (const gidx of Object.keys(this.stateInfoList)) {
-                    const group = this.stateInfoList[gidx];
-                    if (this.config[group.enabledName]) {
-                        await group.fnct(group.Group);
+                    const stateInfo = this.stateInfoList[gidx];
+                    if (this.config[stateInfo.enabledName]) {
+                        await stateInfo.fnct(stateInfo.Group);
                     }
                     else {
-                        this.log.info(group.Group + ' data disabled! Adapter won\'t fetch ' + group.Group + ' data. According states deleted.');
-                        await this.deleteStatesForGroup(group.Group);
+                        this.log.info(stateInfo.Group + ' data disabled! Adapter won\'t fetch ' + stateInfo.Group + ' data. According states deleted.');
+                        await this.delObjectAsync(stateInfo.Group, { recursive: true });
                     }
                 }
             }
@@ -700,41 +709,15 @@ class AlphaEss extends utils.Adapter {
     onStateChange(id, state) {
         if (state) {
             // The state was changed
-            this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+            this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
         } else {
             // The state was deleted
-            this.log.info(`state ${id} deleted`);
+            this.log.debug(`state ${id} deleted`);
         }
     }
 
     /**
-     * Delete all states for a given group (async, so it can be used in a Promise)
-     * @param {string} group
-     */
-    async deleteStatesForGroupAsync(group) {
-        const states = await this.getStatesAsync(group + '.*');
-        for (const id in states) {
-            this.log.info(id + ': ' + JSON.stringify(states[id]));
-            await this.delObjectAsync(id);
-        }
-    }
-
-    /**
-     * Delete all states for a given group
-     * @param {string} group
-     */
-    deleteStatesForGroup(group) {
-        return new Promise((resolve) => {
-            this.deleteStatesForGroupAsync(group).then(() => {
-                resolve(true);
-            }).catch(e => {
-                this.log.warn('Error: ' + e + '. Deletion of group ' + group + ' failed!');
-                resolve(false);
-            });
-        });
-    }
-
-    /** Stop a timer for a given group
+     * Stop a timer for a given group
      *
      * @param {string} group
      */
@@ -980,19 +963,28 @@ class AlphaEss extends utils.Adapter {
 
     /**
      * Create states when called the first time, update state values in each call
-     * @param {string} groupName
+     * @param {string} group
      * @param {{ [s: string]: any; }} data
      */
-    async createAndUpdateStates(groupName, data) {
+    async createAndUpdateStates(group, data) {
         try {
             if (data) {
                 const idx = new Date().getDate() - 1;
 
+                await this.setObjectNotExistsAsync(group, {
+                    type: 'folder',
+                    common: {
+                        name: group
+                        , read: true
+                        , write: false
+                    },
+                    native: {}
+                });
                 for (const [alphaAttrName, rawValue] of Object.entries(data)) {
-                    const stateInfo = this.getStateInfo(groupName, alphaAttrName);
+                    const stateInfo = this.getStateInfo(group, alphaAttrName);
                     if (stateInfo) {
-                        if (!this.createdStates[groupName]) {
-                            await this.setObjectNotExistsAsync(groupName + '.' + this.osn(stateInfo.id), {
+                        if (!this.createdStates[group]) {
+                            await this.setObjectNotExistsAsync(group + '.' + this.osn(stateInfo.id), {
                                 type: 'state',
                                 common: {
                                     name: stateInfo.name + ' [' + stateInfo.alphaAttrName + ']'
@@ -1014,7 +1006,7 @@ class AlphaEss extends utils.Adapter {
                         else {
                             value = rawValue;
                         }
-                        this.log.silly(groupName + '.' + this.osn(stateInfo.id) + ':' + value);
+                        this.log.silly(group + '.' + this.osn(stateInfo.id) + ':' + value);
                         let tvalue;
                         switch (stateInfo.type) {
                             case 'number':
@@ -1042,22 +1034,22 @@ class AlphaEss extends utils.Adapter {
                         }
 
                         if (this.config.updateUnchangedStates) {
-                            await this.setStateAsync(groupName + '.' + this.osn(stateInfo.id), tvalue, true);
+                            await this.setStateAsync(group + '.' + this.osn(stateInfo.id), tvalue, true);
                         }
                         else {
-                            await this.setStateChangedAsync(groupName + '.' + this.osn(stateInfo.id), tvalue, true);
+                            await this.setStateChangedAsync(group + '.' + this.osn(stateInfo.id), tvalue, true);
                         }
-                        this.log.debug('Received object ' + groupName + '.' + this.osn(stateInfo.alphaAttrName) + ' with value ' + rawValue);
+                        this.log.debug('Received object ' + group + '.' + this.osn(stateInfo.alphaAttrName) + ' with value ' + rawValue);
                     }
                     else {
-                        if (!this.createdStates[groupName]) {
-                            this.log.info('Skipped object ' + groupName + '.' + alphaAttrName + ' with value ' + rawValue);
+                        if (!this.createdStates[group]) {
+                            this.log.info('Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue);
                         }
                     }
                 }
-                if (!this.createdStates[groupName]) {
-                    this.log.info('Created states for : ' + groupName);
-                    this.createdStates[groupName] = true;
+                if (!this.createdStates[group]) {
+                    this.log.info('Created states for : ' + group);
+                    this.createdStates[group] = true;
                 }
             }
         }
