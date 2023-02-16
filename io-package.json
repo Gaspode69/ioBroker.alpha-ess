@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "0.3.0",
+    "version": "0.4.0",
     "news": {
+      "0.4.0": {
+        "en": "Optimized deletion of group states\nAdded new Realtime state for pmeter_dc",
+        "de": "Optimiertes Löschen von Gruppenzuständen\nNeuer Realtime-Zustand für pmeter_dc hinzugefügt",
+        "ru": "Оптимизированное удаление групповых государств\nДобавлено новое состояние в режиме реального времени для pmeter_dc",
+        "pt": "Eliminação otimizada de estados de grupo\nAdicionado novo estado em tempo real para pmeter_dc",
+        "nl": "Optimaal deletie van de groepsstaat\nVoegde nieuwe Realtime staat toe voor begraafplaats",
+        "fr": "Suppression optimisée des états de groupe\nAjout d'un nouvel état en temps réel pour pmeter_dc",
+        "it": "Eliminazione ottimizzata degli stati di gruppo\nAggiunto nuovo stato in tempo reale per pmeter_dc",
+        "es": "Eliminación optimizada de estados de grupo\nNuevo estado en tiempo real añadido para pmeter_dc",
+        "pl": "Ostateczne delecje grupowych stanów\nNowy stan rzeczywisty",
+        "uk": "Оптимальне видалення групових станів\nДодано новий стан в режимі реального часу для pmeter_dc",
+        "zh-cn": "删除集团国家\n添加新实时状态"
+      },
       "0.3.0": {
         "en": "Rearranged statistical data and added more values. Many thanks to [Thorsten](https://github.com/ThorstenBoettler) for his valuable contribution in testing the early alpha versions of this release and providing informative suggestions and recommendations for new data points.\nAdded Summary data \nRefactored complete implementation\nChanged the unit of settings for all intervals, except of realtime data, to minutes (Caution: settings are reset to defaults)\nRemove disabled states at adapter startup\nRemoved no more supported value 'createtime' (state ID Realtime.Last_update). \nOptimized rounding for selected values",
         "de": "Rearrangierte statistische Daten und fügte weitere Werte hinzu. Vielen Dank an [Thorsten](https://github.com/ThorstenBoettler) für seinen wertvollen Beitrag bei der Prüfung der frühen Alpha-Versionen dieser Veröffentlichung und Bereitstellung informativer Vorschläge und Empfehlungen für neue Datenpunkte.\nZusammenfassung Daten\nRefactored complete Implementation\nÄnderte die Einheit der Einstellungen für alle Intervalle, mit Ausnahme von Echtzeitdaten, in Minuten (Vorsicht: Einstellungen werden auf Standardeinstellungen zurückgesetzt)\nEntfernen von deaktivierten Zuständen bei Adapter-Start\nKeine unterstützte Wert-Erstellung entfernt (state ID Realtime.Last_update).\nOptimierte Rundung für ausgewählte Werte",
@@ -80,19 +93,6 @@
         "pl": "Zmienił adapter typu z metrowania do energii",
         "uk": "Змінений тип адаптера від вимірювальної енергії",
         "zh-cn": "能源参数的变量"
-      },
-      "0.0.6-beta.3": {
-        "en": "Correction for NPM",
-        "de": "Korrektur für NPM",
-        "ru": "Коррекция для NPM",
-        "pt": "Correção para NPM",
-        "nl": "Correctie voor NPM",
-        "fr": "Correction pour les mécanismes nationaux de prévention",
-        "it": "Correzione per NPM",
-        "es": "Corrección para el mecanismo nacional de prevención",
-        "pl": "Poprawka dla NPM",
-        "uk": "Корекція для NPM",
-        "zh-cn": "国家防范机制的纠正"
       }
     },
     "titleLang": {
