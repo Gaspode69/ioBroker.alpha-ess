@@ -663,13 +663,13 @@ class AlphaEss extends utils.Adapter {
             if (this.config.password && this.config.username && this.config.systemId) {
 
                 for (const gidx of Object.keys(this.stateInfoList)) {
-                    const stateInfo = this.stateInfoList[gidx];
-                    if (this.config[stateInfo.enabledName]) {
-                        await stateInfo.fnct(stateInfo.Group);
+                    const groupInfo = this.stateInfoList[gidx];
+                    if (this.config[groupInfo.enabledName]) {
+                        await groupInfo.fnct(groupInfo.Group);
                     }
                     else {
-                        this.log.info(stateInfo.Group + ' data disabled! Adapter won\'t fetch ' + stateInfo.Group + ' data. According states deleted.');
-                        await this.delObjectAsync(stateInfo.Group, { recursive: true });
+                        this.log.info(groupInfo.Group + ' data disabled! Adapter won\'t fetch ' + groupInfo.Group + ' data. According states deleted.');
+                        await this.delObjectAsync(groupInfo.Group, { recursive: true });
                     }
                 }
             }
@@ -971,15 +971,34 @@ class AlphaEss extends utils.Adapter {
             if (data) {
                 const idx = new Date().getDate() - 1;
 
-                await this.setObjectNotExistsAsync(group, {
-                    type: 'folder',
-                    common: {
-                        name: group
-                        , read: true
-                        , write: false
-                    },
-                    native: {}
-                });
+                if (!this.createdStates[group]) {
+                    // Delete no longer supported states for this group
+                    const gidx = this.stateInfoList.findIndex(i => i.Group == group);
+                    if (gidx >= 0) {
+                        const groupStateList = this.stateInfoList[gidx].states;
+                        const states = await this.getStatesAsync(group + '.*');
+                        for (const sid in states) {
+                            const parts = sid.split('.');
+                            const id = parts[parts.length - 1];
+                            if (groupStateList.findIndex(i => i.id == id) == -1) {
+                                this.log.info('State ' + group + '.' + id + ' removed, no longer supported.');
+                                await this.delObjectAsync(group + '.' + id);
+                            }
+                        }
+                    }
+
+                    // Create the folder for this group, if it does not exist already
+                    await this.setObjectNotExistsAsync(group, {
+                        type: 'folder',
+                        common: {
+                            name: group
+                            , read: true
+                            , write: false
+                        },
+                        native: {}
+                    });
+                }
+
                 for (const [alphaAttrName, rawValue] of Object.entries(data)) {
                     const stateInfo = this.getStateInfo(group, alphaAttrName);
                     if (stateInfo) {
@@ -1043,10 +1062,11 @@ class AlphaEss extends utils.Adapter {
                     }
                     else {
                         if (!this.createdStates[group]) {
-                            this.log.info('Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue);
+                            this.log.debug('Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue);
                         }
                     }
                 }
+
                 if (!this.createdStates[group]) {
                     this.log.info('Created states for : ' + group);
                     this.createdStates[group] = true;
