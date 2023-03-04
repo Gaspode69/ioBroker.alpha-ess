@@ -626,6 +626,9 @@ class AlphaEss extends utils.Adapter {
             RefreshToken: ''
         };
 
+        this.setObjectNormalAsync = this.setObjectNotExistsAsync.bind(this);
+        this.setObjectMigrationAsync = this.setObjectAsync.bind(this);
+
         this.createdStates = [];
 
         this.errorCount = 0;
@@ -658,6 +661,22 @@ class AlphaEss extends utils.Adapter {
             this.log.debug('config updateUnchangedStates:            ' + this.config.updateUnchangedStates);
             this.wrongCredentials = false;
 
+            await this.setObjectNotExistsAsync('info.version', {
+                type: 'state',
+                common: {
+                    name: 'Adapter Version'
+                    , type: 'string'
+                    , role: 'value'
+                    , read: true
+                    , write: false
+                },
+                native: {},
+            });
+
+            if (await this.isMigrationNecessary()) {
+                this.log.info('States will be migrated.');
+            }
+
             await this.resetAuth();
 
             if (this.config.password && this.config.username && this.config.systemId) {
@@ -676,6 +695,8 @@ class AlphaEss extends utils.Adapter {
             else {
                 this.log.error('No username, password and/or system ID set! Adapter won\'t fetch any data.');
             }
+
+            await this.setStateAsync('info.version', this.version, true);
         }
         catch (e) {
             this.log.error('onReady Exception occurred: ' + e);
@@ -962,6 +983,26 @@ class AlphaEss extends utils.Adapter {
     }
 
     /**
+     * Answer if the states shall be migrated, i.e. overwritten.
+     * This is called a view times at startup only.
+     */
+    async isMigrationNecessary() {
+        const oldVersionState = await this.getStateAsync('info.version');
+        if (oldVersionState) {
+            const oldVersion = '' + oldVersionState.val;
+            const vParts = oldVersion.split('.');
+            if (vParts.length >= 3) {
+                const major = Number.parseInt(vParts[0]);
+                const minor = Number.parseInt(vParts[1]);
+                if (major == 0 && minor > 4 || major > 0) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    /**
      * Create states when called the first time, update state values in each call
      * @param {string} group
      * @param {{ [s: string]: any; }} data
@@ -972,6 +1013,7 @@ class AlphaEss extends utils.Adapter {
                 const idx = new Date().getDate() - 1;
 
                 if (!this.createdStates[group]) {
+
                     // Delete no longer supported states for this group
                     const gidx = this.stateInfoList.findIndex(i => i.Group == group);
                     if (gidx >= 0) {
@@ -987,8 +1029,10 @@ class AlphaEss extends utils.Adapter {
                         }
                     }
 
-                    // Create the folder for this group, if it does not exist already
-                    await this.setObjectNotExistsAsync(group, {
+                    const setObjectFunc = await this.isMigrationNecessary() ? this.setObjectMigrationAsync : this.setObjectNormalAsync;
+
+                    // Create the folder for this group
+                    await setObjectFunc(group, {
                         type: 'folder',
                         common: {
                             name: group
@@ -997,13 +1041,12 @@ class AlphaEss extends utils.Adapter {
                         },
                         native: {}
                     });
-                }
 
-                for (const [alphaAttrName, rawValue] of Object.entries(data)) {
-                    const stateInfo = this.getStateInfo(group, alphaAttrName);
-                    if (stateInfo) {
-                        if (!this.createdStates[group]) {
-                            await this.setObjectNotExistsAsync(group + '.' + this.osn(stateInfo.id), {
+                    // Create all states for received elements
+                    for (const [alphaAttrName, rawValue] of Object.entries(data)) {
+                        const stateInfo = this.getStateInfo(group, alphaAttrName);
+                        if (stateInfo) {
+                            await setObjectFunc(group + '.' + this.osn(stateInfo.id), {
                                 type: 'state',
                                 common: {
                                     name: stateInfo.name + ' [' + stateInfo.alphaAttrName + ']'
@@ -1018,6 +1061,18 @@ class AlphaEss extends utils.Adapter {
                                 native: {},
                             });
                         }
+                        else {
+                            this.log.debug('Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue);
+                        }
+                    }
+                    this.log.info('Initialized states for : ' + group);
+                    this.createdStates[group] = true;
+                }
+
+                // Set values for received states
+                for (const [alphaAttrName, rawValue] of Object.entries(data)) {
+                    const stateInfo = this.getStateInfo(group, alphaAttrName);
+                    if (stateInfo) {
                         let value = '';
                         if (stateInfo.dayIndex) {
                             value = rawValue[idx];
@@ -1051,7 +1106,6 @@ class AlphaEss extends utils.Adapter {
                             default:
                                 tvalue = value;
                         }
-
                         if (this.config.updateUnchangedStates) {
                             await this.setStateAsync(group + '.' + this.osn(stateInfo.id), tvalue, true);
                         }
@@ -1060,16 +1114,6 @@ class AlphaEss extends utils.Adapter {
                         }
                         this.log.debug('Received object ' + group + '.' + this.osn(stateInfo.alphaAttrName) + ' with value ' + rawValue);
                     }
-                    else {
-                        if (!this.createdStates[group]) {
-                            this.log.debug('Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue);
-                        }
-                    }
-                }
-
-                if (!this.createdStates[group]) {
-                    this.log.info('Created states for : ' + group);
-                    this.createdStates[group] = true;
                 }
             }
         }
