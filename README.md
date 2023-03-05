@@ -39,6 +39,7 @@ The password is stored encrypted and must therefore be entered manually: demo
 ## Changelog
 ### **WORK IN PROGRESS**
 * (Gaspode) Remove no more supported states at startup automatically
+* (Gaspode) Prepared data migration for future versions
 
 ### 0.4.0 (2023-02-16)
 * (Gaspode) Optimized deletion of group states
