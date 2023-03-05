@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "0.4.0",
+    "version": "0.5.0",
     "news": {
+      "0.5.0": {
+        "en": "Remove no more supported states at startup automatically\nPrepared data migration for future versions",
+        "de": "Entfernen Sie keine unterstützten Zustände beim Start automatisch\nVorbereitete Datenmigration für zukünftige Versionen",
+        "ru": "Удалить больше не поддерживаемых состояний при запуске автоматически\nПодготовленная миграция данных для будущих версий",
+        "pt": "Remover estados não mais suportados na inicialização automaticamente\nMigração de dados preparada para versões futuras",
+        "nl": "Verwijder geen ondersteunende staten bij start-up automatisch\nVertaling:",
+        "fr": "Enlever plus d'états supportés au démarrage automatiquement\nMigration de données préparée pour les versions futures",
+        "it": "Non rimuovere più stati supportati all'avvio automaticamente\nMigrazione dei dati preparata per le versioni future",
+        "es": "Eliminar no más estados compatibles en el inicio automáticamente\nMigración de datos preparada para futuras versiones",
+        "pl": "Remove nie będzie więcej wspieranych państw\nWstępna migracja danych do przyszłych wersji",
+        "uk": "Видаліть не більше підтримуваних держав при запуску автоматично\nПідготовка міграції даних для майбутніх версій",
+        "zh-cn": "自动取消不再支持的开办国家\n今后版本的准备数据迁移"
+      },
       "0.4.0": {
         "en": "Optimized deletion of group states\nAdded new Realtime state for pmeter_dc",
         "de": "Optimiertes Löschen von Gruppenzuständen\nNeuer Realtime-Zustand für pmeter_dc hinzugefügt",
@@ -80,19 +93,6 @@
         "pl": "Zmniejszenie żądań dotyczących trwałych błędów",
         "uk": "Повільні запити у разі постійних помилок",
         "zh-cn": "长期错误请求下降"
-      },
-      "0.0.6-beta.4": {
-        "en": "Changed adapter type from metering to energy",
-        "de": "Geänderter Adaptertyp von der Dosierung bis zur Energie",
-        "ru": "Измененный тип адаптера от измерения до энергии",
-        "pt": "Tipo de adaptador alterado de medição para energia",
-        "nl": "Veranderde adapter type van meting naar energie",
-        "fr": "Type d'adaptateur modifié de mesure à énergie",
-        "it": "Tipo di adattatore modificato dalla misurazione all'energia",
-        "es": "Tipo de adaptador cambiado de medición a energía",
-        "pl": "Zmienił adapter typu z metrowania do energii",
-        "uk": "Змінений тип адаптера від вимірювальної енергії",
-        "zh-cn": "能源参数的变量"
       }
     },
     "titleLang": {
