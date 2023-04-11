@@ -8,5 +8,9 @@
     "Interval to read settings data": "读取设置数据的间隔[分钟]",
     "Interval to read statistical data (today)": "读取统计数据的间隔（今天）[min]",
     "Interval to read summary data": "读取摘要数据的间隔[分钟]",
-    "Update unchanged states": "更新未改变的状态"
+    "Update unchanged states": "更新未改变的状态",
+    "Personal APP ID": "个人申请编号",
+    "Personal APP Secret": "个人申请秘诀",
+    "Interval to read charging settings": "读取充电设置的间隔",
+    "Interval to read discharging settings": "读取放电设置的间隔"
 }

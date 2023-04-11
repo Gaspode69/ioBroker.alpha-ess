@@ -8,5 +8,9 @@
     "Interval to read settings data": "Interval om instellingsgegevens te lezen [min]",
     "Interval to read statistical data (today)": "Interval om statistische gegevens te lezen (vandaag) [min]",
     "Interval to read summary data": "Interval om samenvattingsgegevens te lezen [min]",
-    "Update unchanged states": "Update ongewijzigde statussen"
+    "Update unchanged states": "Update ongewijzigde statussen",
+    "Personal APP ID": "Persoonlijke applicatie-ID",
+    "Personal APP Secret": "Persoonlijk toepassingsgeheim",
+    "Interval to read charging settings": "Interval om laadinstellingen te lezen",
+    "Interval to read discharging settings": "Interval om ontlaadinstellingen te lezen"
 }

@@ -2,17 +2,43 @@
     "i18n": true,
     "type": "panel",
     "items": {
+        "apiType": {
+            "sm": 5,
+            "type": "select",
+            "label": "Select API",
+            "newLine": true,
+            "options": [
+                { "label": "Closed API", "value": 0 },
+                { "label": "Open API", "value": 1 }
+            ]
+        },
         "username": {
             "sm": 5,
             "type": "text",
             "label": "Username",
-            "newLine": true
+            "newLine": true,
+            "hidden": "data.apiType == 1"
         },
         "password": {
             "sm": 5,
             "type": "password",
             "label": "Password",
-            "newLine": true
+            "newLine": true,
+            "hidden": "data.apiType == 1"
+        },
+        "appID": {
+            "sm": 5,
+            "type": "text",
+            "label": "Personal APP ID",
+            "newLine": true,
+            "hidden": "data.apiType == 0"
+        },
+        "appSecret": {
+            "sm": 5,
+            "type": "password",
+            "label": "Personal APP Secret",
+            "newLine": true,
+            "hidden": "data.apiType == 0"
         },
         "systemId": {
             "sm": 5,
@@ -22,58 +48,181 @@
         },
         "enableRealtimedata": {
             "type": "checkbox",
-            "newLine": true
+            "newLine": true,
+            "hidden": "data.apiType == 1"
         },
         "intervalRealtimedata": {
             "sm": 5,
             "min": 10,
             "type": "number",
             "label": "Interval to read realtime data",
-            "newLine": false
+            "newLine": false,
+            "disabled": "!data.enableRealtimedata",
+            "hidden": "data.apiType == 1"
         },
         "enableEnergydata": {
             "type": "checkbox",
-            "newLine": true
+            "newLine": true,
+            "hidden": "data.apiType == 1"
         },
         "intervalEnergydataMins": {
             "sm": 5,
             "min": 1,
             "type": "number",
             "label": "Interval to read energy data",
-            "newLine": false
+            "newLine": false,
+            "disabled": "!data.enableEnergydata",
+            "hidden": "data.apiType == 1"
         },
         "enableSettingsdata": {
             "type": "checkbox",
-            "newLine": true
+            "newLine": true,
+            "hidden": "data.apiType == 1"
+        },
+        "enableSettingsCharge": {
+            "type": "checkbox",
+            "newLine": true,
+            "hidden": "true"
+        },
+        "enableSettingsDisCharge": {
+            "type": "checkbox",
+            "newLine": true,
+            "hidden": "true"
         },
         "intervalSettingsdataMins": {
             "sm": 5,
             "min": 1,
             "type": "number",
             "label": "Interval to read settings data",
-            "newLine": false
+            "newLine": false,
+            "disabled": "!data.enableSettingsdata",
+            "hidden": "data.apiType == 1"
         },
         "enableStatisticalTodaydata": {
             "type": "checkbox",
-            "newLine": true
+            "newLine": true,
+            "hidden": "data.apiType == 1"
         },
         "intervalStatisticalTodaydataMins": {
             "sm": 5,
             "min": 1,
             "type": "number",
             "label": "Interval to read statistical data (today)",
-            "newLine": false
+            "newLine": false,
+            "disabled": "!data.enableStatisticalTodaydata",
+            "hidden": "data.apiType == 1"
         },
         "enableSummarydata": {
             "type": "checkbox",
-            "newLine": true
+            "newLine": true,
+            "hidden": "data.apiType == 1"
         },
         "intervalSummarydataMins": {
             "sm": 5,
             "min": 5,
             "type": "number",
             "label": "Interval to read summary data",
-            "newLine": false
+            "newLine": false,
+            "disabled": "!data.enableSummarydata",
+            "hidden": "data.apiType == 1"
+        },
+        "oAEnableRealtime": {
+            "type": "checkbox",
+            "newLine": true,
+            "hidden": "data.apiType == 0"
+        },
+        "oAIntervalRealtime": {
+            "sm": 5,
+            "min": 10,
+            "type": "number",
+            "label": "Interval to read realtime data",
+            "newLine": false,
+            "disabled": "!data.oAEnableRealtime",
+            "hidden": "data.apiType == 0"
+        },
+        "oAEnableEnergy": {
+            "type": "checkbox",
+            "newLine": true,
+            "hidden": "data.apiType == 0"
+        },
+        "oAIntervalEnergyMins": {
+            "sm": 5,
+            "min": 1,
+            "type": "number",
+            "label": "Interval to read energy data",
+            "newLine": false,
+            "disabled": "!data.oAEnableEnergy",
+            "hidden": "data.apiType == 0"
+        },
+        "oAEnableStatisticsToday": {
+            "type": "checkbox",
+            "newLine": true,
+            "hidden": "true"
+        },
+        "oAIntervalStatisticsTodayMins": {
+            "sm": 5,
+            "min": 1,
+            "type": "number",
+            "label": "Interval to read statistical data (today)",
+            "newLine": false,
+            "disabled": "!data.oAEnableStatisticsToday",
+            "hidden": "true"
+        },
+        "oAEnableSettings": {
+            "type": "checkbox",
+            "newLine": true,
+            "hidden": "true"
+        },
+        "oAIntervalSettingsMins": {
+            "sm": 5,
+            "min": 1,
+            "type": "number",
+            "label": "Interval to read settings data",
+            "newLine": false,
+            "disabled": "!data.oAEnableSettings",
+            "hidden": "true"
+        },
+        "oAEnableSettingsCharge": {
+            "type": "checkbox",
+            "newLine": true,
+            "hidden": "data.apiType == 0"
+        },
+        "oAIntervalSettingsChargeMins": {
+            "sm": 5,
+            "min": 1,
+            "type": "number",
+            "label": "Interval to read charging settings",
+            "newLine": false,
+            "disabled": "!data.oAEnableSettingsCharge",
+            "hidden": "data.apiType == 0"
+        },
+        "oAEnableSettingsDischarge": {
+            "type": "checkbox",
+            "newLine": true,
+            "hidden": "data.apiType == 0"
+        },
+        "oAIntervalSettingsDischargeMins": {
+            "sm": 5,
+            "min": 1,
+            "type": "number",
+            "label": "Interval to read discharging settings",
+            "newLine": false,
+            "disabled": "!data.oAEnableSettingsDischarge",
+            "hidden": "data.apiType == 0"
+        },
+        "oAEnableSummary": {
+            "type": "checkbox",
+            "newLine": true,
+            "hidden": "data.apiType == 0"
+        },
+        "oAIntervalSummaryMins": {
+            "sm": 5,
+            "min": 1,
+            "type": "number",
+            "label": "Interval to read summary data",
+            "newLine": false,
+            "disabled": "!data.oAEnableSummary",
+            "hidden": "data.apiType == 0"
         },
         "updateUnchangedStates": {
             "type": "checkbox",

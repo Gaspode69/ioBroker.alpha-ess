@@ -8,5 +8,9 @@
     "Interval to read settings data": "Інтервал зчитування даних налаштувань [хв]",
     "Interval to read statistical data (today)": "Інтервал читання статистичних даних (сьогодні) [хв]",
     "Interval to read summary data": "Інтервал читання підсумкових даних [хв.]",
-    "Update unchanged states": "Оновити незмінні стани"
+    "Update unchanged states": "Оновити незмінні стани",
+    "Personal APP ID": "Персональний ID програми",
+    "Personal APP Secret": "Особистий секрет програми",
+    "Interval to read charging settings": "Інтервал зчитування параметрів заряджання",
+    "Interval to read discharging settings": "Інтервал зчитування параметрів розрядки"
 }

@@ -9,27 +9,653 @@
 const utils = require('@iobroker/adapter-core');
 
 const crypto = require('crypto');
-const axios = require('axios');
+const axios = require('axios').default;
 
-const AUTHPREFIX = 'al8e4s';
-const AUTHCONSTANT = 'LS885ZYDA95JVFQKUIUUUV7PQNODZRDZIS4ERREDS0EED8BCWSS';
-const AUTHSUFFIX = 'ui893ed';
-const BaseURI = 'https://cloud.alphaess.com/';
+const CA_AUTHPREFIX = 'al8e4s';
+const CA_AUTHCONSTANT = 'LS885ZYDA95JVFQKUIUUUV7PQNODZRDZIS4ERREDS0EED8BCWSS';
+const CA_AUTHSUFFIX = 'ui893ed';
+const CA_BaseURI = 'https://cloud.alphaess.com/';
+const OA_BaseURI = 'https://openapi.alphaess.com/api';
 
 const REQUEST_TIMEOUT = 10000;
 
-class AlphaEss extends utils.Adapter {
+/**
+ * Functions and definitions using the Alpha-ESS official "open" API.
+ */
+class OpenAPI {
+    constructor(adapter) {
+        this.stateInfoList = [{
+            Group: 'Realtime'
+            , fnct: this.getLastPowerData.bind(this)
+            , enabledName: 'oAEnableRealtime'
+            , intervalName: 'oAIntervalRealtime'
+            , states: [
+                {
+                    alphaAttrName: 'ppv'
+                    , role: 'value.power'
+                    , id: 'PV_power_total'
+                    , name: 'PV power total'
+                    , type: 'number'
+                    , unit: 'W'
+                },
+                {
+                    alphaAttrName: 'pload'
+                    , role: 'value.power'
+                    , id: 'Load_total'
+                    , name: 'Load total'
+                    , type: 'number'
+                    , unit: 'W'
+                },
+                {
+                    alphaAttrName: 'soc'
+                    , role: 'value.battery'
+                    , id: 'Battery_SOC'
+                    , name: 'State of charge'
+                    , type: 'number'
+                    , unit: '%'
+                },
+                {
+                    alphaAttrName: 'pgrid'
+                    , role: 'value.power'
+                    , id: 'Grid_power_total'
+                    , name: 'Grid power total'
+                    , type: 'number'
+                    , unit: 'W'
+                },
+                {
+                    alphaAttrName: 'pbat'
+                    , role: 'value.power'
+                    , id: 'Battery_power'
+                    , name: 'Battery power'
+                    , type: 'number'
+                    , unit: 'W'
+                },
+                {
+                    alphaAttrName: 'pev'
+                    , role: 'value.power'
+                    , id: 'Charging_pile_total'
+                    , name: 'Charging pile (Wallbox) total'
+                    , type: 'number'
+                    , unit: 'W'
+                }]
+        },
+        {
+            Group: 'Energy'
+            , fnct: this.getOneDateEnergyBySn.bind(this)
+            , enabledName: 'oAEnableEnergy'
+            , intervalName: 'oAIntervalEnergyMins'
+            , states: [
+                {
+                    alphaAttrName: 'eCharge'
+                    , role: 'value.power.consumption'
+                    , id: 'Battery_charge_today'
+                    , name: 'Today\'s battery charge'
+                    , type: 'number'
+                    , unit: 'kWh'
+                },
+                {
+                    alphaAttrName: 'eDischarge'
+                    , role: 'value.power.consumption'
+                    , id: 'Battery_discharge_today'
+                    , name: 'Today\'s battery discharge'
+                    , type: 'number'
+                    , unit: 'kWh'
+                },
+                {
+                    alphaAttrName: 'eChargingPile'
+                    , role: 'value.power.consumption'
+                    , id: 'Charging_pile'
+                    , name: 'Charging pile (Wallbox)'
+                    , type: 'number'
+                    , unit: 'kWh'
+                },
+                {
+                    alphaAttrName: 'eGridCharge'
+                    , role: 'value.power.consumption'
+                    , id: 'Grid_charge'
+                    , name: 'Grid charge'
+                    , type: 'number'
+                    , unit: 'kWh'
+                },
+                {
+                    alphaAttrName: 'eInput'
+                    , role: 'value.power.consumption'
+                    , id: 'Grid_consumption_today'
+                    , name: 'Today\'s grid consumption'
+                    , type: 'number'
+                    , unit: 'kWh'
+                },
+                {
+                    alphaAttrName: 'eOutput'
+                    , role: 'value.power.consumption'
+                    , id: 'Grid_feed_in_today'
+                    , name: 'Today\'s grid feed in'
+                    , type: 'number'
+                    , unit: 'kWh'
+                },
+                {
+                    alphaAttrName: 'epv'
+                    , role: 'value.power.consumption'
+                    , id: 'Generation_today'
+                    , name: 'Today\'s generation'
+                    , type: 'number'
+                    , unit: 'kWh'
+                }]
+        },
+        {
+            Group: 'Settings'
+            , fnct: this.getSettingsDataDummy.bind(this)
+            , enabledName: 'oAEnableSettings'
+            , intervalName: 'oAIntervalSettingsMins'
+            , states: []
+        },
+        {
+            // Just a dummy to ensure that this group is deleted
+            Group: 'StatisticsToday'
+            , fnct: this.getOneDayPowerBySnDummy.bind(this)
+            , enabledName: 'oAEnableStatisticsToday'
+            , intervalName: 'oAIntervalStatisticsTodayMins'
+            , states: []
+        },
+        {
+            Group: 'Settings_Charge'
+            , fnct: this.getChargeConfigInfo.bind(this)
+            , enabledName: 'oAEnableSettingsCharge'
+            , intervalName: 'oAIntervalSettingsChargeMins'
+            , states: [
+                {
+                    alphaAttrName: 'gridCharge'
+                    , role: 'switch.enable'
+                    , id: 'Battery_Charging_enabled'
+                    , name: 'Battery Charging enabled'
+                    , type: 'boolean'
+                    , unit: ''
+                    , dayIndex: false
+                }
+                , {
+                    alphaAttrName: 'timeChaf1'
+                    , role: 'value'
+                    , id: 'Charging_period_1_start'
+                    , name: 'Charging period 1 start'
+                    , type: 'string'
+                    , unit: ''
+                    , dayIndex: false
+                }
+                , {
+                    alphaAttrName: 'timeChae1'
+                    , role: 'value'
+                    , id: 'Charging_period 1_end'
+                    , name: 'Charging period 1 end'
+                    , type: 'string'
+                    , unit: ''
+                    , dayIndex: false
+                }
+                , {
+                    alphaAttrName: 'timeChaf2'
+                    , role: 'value'
+                    , id: 'Charging_period_2_start'
+                    , name: 'Charging period 2 start'
+                    , type: 'string'
+                    , unit: ''
+                    , dayIndex: false
+                }
+                , {
+                    alphaAttrName: 'timeChae2'
+                    , role: 'value'
+                    , id: 'Charging_period_2_end'
+                    , name: 'Charging period 2 end'
+                    , type: 'string'
+                    , unit: ''
+                    , dayIndex: false
+                }
+                , {
+                    alphaAttrName: 'batHighCap'
+                    , role: 'value'
+                    , id: 'Charging_stopps_at_SOC'
+                    , name: 'Charging stopps at SOC'
+                    , type: 'number'
+                    , unit: '%'
+                    , dayIndex: false
+                }]
+        },
+        {
+            Group: 'Settings_Discharge'
+            , fnct: this.getDisChargeConfigInfo.bind(this)
+            , enabledName: 'oAEnableSettingsDischarge'
+            , intervalName: 'oAIntervalSettingsDischargeMins'
+            , states: [
+                {
+                    alphaAttrName: 'ctrDis'
+                    , role: 'switch.enable'
+                    , id: 'Battery_Discharging_enabled'
+                    , name: 'Battery Discharging enabled'
+                    , type: 'boolean'
+                    , unit: ''
+                    , dayIndex: false
+                }
+                , {
+                    alphaAttrName: 'timeDisf1'
+                    , role: 'value'
+                    , id: 'Discharging_period_1_start'
+                    , name: 'Discharging period 1 start'
+                    , type: 'string'
+                    , unit: ''
+                    , dayIndex: false
+                }
+                , {
+                    alphaAttrName: 'timeDise1'
+                    , role: 'value'
+                    , id: 'Discharging_period_1_end'
+                    , name: 'Discharging period 1 end'
+                    , type: 'string'
+                    , unit: ''
+                    , dayIndex: false
+                }
+                , {
+                    alphaAttrName: 'timeDisf2'
+                    , role: 'value'
+                    , id: 'Discharging_period_2_start'
+                    , name: 'Discharging period 2 start'
+                    , type: 'string'
+                    , unit: ''
+                    , dayIndex: false
+                }
+                , {
+                    alphaAttrName: 'timeDise2'
+                    , role: 'value'
+                    , id: 'Discharging_period_2_end'
+                    , name: 'Discharging period 2 end'
+                    , type: 'string'
+                    , unit: ''
+                    , dayIndex: false
+                }
+                , {
+                    alphaAttrName: 'batUseCap'
+                    , role: 'value'
+                    , id: 'Discharging_Cutoff_SOC'
+                    , name: 'Discharging Cutoff SOC'
+                    , type: 'number'
+                    , unit: '%'
+                    , dayIndex: false
+                }]
+        },
+        {
+            Group: 'Summary'
+            , fnct: this.getSumDataForCustomer.bind(this)
+            , enabledName: 'oAEnableSummary'
+            , intervalName: 'oAIntervalSummaryMins'
+            , states: [
+                {
+                    alphaAttrName: 'epvtoday'
+                    , role: 'value.power.consumption'
+                    , id: 'Generation_today'
+                    , name: 'Today\'s Generation'
+                    , type: 'number'
+                    , unit: 'kWh'
+                    , round: 3
+                }
+                , {
+                    alphaAttrName: 'epvtotal'
+                    , role: 'value.power.consumption'
+                    , id: 'Generation_total'
+                    , name: 'Total Generation'
+                    , type: 'number'
+                    , unit: 'kWh'
+                    , round: 3
+                }
+                , {
+                    alphaAttrName: 'todayIncome'
+                    , role: 'value'
+                    , id: 'Income_today'
+                    , name: 'Today\'s Income'
+                    , type: 'number'
+                    , unit: '{moneyType}'
+                    , round: 2
+                }
+                , {
+                    alphaAttrName: 'totalIncome'
+                    , role: 'value'
+                    , id: 'Income_total'
+                    , name: 'Total Profit'
+                    , type: 'number'
+                    , unit: '{moneyType}'
+                    , round: 2
+                }
+                , {
+                    alphaAttrName: 'eselfConsumption'
+                    , role: 'value'
+                    , id: 'Self_consumption_total'
+                    , name: 'Total Self Consumption'
+                    , type: 'number'
+                    , unit: '%'
+                    , factor: 100
+                    , round: 1
+                }
+                , {
+                    alphaAttrName: 'eselfSufficiency'
+                    , role: 'value'
+                    , id: 'Self_sufficiency_total'
+                    , name: 'Total Self Sufficiency'
+                    , type: 'number'
+                    , unit: '%'
+                    , factor: 100
+                    , round: 1
+                }
+                , {
+                    alphaAttrName: 'treeNum'
+                    , role: 'value'
+                    , id: 'Trees_plantet_total'
+                    , name: 'Total Trees planted'
+                    , type: 'number'
+                    , unit: '🌳'
+                    , round: 1
+                }
+                , {
+                    alphaAttrName: 'carbonNum'
+                    , role: 'value'
+                    , id: 'CO2_reduction_total'
+                    , name: 'Total CO₂ reduction'
+                    , type: 'number'
+                    , unit: 'kg'
+                    , round: 1
+                }
+                , {
+                    alphaAttrName: 'moneyType'
+                    , role: 'value'
+                    , id: 'Currency'
+                    , name: 'Currency'
+                    , type: 'string'
+                    , unit: ''
+                },
+                {
+                    alphaAttrName: 'eload'
+                    , role: 'value.power.consumption'
+                    , id: 'Consumption_today'
+                    , name: 'Today\'s consumption'
+                    , type: 'number'
+                    , unit: 'kWh'
+                }
+                , {
+                    alphaAttrName: 'eoutput'
+                    , role: 'value.power.consumption'
+                    , id: 'Grid_feed_in_today'
+                    , name: 'Today\'s grid feed in'
+                    , type: 'number'
+                    , unit: 'kWh'
+                }
+                , {
+                    alphaAttrName: 'einput'
+                    , role: 'value.power.consumption'
+                    , id: 'Grid_consumption_today'
+                    , name: 'Today\'s grid consumption'
+                    , type: 'number'
+                    , unit: 'kWh'
+                }
+                , {
+                    alphaAttrName: 'echarge'
+                    , role: 'value.power.consumption'
+                    , id: 'Battery_charge_today'
+                    , name: 'Today\'s battery charge'
+                    , type: 'number'
+                    , unit: 'kWh'
+                }
+                , {
+                    alphaAttrName: 'edischarge'
+                    , role: 'value.power.consumption'
+                    , id: 'Battery_discharge_today'
+                    , name: 'Today\'s battery discharge'
+                    , type: 'number'
+                    , unit: 'kWh'
+                }]
+        }];
+        this.adapter = adapter;
+        this.emptyBody = { data: null };
+    }
 
     /**
-     * @param {Partial<utils.AdapterOptions>} [options={}]
+    * @param {number} timestamp
+    */
+    getSignature(timestamp) {
+        return crypto.createHash('sha512').update(this.adapter.config.appID + this.adapter.config.appSecret + timestamp).digest('hex');
+    }
+
+    /**
+    * @param {{ [x: string]: string; }} headers
+    */
+    async addAuthHeaders(headers) {
+        const timestamp = Math.floor(Date.now() / 1000);
+        const sign = this.getSignature(timestamp);
+        headers['appId'] = this.adapter.config.appID;
+        headers['timestamp'] = '' + timestamp;
+        headers['sign'] = sign;
+
+        return headers;
+    }
+
+    /**
+    * @param {string} path
+    * @param {{}} headers
+    */
+    async getRequest(path, headers) {
+        try {
+            const url = `${OA_BaseURI}/${path}`;
+            headers = await this.addAuthHeaders(headers);
+
+            const res = await axios.get(url,
+                {
+                    timeout: REQUEST_TIMEOUT,
+                    headers: headers
+                });
+            return res;
+        }
+        catch (e) {
+            this.adapter.log.error('Error prforming get request ' + path + ': ' + e);
+            return this.emptyBody;
+        }
+    }
+
+    async postRequest(path, sndBody, headers) {
+        try {
+            const url = `${OA_BaseURI}/${path}`;
+            headers = await this.addAuthHeaders(headers);
+
+            const res = await axios.post(url,
+                sndBody,
+                {
+                    timeout: REQUEST_TIMEOUT,
+                    headers: headers
+                });
+
+            return res;
+        }
+        catch (e) {
+            this.adapter.log.error('Error prforming post request ' + path + ': ' + e);
+            return this.emptyBody;
+        }
+    }
+
+    async getLastPowerData(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Fetching ' + group + ' data...');
+
+            const res = await this.getRequest(`getLastPowerData?sysSn=${this.adapter.config.systemId}`, {});
+            if (res && res['status'] == 200 && res.data && res.data.data) {
+                await this.adapter.createAndUpdateStates(group, res.data.data);
+                await this.adapter.setStateChangedAsync('info.connection', true, true);
+            }
+            else {
+                await this.handleError(res);
+            }
+
+            await this.startGroupTimeout(1, group);
+
+        }
+        catch (e) {
+            this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
+            await this.handleError(this.emptyBody);
+        }
+    }
+
+    async getOneDateEnergyBySn(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Fetching ' + group + ' data...');
+
+            const dt = new Date();
+            const dts = (dt.getFullYear() + '-' + ('0' + (dt.getMonth() + 1)).slice(-2) + '-' + ('0' + dt.getDate()).slice(-2));
+            const res = await this.getRequest(`getOneDateEnergyBySn?sysSn=${this.adapter.config.systemId}&queryDate=${dts}`, {});
+            if (res && res['status'] == 200 && res.data && res.data.data) {
+                await this.adapter.createAndUpdateStates(group, res.data.data);
+                await this.adapter.setStateChangedAsync('info.connection', true, true);
+            }
+            else {
+                await this.handleError(res);
+            }
+
+            await this.startGroupTimeout(60, group);
+
+        }
+        catch (e) {
+            this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
+            await this.handleError(this.emptyBody);
+        }
+    }
+
+    async getOneDayPowerBySnDummy(group) {
+        this.adapter.log.warn(`Internal error (group ${group}): function getOneDayPowerBySnDummy should never be called.`);
+    }
+
+    async getSettingsDataDummy(group) {
+        this.adapter.log.warn(`Internal error (group ${group}): function getSettingsDataDummy should never be called.`);
+    }
+
+    async getChargeConfigInfo(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Fetching ' + group + ' data...');
+
+            const res = await this.getRequest(`getChargeConfigInfo?sysSn=${this.adapter.config.systemId}`, {});
+            if (res && res['status'] == 200 && res.data && res.data.data) {
+                await this.adapter.createAndUpdateStates(group, res.data.data);
+                await this.adapter.setStateChangedAsync('info.connection', true, true);
+            }
+            else {
+                await this.handleError(res);
+            }
+
+            await this.startGroupTimeout(60, group);
+
+        }
+        catch (e) {
+            this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
+            await this.handleError(this.emptyBody);
+        }
+    }
+
+    async getDisChargeConfigInfo(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Fetching ' + group + ' data...');
+
+            const res = await this.getRequest(`getDisChargeConfigInfo?sysSn=${this.adapter.config.systemId}`, {});
+            if (res && res['status'] == 200 && res.data && res.data.data) {
+                await this.adapter.createAndUpdateStates(group, res.data.data);
+                await this.adapter.setStateChangedAsync('info.connection', true, true);
+            }
+            else {
+                await this.handleError(res);
+            }
+
+            await this.startGroupTimeout(60, group);
+
+        }
+        catch (e) {
+            this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
+            await this.handleError(this.emptyBody);
+        }
+    }
+
+    async getSumDataForCustomer(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Fetching ' + group + ' data...');
+
+            const res = await this.getRequest(`getSumDataForCustomer?sysSn=${this.adapter.config.systemId}`, {});
+            if (res && res['status'] == 200 && res.data && res.data.data) {
+                await this.adapter.createAndUpdateStates(group, res.data.data);
+                await this.adapter.setStateChangedAsync('info.connection', true, true);
+            }
+            else {
+                await this.handleError(res);
+            }
+
+            await this.startGroupTimeout(60, group);
+
+        }
+        catch (e) {
+            this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
+            await this.handleError(this.emptyBody);
+        }
+    }
+
+    async startGroupTimeout(multiplyer, group) {
+        if (!this.adapter.wrongCredentials) {
+            const gidx = this.stateInfoList.findIndex(i => i.Group == group);
+            if (gidx >= 0 && this.adapter.config[this.stateInfoList[gidx].intervalName] > 0) {
+                this.adapter.startGroupTimeout(multiplyer * this.adapter.config[this.stateInfoList[gidx].intervalName], group);
+            }
+            else {
+                this.adapter.log.error('Internal Error for group ' + group + ': No timeout configuration found!');
+                await this.handleError(this.emptyBody);
+            }
+        }
+        else {
+            this.adapter.log.debug('Group ' + group + ': No new timer started, wrong credentials!');
+        }
+    }
+
+    /**
+     * @param {import("axios").AxiosResponse<any, any> | { data: null; }} res
      */
-    constructor(options) {
+    async handleError(res) {
+        await this.adapter.setStateChangedAsync('info.connection', false, true);
+        if (res.data && res.data.code && res.data.code != 0) {
+            this.adapter.log.error('Alpha ESS Api returns an error! Adapter won\'t try again to fetch any data.');
+            switch (res.data.code) {
+                case 6001: this.adapter.log.error('Error: ' + res.data.code + ' - Parameter error'); break;
+                case 6002: this.adapter.log.error('Error: ' + res.data.code + ' - The SN is not bound to the user'); break;
+                case 6003: this.adapter.log.error('Error: ' + res.data.code + ' - You have bound this SN'); break;
+                case 6004: this.adapter.log.error('Error: ' + res.data.code + ' - CheckCode error'); break;
+                case 6005: this.adapter.log.error('Error: ' + res.data.code + ' - This appId is not bound to the SN'); break;
+                case 6006: this.adapter.log.error('Error: ' + res.data.code + ' - Timestamp error'); break;
+                case 6007: this.adapter.log.error('Error: ' + res.data.code + ' - Sign verification error'); break;
+                case 6008: this.adapter.log.error('Error: ' + res.data.code + ' - Set failed'); break;
+                case 6009: this.adapter.log.error('Error: ' + res.data.code + ' - Whitelist verification failed'); break;
+                case 6010: this.adapter.log.error('Error: ' + res.data.code + ' - Sign is empty'); break;
+                case 6011: this.adapter.log.error('Error: ' + res.data.code + ' - timestamp is empty'); break;
+                case 6012: this.adapter.log.error('Error: ' + res.data.code + ' - AppId is empty'); break;
+                case 6046: this.adapter.log.error('Error: ' + res.data.code + ' - Verification code error'); break;
+                default: this.adapter.log.error('Error: ' + res.data.code + ' - Unknown error');
+            }
+            this.adapter.wrongCredentials = true;
+        }
+        else {
+            this.adapter.log.error('Unknown error occurred: ' + JSON.stringify(res.data));
+        }
+    }
+}
 
-        super({
-            ...options,
-            name: 'alpha-ess',
-        });
-
+/**
+ * Functions and definitions using the Alpha-ESS inofficial "closed" API.
+ */
+class ClosedAPI {
+    constructor(adapter) {
         this.stateInfoList = [{
             Group: 'Realtime'
             , fnct: this.fetchRealtimeData.bind(this)
@@ -313,6 +939,20 @@ class AlphaEss extends utils.Adapter {
                 }]
         },
         {
+            // Just a dummy to ensure that this group is deleted
+            Group: 'Settings_Charge'
+            , fnct: this.fetchSettingsChargeDataDummy.bind(this)
+            , enabledName: 'enableSettingsCharge'
+            , states: []
+        },
+        {
+            // Just a dummy to ensure that this group is deleted
+            Group: 'Settings_Discharge'
+            , fnct: this.fetchSettingsDischargeDataDummy.bind(this)
+            , enabledName: 'enableSettingsDischarge'
+            , states: []
+        },
+        {
             Group: 'Energy'
             , fnct: this.fetchEnergyData.bind(this)
             , enabledName: 'enableEnergydata'
@@ -460,8 +1100,8 @@ class AlphaEss extends utils.Adapter {
                 , {
                     alphaAttrName: 'EGridCharge'
                     , role: 'value.power.consumption'
-                    , id: 'Grid_connection_battery_charging/discharging'
-                    , name: 'Grid connection-battery charging/discharging'
+                    , id: 'Grid_charge'
+                    , name: 'Grid charge'
                     , type: 'number'
                     , unit: 'kWh'
                     , round: 3
@@ -625,6 +1265,394 @@ class AlphaEss extends utils.Adapter {
             Expires: 0,
             RefreshToken: ''
         };
+        this.adapter = adapter;
+    }
+
+    /**
+     * Check alpha-ess authentcation. Decides if login or refresh has to be performed
+     * @returns true in case of success, otherwise false
+     */
+    async checkAuthentication() {
+        try {
+            if (this.Auth.Token && this.Auth.RefreshToken && this.Auth.Expires) {
+                if (Date.now() < this.Auth.Expires) {
+                    this.adapter.log.debug('Authentication token still valid.');
+                    return true;
+                }
+                else {
+                    // First we try to refresh the token:
+                    if (await this.authenticate(true)) {
+                        return true;
+                    }
+                    else {
+                        // If refresh fails we log in again
+                        return (await this.authenticate(false));
+                    }
+                }
+            }
+            else {
+                return (await this.authenticate(false));
+            }
+        }
+        catch (e) {
+            this.adapter.log.error('checkAuthentication Exception occurred: ' + e);
+        }
+    }
+
+    /**
+     * Perform alpha-ess authentication
+     * @param {boolean} [refresh]
+     */
+    async authenticate(refresh) {
+        try {
+
+            let LoginData = undefined;
+
+            if (refresh) {
+                this.adapter.log.info('Try to refresh authentication token');
+                LoginData =
+                {
+                    'username': this.Auth.username,
+                    'accesstoken': this.Auth.Token,
+                    'refreshtokenkey': this.Auth.RefreshToken
+                };
+            }
+            else {
+                this.adapter.log.info('Try to login');
+                LoginData =
+                {
+                    'username': this.Auth.username,
+                    'password': this.Auth.password
+                };
+            }
+
+            const res = await axios.post(CA_BaseURI + 'api/' + (refresh ? 'Account/RefreshToken' : 'Account/Login'),
+                JSON.stringify(LoginData),
+                {
+                    timeout: REQUEST_TIMEOUT,
+                    headers: this.headers(null)
+                });
+
+            if (res.status == 200) {
+                if (res.data && res.data.code && res.data.code == 5) {
+                    this.adapter.log.error('Alpha ESS Api returns \'Invalid username or password\'! Adapter won\'t try again to fetch any data.');
+                    this.adapter.wrongCredentials = true;
+                    return false;
+                }
+                else {
+                    this.Auth.Token = res.data.data.AccessToken;
+                    this.Auth.Expires = Date.now() + ((res.data.data.ExpiresIn - 3600) * 1000); // Set expire time one hour earlier to be sure
+                    this.Auth.RefreshToken = res.data.data.RefreshTokenKey;
+
+                    this.adapter.log.info(refresh ? 'Token succesfully refreshed' : 'Login succesful');
+                    this.adapter.log.debug('Auth.Token:        ' + this.Auth.Token);
+                    this.adapter.log.debug('Auth.RefreshToken: ' + this.Auth.RefreshToken);
+                    this.adapter.log.debug('Auth.Expires:      ' + new Date(this.Auth.Expires));
+                    this.adapter.errorCount = 0;
+                    return true;
+                }
+            }
+            else {
+                this.adapter.log.info('Error during authentication, status: ' + res.status);
+                return false;
+            }
+        }
+        catch (e) {
+            this.adapter.log.error('authenticate Exception occurred: ' + e);
+            return false;
+        }
+    }
+
+    /**
+     * Perform a get request and return the received body.
+     * @param {string} uri
+     */
+    async getData(uri) {
+        const emptyBody = { data: null };
+        try {
+            if (this.adapter.wrongCredentials) {
+                return emptyBody;
+            }
+            if (!await this.checkAuthentication()) {
+                await this.handleError();
+                this.adapter.log.warn('Error in Authorization (error count: ' + this.adapter.errorCount + ')');
+                await this.adapter.setStateChangedAsync('info.connection', false, true);
+                return emptyBody;
+            }
+
+            this.adapter.log.debug('getData Uri: ' + uri);
+
+            const res = await axios.get(uri,
+                {
+                    timeout: REQUEST_TIMEOUT,
+                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
+                });
+
+            if (res.status == 200) {
+                await this.adapter.setStateChangedAsync('info.connection', true, true);
+                return res.data;
+            }
+            else {
+                await this.handleError();
+                this.adapter.log.error('Error when fetching data for ' + this.adapter.config.systemId + ', status code: ' + res.status + ' (error count: ' + this.adapter.errorCount + ')');
+                return emptyBody;
+            }
+        }
+        catch (e) {
+            await this.handleError();
+            this.adapter.log.error('fetchData Exception occurred: ' + e + ' (error count: ' + this.adapter.errorCount + ')');
+            return emptyBody;
+        }
+    }
+
+    /**
+     * Perform a post request and return the received body.
+    * @param {string} uri
+    * @param {string} sndBody
+    */
+    async postData(uri, sndBody) {
+        const emptyBody = { data: null };
+        try {
+            if (this.adapter.wrongCredentials) {
+                return emptyBody;
+            }
+            if (!await this.checkAuthentication()) {
+                await this.handleError();
+                this.adapter.log.warn('Error in Authorization (error count: ' + this.adapter.errorCount + ')');
+                await this.adapter.setStateChangedAsync('info.connection', false, true);
+                return emptyBody;
+            }
+
+            this.adapter.log.debug('postData Uri: ' + uri);
+
+            const res = await axios.post(uri,
+                sndBody,
+                {
+                    timeout: REQUEST_TIMEOUT,
+                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
+                });
+
+            if (res.status == 200) {
+                await this.adapter.setStateChangedAsync('info.connection', true, true);
+                return res.data;
+            }
+            else {
+                await this.handleError();
+                this.adapter.log.error('Error when fetching data for ' + this.adapter.config.systemId + ', status code: ' + res.status + ' (error count: ' + this.adapter.errorCount + ')');
+                return emptyBody;
+            }
+        }
+        catch (e) {
+            await this.handleError();
+            this.adapter.log.error('fetchData Exception occurred: ' + e + ' (error count: ' + this.adapter.errorCount + ')');
+            return emptyBody;
+        }
+    }
+
+    /**
+     * Reset authentication data to defaults. Login must be performed afterwards.
+     */
+    async resetAuth() {
+        try {
+            await this.adapter.setStateChangedAsync('info.connection', false, true);
+            return new Promise((resolve) => {
+                this.Auth =
+                {
+                    username: this.adapter.config.username,
+                    password: this.adapter.config.password,
+                    AccessToken: '',
+                    Expires: 0,
+                    RefreshToken: ''
+                };
+                this.adapter.log.debug('Reset authentication data');
+                resolve(true);
+            });
+        }
+        catch (e) {
+            this.adapter.log.error('resetAuth Exception occurred: ' + e);
+            return false;
+        }
+    }
+
+    /**
+     * Answer alpha-ess specific headers for web requests
+     * @param {any} extraHeaders
+     */
+    headers(extraHeaders) {
+        const timestamp = ((new Date).getTime() / 1000);
+        const data = CA_AUTHCONSTANT + timestamp;
+        const hash = crypto.createHash('sha512').update(data).digest('hex');
+
+        const stdHeaders = {
+            'Content-Type': 'application/json',
+            'Connection': 'keep-alive',
+            'Accept': '*/*',
+            'Accept-Encoding': 'gzip, deflate',
+            'Cache-Control': 'no-cache',
+            'AuthTimestamp': '' + timestamp,
+            'AuthSignature': CA_AUTHPREFIX + hash + CA_AUTHSUFFIX
+        };
+
+        return Object.assign({}, stdHeaders, extraHeaders);
+    }
+
+    /**
+     * Will be called if during any request an error occurs
+     */
+    async handleError() {
+        try {
+            // Increase error count, will be reset with the next successful connection
+            this.adapter.errorCount++;
+            await this.resetAuth();
+        }
+        catch (e) {
+            this.adapter.log.error('handleError Exception occurred: ' + e);
+        }
+    }
+
+    async fetchSettingsChargeDataDummy(group) {
+        this.adapter.log.warn(`Internal error (group ${group}): function fetchSettingsChargeDataDummy should never be called.`);
+    }
+
+    async fetchSettingsDischargeDataDummy(group) {
+        this.adapter.log.warn(`Internal error (group ${group}): function fetchSettingsDischargeDataDummy should never be called.`);
+    }
+
+    /**
+     * Get realtime data from alpha-ess and start timer for next execution
+     * @param {string} group
+     */
+    async fetchRealtimeData(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Fetching ' + group + ' data...');
+
+            const body = await this.getData(CA_BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.adapter.config.systemId + '&noLoading=true');
+            await this.adapter.createAndUpdateStates(group, body.data);
+
+            this.adapter.startGroupTimeout(this.adapter.config.intervalRealtimedata, group);
+        }
+        catch (e) {
+            this.adapter.log.error('fetchRealtimeData Exception occurred: ' + e);
+        }
+    }
+
+    /**
+     * Get energy data from alpha-ess and start timer for next execution
+     * @param {string} group
+     */
+    async fetchEnergyData(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Fetching ' + group + ' data...');
+
+            const dt = new Date();
+            const dts = (dt.getFullYear() + '-0' + (dt.getMonth() + 1) + '-01');
+            const json = {
+                'statisticBy': 'month',
+                'sDate': dts,
+                'isOEM': 0,
+                'sn': this.adapter.config.systemId,
+                'userId': '',
+            };
+            const body = await this.postData(CA_BaseURI + 'api/Statistic/SystemStatistic', JSON.stringify(json));
+            await this.adapter.createAndUpdateStates(group, body.data);
+
+            this.adapter.startGroupTimeout(this.adapter.config.intervalEnergydataMins * 60, group);
+        }
+        catch (e) {
+            this.adapter.log.error('fetchEnergyData Exception occurred: ' + e);
+        }
+    }
+
+    /**
+     * Get settings data from alpha-ess and start timer for next execution
+     * @param {string} group
+     */
+    async fetchSettingsData(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Fetching ' + group + ' data...');
+
+            const body = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.adapter.config.systemId + '&noLoading=true');
+            await this.adapter.createAndUpdateStates(group, body.data);
+
+            this.adapter.startGroupTimeout(this.adapter.config.intervalSettingsdataMins * 60, group);
+        }
+        catch (e) {
+            this.adapter.log.error('fetchSettingsData Exception occurred: ' + e);
+        }
+    }
+
+    /**
+     * Get statistical data for today from alpha-ess and start timer for next execution
+     * @param {string} group
+     */
+    async fetchStatisticalTodayData(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Fetching ' + group + ' data...');
+
+            const dt = new Date();
+            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
+
+            const body = await this.getData(CA_BaseURI + 'api/Power/SticsByPeriod?beginDay=' + dts + '&endDay=' + dts +
+                '&tDay=' + dts + '&SN=' + this.adapter.config.systemId + '&noLoading=true');
+
+            await this.adapter.createAndUpdateStates(group, body.data);
+
+            this.adapter.startGroupTimeout(this.adapter.config.intervalStatisticalTodaydataMins * 60, group);
+        }
+        catch (e) {
+            this.adapter.log.error('fetchStatisticalTodayData Exception occurred: ' + e);
+        }
+    }
+
+    /**
+     * Get summary data for today from alpha-ess and start timer for next execution
+     * @param {string} group
+     */
+    async fetchSummaryData(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Fetching summary data...');
+
+            const dt = new Date();
+            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
+
+            const body = await this.getData(CA_BaseURI + 'api/ESS/SticsSummeryDataForCustomer?sn=' + this.adapter.config.systemId +
+                '&tday=' + dts + '&noLoading=true');
+
+            await this.adapter.createAndUpdateStates(group, body.data);
+
+            // Configuration is in minutes, so multiply with 60
+            this.adapter.startGroupTimeout(this.adapter.config.intervalSummarydataMins * 60, group);
+        }
+        catch (e) {
+            this.adapter.log.error('fetchSummaryData Exception occurred: ' + e);
+        }
+    }
+}
+
+class AlphaEss extends utils.Adapter {
+
+    /**
+     * @param {Partial<utils.AdapterOptions>} [options={}]
+     */
+    constructor(options) {
+
+        super({
+            ...options,
+            name: 'alpha-ess',
+        });
+
+        this.openApi = new OpenAPI(this);
+        this.closedApi = new ClosedAPI(this);
 
         this.setObjectNormalAsync = this.setObjectNotExistsAsync.bind(this);
         this.setObjectMigrationAsync = this.setObjectAsync.bind(this);
@@ -632,6 +1660,8 @@ class AlphaEss extends utils.Adapter {
         this.createdStates = [];
 
         this.errorCount = 0;
+
+        this.wrongCredentials = false;
 
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
@@ -646,19 +1676,40 @@ class AlphaEss extends utils.Adapter {
             // Reset the connection indicator during startup
             await this.setStateChangedAsync('info.connection', false, true);
 
-            this.log.debug('config username:                         ' + this.config.username);
-            this.log.debug('config systemId:                         ' + this.config.systemId);
-            this.log.debug('config intervalRealtimedata:             ' + this.config.intervalRealtimedata);
-            this.log.debug('config intervalSettingsdataMins          ' + this.config.intervalSettingsdataMins);
-            this.log.debug('config intervalEnergydataMins:           ' + this.config.intervalEnergydataMins);
-            this.log.debug('config intervalStatisticalTodaydataMins: ' + this.config.intervalStatisticalTodaydataMins);
-            this.log.debug('config intervalSummarydataMins:          ' + this.config.intervalSummarydataMins);
-            this.log.debug('config enableRealtimedata:               ' + this.config.enableRealtimedata);
-            this.log.debug('config enableSettingsdata:               ' + this.config.enableSettingsdata);
-            this.log.debug('config enableEnergydata:                 ' + this.config.enableEnergydata);
-            this.log.debug('config enableStatisticalTodaydata:       ' + this.config.enableStatisticalTodaydata);
-            this.log.debug('config enableSummarydata:                ' + this.config.enableSummarydata);
-            this.log.debug('config updateUnchangedStates:            ' + this.config.updateUnchangedStates);
+            if (this.config.apiType == 0) {
+                this.log.debug('Used API:                                Closed API');
+                this.log.debug('config username:                         ' + this.config.username);
+                this.log.debug('config systemId:                         ' + this.config.systemId);
+                this.log.debug('config intervalRealtimedata:             ' + this.config.intervalRealtimedata);
+                this.log.debug('config intervalEnergydataMins:           ' + this.config.intervalEnergydataMins);
+                this.log.debug('config intervalSettingsdataMins          ' + this.config.intervalSettingsdataMins);
+                this.log.debug('config intervalStatisticalTodaydataMins: ' + this.config.intervalStatisticalTodaydataMins);
+                this.log.debug('config intervalSummarydataMins:          ' + this.config.intervalSummarydataMins);
+                this.log.debug('config enableRealtimedata:               ' + this.config.enableRealtimedata);
+                this.log.debug('config enableSettingsdata:               ' + this.config.enableSettingsdata);
+                this.log.debug('config enableEnergydata:                 ' + this.config.enableEnergydata);
+                this.log.debug('config enableStatisticalTodaydata:       ' + this.config.enableStatisticalTodaydata);
+                this.log.debug('config enableSummarydata:                ' + this.config.enableSummarydata);
+                this.log.debug('config updateUnchangedStates:            ' + this.config.updateUnchangedStates);
+            }
+            else {
+                this.log.debug('Used API:                              Open API');
+                this.log.debug('config appID:                          ' + this.config.appID);
+                this.log.debug('config systemId:                       ' + this.config.systemId);
+                this.log.debug('config oAIntervalRealtime:             ' + this.config.oAIntervalRealtime);
+                this.log.debug('config oAIntervalEnergyMins:           ' + this.config.oAIntervalEnergyMins);
+                this.log.debug('config oAIntervalSettingsChargeMins    ' + this.config.oAIntervalSettingsChargeMins);
+                this.log.debug('config oAIntervalSettingsDischargeMins ' + this.config.oAIntervalSettingsDischargeMins);
+                this.log.debug('config oAIntervalSummaryMins:          ' + this.config.oAIntervalSummaryMins);
+                this.log.debug('config enableRealtimedata:             ' + this.config.oAEnableRealtime);
+                this.log.debug('config enableEnergydata:               ' + this.config.oAEnableEnergy);
+                this.log.debug('config enableSettingsdata:             ' + this.config.oAEnableSettingsCharge);
+                this.log.debug('config enableStatisticalTodaydata:     ' + this.config.oAEnableSettingsDischarge);
+                this.log.debug('config enableSummarydata:              ' + this.config.oAEnableSettingsDischarge);
+                this.log.debug('config enableSummarydata:              ' + this.config.oAEnableSummary);
+                this.log.debug('config updateUnchangedStates:          ' + this.config.updateUnchangedStates);
+            }
+
             this.wrongCredentials = false;
 
             await this.setObjectNotExistsAsync('info.version', {
@@ -677,12 +1728,13 @@ class AlphaEss extends utils.Adapter {
                 this.log.info('States will be migrated.');
             }
 
-            await this.resetAuth();
+            await this.closedApi.resetAuth();
 
-            if (this.config.password && this.config.username && this.config.systemId) {
+            if (this.config.apiType == 0 && this.config.password && this.config.username && this.config.systemId ||
+                this.config.apiType == 1 && this.config.appID && this.config.appSecret && this.config.systemId) {
 
-                for (const gidx of Object.keys(this.stateInfoList)) {
-                    const groupInfo = this.stateInfoList[gidx];
+                for (const gidx of Object.keys(this.getStateInfoList())) {
+                    const groupInfo = this.getStateInfoList()[gidx];
                     if (this.config[groupInfo.enabledName]) {
                         await groupInfo.fnct(groupInfo.Group);
                     }
@@ -693,7 +1745,12 @@ class AlphaEss extends utils.Adapter {
                 }
             }
             else {
-                this.log.error('No username, password and/or system ID set! Adapter won\'t fetch any data.');
+                if (this.config.apiType == 0) {
+                    this.log.error('Closed API: No username, password and/or system ID set! Adapter won\'t fetch any data.');
+                }
+                else {
+                    this.log.error('Open API: No appID, appSecret and/or system ID set! Adapter won\'t fetch any data.');
+                }
             }
 
             await this.setStateAsync('info.version', this.version, true);
@@ -710,11 +1767,11 @@ class AlphaEss extends utils.Adapter {
     onUnload(callback) {
         try {
             // Clear all timers
-            for (const gidx of Object.keys(this.stateInfoList)) {
-                this.stopGroupTimeout(this.stateInfoList[gidx].Group);
+            for (const gidx of Object.keys(this.getStateInfoList())) {
+                this.stopGroupTimeout(this.getStateInfoList()[gidx].Group);
             }
 
-            this.resetAuth();
+            this.closedApi.resetAuth();
 
             callback();
         } catch (e) {
@@ -737,17 +1794,26 @@ class AlphaEss extends utils.Adapter {
         }
     }
 
+    getStateInfoList() {
+        if (this.config.apiType == 0) {
+            return this.closedApi.stateInfoList;
+        }
+        else {
+            return this.openApi.stateInfoList;
+        }
+    }
+
     /**
      * Stop a timer for a given group
      *
      * @param {string} group
      */
     stopGroupTimeout(group) {
-        const gidx = this.stateInfoList.findIndex(i => i.Group == group);
-        if (this.stateInfoList[gidx].timeoutHandle) {
+        const gidx = this.getStateInfoList().findIndex(i => i.Group == group);
+        if (this.getStateInfoList()[gidx].timeoutHandle) {
             this.log.debug('Timeout cleared for group ' + group);
-            clearTimeout(this.stateInfoList[gidx].timeoutHandle);
-            this.stateInfoList[gidx].timeoutHandle = 0;
+            clearTimeout(this.getStateInfoList()[gidx].timeoutHandle);
+            this.getStateInfoList()[gidx].timeoutHandle = 0;
         }
     }
 
@@ -757,230 +1823,15 @@ class AlphaEss extends utils.Adapter {
      * @param {string} group
      */
     startGroupTimeout(intervalInS, group) {
-        const gidx = this.stateInfoList.findIndex(i => i.Group == group);
-        if (!this.stateInfoList[gidx].timeoutHandle) {
+        const gidx = this.getStateInfoList().findIndex(i => i.Group == group);
+        if (!this.getStateInfoList()[gidx].timeoutHandle) {
             const interval = this.calculateIntervalInMs(intervalInS, group);
             this.log.debug('Timeout with interval ' + interval + ' ms started for group ' + group);
-            this.stateInfoList[gidx].timeoutHandle = setTimeout(() => { this.stateInfoList[gidx].fnct(group); }, interval);
-        }
-    }
-
-    /**
-     * Check alpha-ess authentcation. Decides if login or refresh has to be performed
-     * @returns true in case of success, otherwise false
-     */
-    async checkAuthentication() {
-        try {
-            if (this.Auth.Token && this.Auth.RefreshToken && this.Auth.Expires) {
-                if (Date.now() < this.Auth.Expires) {
-                    this.log.debug('Authentication token still valid.');
-                    return true;
-                }
-                else {
-                    // First we try to refresh the token:
-                    if (await this.authenticate(true)) {
-                        return true;
-                    }
-                    else {
-                        // If refresh fails we log in again
-                        return (await this.authenticate(false));
-                    }
-                }
-            }
-            else {
-                return (await this.authenticate(false));
-            }
-        }
-        catch (e) {
-            this.log.error('checkAuthentication Exception occurred: ' + e);
+            this.getStateInfoList()[gidx].timeoutHandle = setTimeout(() => { this.getStateInfoList()[gidx].fnct(group); }, interval);
         }
     }
 
 
-    /**
-     * Perform alpha-ess authentication
-     * @param {boolean} [refresh]
-     */
-    async authenticate(refresh) {
-        try {
-
-            let LoginData = undefined;
-
-            if (refresh) {
-                this.log.info('Try to refresh authentication token');
-                LoginData =
-                {
-                    'username': this.Auth.username,
-                    'accesstoken': this.Auth.Token,
-                    'refreshtokenkey': this.Auth.RefreshToken
-                };
-            }
-            else {
-                this.log.info('Try to login');
-                LoginData =
-                {
-                    'username': this.Auth.username,
-                    'password': this.Auth.password
-                };
-            }
-
-            // @ts-ignore
-            const res = await axios.post(BaseURI + 'api/' + (refresh ? 'Account/RefreshToken' : 'Account/Login'),
-                JSON.stringify(LoginData),
-                {
-                    timeout: REQUEST_TIMEOUT,
-                    headers: this.headers(null)
-                });
-
-            if (res.status == 200) {
-                if (res.data && res.data.code && res.data.code == 5) {
-                    this.log.error('Alpha ESS Api returns \'Invalid username or password\'! Adapter won\'t try again to fetch any data.');
-                    this.wrongCredentials = true;
-                    return false;
-                }
-                else {
-                    this.Auth.Token = res.data.data.AccessToken;
-                    this.Auth.Expires = Date.now() + ((res.data.data.ExpiresIn - 3600) * 1000); // Set expire time one hour earlier to be sure
-                    this.Auth.RefreshToken = res.data.data.RefreshTokenKey;
-
-                    this.log.info(refresh ? 'Token succesfully refreshed' : 'Login succesful');
-                    this.log.debug('Auth.Token:        ' + this.Auth.Token);
-                    this.log.debug('Auth.RefreshToken: ' + this.Auth.RefreshToken);
-                    this.log.debug('Auth.Expires:      ' + new Date(this.Auth.Expires));
-                    this.errorCount = 0;
-                    return true;
-                }
-            }
-            else {
-                this.log.info('Error during authentication, status: ' + res.status);
-                return false;
-            }
-        }
-        catch (e) {
-            this.log.error('authenticate Exception occurred: ' + e);
-            return false;
-        }
-    }
-
-    /**
-     * Get realtime data from alpha-ess and start timer for next execution
-     * @param {string} group
-     */
-    async fetchRealtimeData(group) {
-        try {
-            this.stopGroupTimeout(group);
-
-            this.log.debug('Fetching ' + group + ' data...');
-
-            const body = await this.getData(BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.config.systemId + '&noLoading=true');
-            await this.createAndUpdateStates(group, body.data);
-
-            this.startGroupTimeout(this.config.intervalRealtimedata, group);
-        }
-        catch (e) {
-            this.log.error('fetchRealtimeData Exception occurred: ' + e);
-        }
-    }
-
-    /**
-     * Get energy data from alpha-ess and start timer for next execution
-     * @param {string} group
-     */
-    async fetchEnergyData(group) {
-        try {
-            this.stopGroupTimeout(group);
-
-            this.log.debug('Fetching ' + group + ' data...');
-
-            const dt = new Date();
-            const dts = (dt.getFullYear() + '-0' + (dt.getMonth() + 1) + '-01');
-            const json = {
-                'statisticBy': 'month',
-                'sDate': dts,
-                'isOEM': 0,
-                'sn': this.config.systemId,
-                'userId': '',
-            };
-            const body = await this.postData(BaseURI + 'api/Statistic/SystemStatistic', JSON.stringify(json));
-            await this.createAndUpdateStates(group, body.data);
-
-            this.startGroupTimeout(this.config.intervalEnergydataMins * 60, group);
-        }
-        catch (e) {
-            this.log.error('fetchEnergyData Exception occurred: ' + e);
-        }
-    }
-
-    /**
-     * Get settings data from alpha-ess and start timer for next execution
-     * @param {string} group
-     */
-    async fetchSettingsData(group) {
-        try {
-            this.stopGroupTimeout(group);
-
-            this.log.debug('Fetching ' + group + ' data...');
-
-            const body = await this.getData(BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.config.systemId + '&noLoading=true');
-            await this.createAndUpdateStates(group, body.data);
-
-            this.startGroupTimeout(this.config.intervalSettingsdataMins * 60, group);
-        }
-        catch (e) {
-            this.log.error('fetchSettingsData Exception occurred: ' + e);
-        }
-    }
-
-    /**
-     * Get statistical data for today from alpha-ess and start timer for next execution
-     * @param {string} group
-     */
-    async fetchStatisticalTodayData(group) {
-        try {
-            this.stopGroupTimeout(group);
-
-            this.log.debug('Fetching ' + group + ' data...');
-
-            const dt = new Date();
-            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
-
-            const body = await this.getData(BaseURI + 'api/Power/SticsByPeriod?beginDay=' + dts + '&endDay=' + dts +
-                '&tDay=' + dts + '&SN=' + this.config.systemId + '&noLoading=true');
-
-            await this.createAndUpdateStates(group, body.data);
-
-            this.startGroupTimeout(this.config.intervalStatisticalTodaydataMins * 60, group);
-        }
-        catch (e) {
-            this.log.error('fetchStatisticalTodayData Exception occurred: ' + e);
-        }
-    }
-
-    /**
-     * Get summary data for today from alpha-ess and start timer for next execution
-     * @param {string} group
-     */
-    async fetchSummaryData(group) {
-        try {
-            this.stopGroupTimeout(group);
-
-            this.log.debug('Fetching summary data...');
-
-            const dt = new Date();
-            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
-
-            const body = await this.getData(BaseURI + 'api/ESS/SticsSummeryDataForCustomer?sn=' + this.config.systemId +
-                '&tday=' + dts + '&noLoading=true');
-
-            await this.createAndUpdateStates(group, body.data);
-
-            // Configuration is in minutes, so multiply with 60
-            this.startGroupTimeout(this.config.intervalSummarydataMins * 60, group);
-        }
-        catch (e) {
-            this.log.error('fetchSummaryData Exception occurred: ' + e);
-        }
-    }
 
     /**
      * Answer if the states shall be migrated, i.e. overwritten.
@@ -1015,9 +1866,9 @@ class AlphaEss extends utils.Adapter {
                 if (!this.createdStates[group]) {
 
                     // Delete no longer supported states for this group
-                    const gidx = this.stateInfoList.findIndex(i => i.Group == group);
+                    const gidx = this.getStateInfoList().findIndex(i => i.Group == group);
                     if (gidx >= 0) {
-                        const groupStateList = this.stateInfoList[gidx].states;
+                        const groupStateList = this.getStateInfoList()[gidx].states;
                         const states = await this.getStatesAsync(group + '.*');
                         for (const sid in states) {
                             const parts = sid.split('.');
@@ -1055,7 +1906,7 @@ class AlphaEss extends utils.Adapter {
                                     // @ts-ignore
                                     , read: true
                                     , write: false
-                                    , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit
+                                    , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit === '{moneyType}' ? data['moneyType'] : stateInfo.unit
                                     , desc: stateInfo.alphaAttrName
                                 },
                                 native: {},
@@ -1123,164 +1974,15 @@ class AlphaEss extends utils.Adapter {
     }
 
     /**
-     * Perform a get request and return the received body.
-     * @param {string} uri
-     */
-    async getData(uri) {
-        const emptyBody = { data: null };
-        try {
-            if (this.wrongCredentials) {
-                return emptyBody;
-            }
-            if (!await this.checkAuthentication()) {
-                await this.handleError();
-                this.log.warn('Error in Authorization (error count: ' + this.errorCount + ')');
-                await this.setStateChangedAsync('info.connection', false, true);
-                return emptyBody;
-            }
-
-            this.log.debug('getData Uri: ' + uri);
-
-            // @ts-ignore
-            const res = await axios.get(uri,
-                {
-                    timeout: REQUEST_TIMEOUT,
-                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
-                });
-
-            if (res.status == 200) {
-                await this.setStateChangedAsync('info.connection', true, true);
-                return res.data;
-            }
-            else {
-                await this.handleError();
-                this.log.error('Error when fetching data for ' + this.config.systemId + ', status code: ' + res.status + ' (error count: ' + this.errorCount + ')');
-                return emptyBody;
-            }
-        }
-        catch (e) {
-            await this.handleError();
-            this.log.error('fetchData Exception occurred: ' + e + ' (error count: ' + this.errorCount + ')');
-            return emptyBody;
-        }
-    }
-
-    /**
-     * Perform a post request and return the received body.
-    * @param {string} uri
-    * @param {string} sndBody
-    */
-    async postData(uri, sndBody) {
-        const emptyBody = { data: null };
-        try {
-            if (this.wrongCredentials) {
-                return emptyBody;
-            }
-            if (!await this.checkAuthentication()) {
-                await this.handleError();
-                this.log.warn('Error in Authorization (error count: ' + this.errorCount + ')');
-                await this.setStateChangedAsync('info.connection', false, true);
-                return emptyBody;
-            }
-
-            this.log.debug('postData Uri: ' + uri);
-
-            // @ts-ignore
-            const res = await axios.post(uri,
-                sndBody,
-                {
-                    timeout: REQUEST_TIMEOUT,
-                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
-                });
-
-            if (res.status == 200) {
-                await this.setStateChangedAsync('info.connection', true, true);
-                return res.data;
-            }
-            else {
-                await this.handleError();
-                this.log.error('Error when fetching data for ' + this.config.systemId + ', status code: ' + res.status + ' (error count: ' + this.errorCount + ')');
-                return emptyBody;
-            }
-        }
-        catch (e) {
-            await this.handleError();
-            this.log.error('fetchData Exception occurred: ' + e + ' (error count: ' + this.errorCount + ')');
-            return emptyBody;
-        }
-    }
-
-    /**
-     * Reset authentication data to defaults. Login must be performed afterwards.
-     */
-    async resetAuth() {
-        try {
-            await this.setStateChangedAsync('info.connection', false, true);
-            return new Promise((resolve) => {
-                this.Auth =
-                {
-                    username: this.config.username,
-                    password: this.config.password,
-                    AccessToken: '',
-                    Expires: 0,
-                    RefreshToken: ''
-                };
-                this.log.debug('Reset authentication data');
-                resolve(true);
-            });
-        }
-        catch (e) {
-            this.log.error('resetAuth Exception occurred: ' + e);
-            return false;
-        }
-    }
-
-    /**
-     * Answer alpha-ess specific headers for web requests
-     * @param {any} extraHeaders
-     */
-    headers(extraHeaders) {
-        const timestamp = ((new Date).getTime() / 1000);
-        const data = AUTHCONSTANT + timestamp;
-        const hash = crypto.createHash('sha512').update(data).digest('hex');
-
-        const stdHeaders = {
-            'Content-Type': 'application/json',
-            'Connection': 'keep-alive',
-            'Accept': '*/*',
-            'Accept-Encoding': 'gzip, deflate',
-            'Cache-Control': 'no-cache',
-            'AuthTimestamp': '' + timestamp,
-            'AuthSignature': AUTHPREFIX + hash + AUTHSUFFIX
-        };
-
-        return Object.assign({}, stdHeaders, extraHeaders);
-    }
-
-    /**
-     * Will be called if during any request an error occurs
-     */
-    async handleError() {
-        try {
-            // Increase error count, will be reset with the next successful connection
-            this.errorCount++;
-            await this.resetAuth();
-        }
-        catch (e) {
-            this.log.error('handleError Exception occurred: ' + e);
-        }
-    }
-
-    /**
      * Answer the state description object for a given group and alpha-ess attribute name
      * @param {string} Group
      * @param {string} alphaAttrName
      */
     getStateInfo(Group, alphaAttrName) {
         try {
-            const gidx = this.stateInfoList.findIndex(i => i.Group == Group);
+            const gidx = this.getStateInfoList().findIndex(i => i.Group == Group);
             if (gidx >= 0) {
-                const currentList = this.stateInfoList[gidx].states;
+                const currentList = this.getStateInfoList()[gidx].states;
                 const sidx = currentList.findIndex(i => i.alphaAttrName == alphaAttrName);
                 if (sidx >= 0) {
                     return currentList[sidx];
@@ -1336,3 +2038,4 @@ if (require.main !== module) {
     // otherwise start the instance directly
     new AlphaEss();
 }
+

@@ -1,204 +1,226 @@
 {
-  "common": {
-    "name": "alpha-ess",
-    "version": "0.5.0",
-    "news": {
-      "0.5.0": {
-        "en": "Remove no more supported states at startup automatically\nPrepared data migration for future versions",
-        "de": "Entfernen Sie keine unterstützten Zustände beim Start automatisch\nVorbereitete Datenmigration für zukünftige Versionen",
-        "ru": "Удалить больше не поддерживаемых состояний при запуске автоматически\nПодготовленная миграция данных для будущих версий",
-        "pt": "Remover estados não mais suportados na inicialização automaticamente\nMigração de dados preparada para versões futuras",
-        "nl": "Verwijder geen ondersteunende staten bij start-up automatisch\nVertaling:",
-        "fr": "Enlever plus d'états supportés au démarrage automatiquement\nMigration de données préparée pour les versions futures",
-        "it": "Non rimuovere più stati supportati all'avvio automaticamente\nMigrazione dei dati preparata per le versioni future",
-        "es": "Eliminar no más estados compatibles en el inicio automáticamente\nMigración de datos preparada para futuras versiones",
-        "pl": "Remove nie będzie więcej wspieranych państw\nWstępna migracja danych do przyszłych wersji",
-        "uk": "Видаліть не більше підтримуваних держав при запуску автоматично\nПідготовка міграції даних для майбутніх версій",
-        "zh-cn": "自动取消不再支持的开办国家\n今后版本的准备数据迁移"
-      },
-      "0.4.0": {
-        "en": "Optimized deletion of group states\nAdded new Realtime state for pmeter_dc",
-        "de": "Optimiertes Löschen von Gruppenzuständen\nNeuer Realtime-Zustand für pmeter_dc hinzugefügt",
-        "ru": "Оптимизированное удаление групповых государств\nДобавлено новое состояние в режиме реального времени для pmeter_dc",
-        "pt": "Eliminação otimizada de estados de grupo\nAdicionado novo estado em tempo real para pmeter_dc",
-        "nl": "Optimaal deletie van de groepsstaat\nVoegde nieuwe Realtime staat toe voor begraafplaats",
-        "fr": "Suppression optimisée des états de groupe\nAjout d'un nouvel état en temps réel pour pmeter_dc",
-        "it": "Eliminazione ottimizzata degli stati di gruppo\nAggiunto nuovo stato in tempo reale per pmeter_dc",
-        "es": "Eliminación optimizada de estados de grupo\nNuevo estado en tiempo real añadido para pmeter_dc",
-        "pl": "Ostateczne delecje grupowych stanów\nNowy stan rzeczywisty",
-        "uk": "Оптимальне видалення групових станів\nДодано новий стан в режимі реального часу для pmeter_dc",
-        "zh-cn": "删除集团国家\n添加新实时状态"
-      },
-      "0.3.0": {
-        "en": "Rearranged statistical data and added more values. Many thanks to [Thorsten](https://github.com/ThorstenBoettler) for his valuable contribution in testing the early alpha versions of this release and providing informative suggestions and recommendations for new data points.\nAdded Summary data \nRefactored complete implementation\nChanged the unit of settings for all intervals, except of realtime data, to minutes (Caution: settings are reset to defaults)\nRemove disabled states at adapter startup\nRemoved no more supported value 'createtime' (state ID Realtime.Last_update). \nOptimized rounding for selected values",
-        "de": "Rearrangierte statistische Daten und fügte weitere Werte hinzu. Vielen Dank an [Thorsten](https://github.com/ThorstenBoettler) für seinen wertvollen Beitrag bei der Prüfung der frühen Alpha-Versionen dieser Veröffentlichung und Bereitstellung informativer Vorschläge und Empfehlungen für neue Datenpunkte.\nZusammenfassung Daten\nRefactored complete Implementation\nÄnderte die Einheit der Einstellungen für alle Intervalle, mit Ausnahme von Echtzeitdaten, in Minuten (Vorsicht: Einstellungen werden auf Standardeinstellungen zurückgesetzt)\nEntfernen von deaktivierten Zuständen bei Adapter-Start\nKeine unterstützte Wert-Erstellung entfernt (state ID Realtime.Last_update).\nOptimierte Rundung für ausgewählte Werte",
-        "ru": "Переопределены статистические данные и добавлены более значения. Большое спасибо [Thorsten](https://github.com/ThorstenBoettler) за его ценный вклад в тестирование ранних альфа-версий этого релиза и предоставление информативных предложений и рекомендаций для новых точек данных.\nДобавлены сводные данные\nРефакторная полная реализация\nИзменена единица настроек для всех интервалов, за исключением данных в режиме реального времени, до минут (завершение: настройки сбрасываются по умолчанию)\nУдалить состояния инвалидов при запуске адаптера\nУдалено больше не поддерживается создание ценности (государственный ID в режиме реального времени.Last_update).\nОптимизированный округление для выбранных значений",
-        "pt": "Dados estatísticos reorganizados e adicionados mais valores. Muito obrigado a [Thorsten](https://github.com/ThorstenBoettler) por sua valiosa contribuição para testar as primeiras versões alfa desta versão e fornecer sugestões e recomendações informativas para novos pontos de dados.\nDados resumidos\nImplementação completa refatorada\nAlterou a unidade de configurações para todos os intervalos, exceto dados em tempo real, para minutos (Caução: as configurações são redefinidas para padrão)\nRemover estados desabilitados na inicialização do adaptador\nRemovido não mais tempo de criação de valor suportado (ID de estado em tempo real.Last_update).\nArredondamento otimizado para valores selecionados",
-        "nl": "Rearrangeerde statistische gegevens en voegde meer waarden toe. Veel dankzij dank aan het testen van de vroege alfa versies van deze vrijlating en het leveren van informatie en aanbevelingen voor nieuwe gegevens.\nVertaling:\nVertaling:\nVeranderde de eenheid van de instellingen voor alle intervals, behalve realtime gegevens, tot minuten (Caution) de instellingen zijn herstart tot defaults\nVerwijder de gehandicapten staten bij adapter startup\nVerwijderde geen gesteunde waarde creëer tijd.\nGeoptimiseerde ronde voor geselecteerde waarden",
-        "fr": "Rearranged statistical data and added more values. De nombreux remerciements à [Thorsten](https://github.com/ThorstenBoettler) pour sa précieuse contribution aux essais des versions alpha précoces de cette version et fournissant des suggestions et des recommandations informatives pour les nouveaux points de données.\nDonnées sommaires\nMise en œuvre intégrale\nChangement de l'unité de paramètres pour tous les intervalles, à l'exception des données en temps réel, à quelques minutes (Attention : les paramètres sont réinitialisés par défaut)\nRetirer les états handicapés au démarrage de l'adaptateur\nEnlevé aucune valeur supportée createtime (état ID Realtime.Last_update).\nArrondissement optimisé pour des valeurs sélectionnées",
-        "it": "Dati statistici riordinati e ulteriori valori. Molte grazie a [Thorsten](https://github.com/ThorstenBoettler) per il suo prezioso contributo nel testare le prime versioni alfa di questa release e fornire suggerimenti e raccomandazioni informativi per nuovi punti di dati.\nDati di sintesi\nAttuazione completa\nModificato l'unità di impostazioni per tutti gli intervalli, ad eccezione dei dati in tempo reale, a minuti (Valutazione: le impostazioni vengono ripristinate ai default)\nRimuovere gli stati disabilitati all'avvio dell'adattatore\nRimosso nessun valore più supportato createtime (state ID Realtime.Last_update).\nArrotondamento ottimizzato per valori selezionati",
-        "es": "Reordenó los datos estadísticos y añadió más valores. Muchas gracias a [Thorsten](https://github.com/ThorstenBoettler) por su valiosa contribución en la prueba de las primeras versiones alfa de esta publicación y en la presentación de sugerencias informativas y recomendaciones para nuevos puntos de datos.\nDatos resumidos\nEjecución completa refactorizada\nCambia la unidad de configuración para todos los intervalos, excepto los datos en tiempo real, a minutos (Caution: settings are reset to defaults)\nEliminar estados discapacitados en la puesta en marcha del adaptador\nEliminado no más tiempo de creación de valor compatible (identidad del estado en tiempo real.\nRedondeo optimizado para valores seleccionados",
-        "pl": "Powtórne dane statystyczne i dodały więcej wartości. Wiele dzięki Thorsten(https:/github.com/ThorstenBoettler) za swój cenny wkład w testowanie wczesnych wersji alfa tego wydania oraz zapewnianie sugestii i rekomendacji dla nowych punktów danych.\nAdded Summary data\nRefaktor kompletny\nZmienił jednostkę ustawień dla wszystkich odstępów, z wyjątkiem danych czasu rzeczywistego, do minut (wspomnienia: ustawienia są resetowane domyślnie)\nRemove stany niepełnosprawne na początku reaktywacji\nPrzewiduje się, że nie będzie więcej wspieranych wartości tworzenia czasu (stanowego ID Realtime).\nOptymizowana runda dla wybranych wartości",
-        "uk": "Зменшення статистичних даних та додано більше значень. Дуже дякую [Torsten](https://github.com/ThorstenBoettler) за його цінний внесок у тестування ранніх альфа-версій цього релізу та надання інформативних пропозицій та рекомендацій для нових точок даних.\nДодаткові дані\nРефакторна повна реалізація\nЗмінено блок налаштувань для всіх інтервалів, крім даних в режимі реального часу, до хвилин (Налаштування: налаштування скидаються на за замовчуванням)\nВидалити відключені стани при запуску адаптера\nВилучено не більше підтримуваних значень (державний ID Realtime.Last_update).\nОптимізований округлення для вибраних значень",
-        "zh-cn": "调整统计数据和增加更多的价值。 许多人由于[保加利亚](https://github.com/Thorsten Boettler)在试验该释放的早期版本方面作出了宝贵贡献,并为新的数据点提出信息建议和建议。.\n增加总数据\n令人满意的全面实施\n除实时数据外,整整整整整整整整整整整整整整整整整整整整整整整套环境,每次都用天数计算(aution:环境重新出现违约)。\nB. 残疾人的开端\n取消无更多支持的价值创造时间(国际清算日。.\nB. 对某些价值的预测"
-      },
-      "0.2.1-beta.0": {
-        "en": "Read selected statistical data",
-        "de": "Ausgewählte statistische Daten",
-        "ru": "Прочитать выбранные статистические данные",
-        "pt": "Leia dados estatísticos selecionados",
-        "nl": "Vertaling:",
-        "fr": "Lire les données statistiques sélectionnées",
-        "it": "Dati statistici selezionati",
-        "es": "Lea los datos estadísticos seleccionados",
-        "pl": "Czytamy dane statystyczne",
-        "uk": "Читати вибрані статистичні дані",
-        "zh-cn": "阅读选定的统计数据"
-      },
-      "0.2.0": {
-        "en": "Added states EV1_power, EV2_power, EV3_power and EV4_power to Realtime folder",
-        "de": "EV1_power, EV2_power, EV3_power und EV4_power in Echtzeit-Ordner",
-        "ru": "Добавлены состояния EV1_power, EV2_power, EV3_power и EV4_power в папку Realtime",
-        "pt": "Estados adicionados EV1_power, EV2_power, EV3_power e EV4_power para pasta em tempo real",
-        "nl": "Vertaling:",
-        "fr": "Ajout des états EV1_power, EV2_power, EV3_power et EV4_power dans le dossier Realtime",
-        "it": "Aggiunti stati EV1_power, EV2_power, EV3_power e EV4_power nella cartella in tempo reale",
-        "es": "Estados adicionales EV1_power, EV2_power, EV3_power y EV4_power a carpeta en tiempo real",
-        "pl": "EV1_power, EV2_power, EV3_power i EV4_power do Realtime folder",
-        "uk": "Додано стани EV1_power, EV2_power, EV3_power і EV4_power до папки реального часу",
-        "zh-cn": "增加国家EV1:能力,EV2_ 能力, EV3_ 权力和EV4_ 实际工作时间的能力"
-      },
-      "0.1.0": {
-        "en": "First release for Latest repository\nCorrected typo in state ID Battery_SOC\nImplemented improvements as suggested in code review",
-        "de": "Erste Veröffentlichung für Neueste Repository\nKorrigierte Typo im Zustand ID Battery_SOC\nImplementierte Verbesserungen wie in der Code-Review vorgeschlagen",
-        "ru": "Первый выпуск для последней репозитории\nИсправлена опечатка в штате ID Батарея_SOC\nВнедренные улучшения, как предлагается в обзоре кода",
-        "pt": "Primeiro lançamento para o repositório mais recente\nTipo corrigido no estado ID Battery_SOC\nMelhorias implementadas conforme sugerido na revisão de código",
-        "nl": "Eerste vrijlating voor Latest\nQuality over Quantity (QoQ) Releases Vertaling: ID Battery\nVerbeteringen zoals geadviseerd in codereview",
-        "fr": "Première version pour Dernier dépôt\nTypo corrigé en état ID Battery_SOC\nAméliorations mises en œuvre comme suggéré dans l ' examen des codes",
-        "it": "Prima release per gli ultimi repository\nTipo corretto in stato ID Battery_SOC\nMiglioramenti attuati come suggerito nella revisione del codice",
-        "es": "Primer lanzamiento para el repositorio más reciente\nTypo corregido en estado ID Battery_SOC\nMejoras aplicadas como se sugiere en el examen del código",
-        "pl": "Pierwsze wydanie repozytorium Latest\nKary w państwie Bateria IDSOC\nImplementacja poprawek, jak zasugerowano w przegląd kodowy",
-        "uk": "Перший реліз для останніх репозиторій\nВиправлено типо в стані Акумулятор ID_SOC\nРеалізовані вдосконалення, як пропонуються в перегляді коду",
-        "zh-cn": "第一批La证存放处的释放\n州的打字 ID Battery_SOC\n实施守则审查建议的改进"
-      },
-      "0.0.6-beta.5": {
-        "en": "Slow down requests in case of permanent errors",
-        "de": "Langsame Anträge bei dauerhaften Fehlern",
-        "ru": "Замедлить запросы в случае постоянных ошибок",
-        "pt": "Reduzir pedidos em caso de erros permanentes",
-        "nl": "Langzamer verzoeken in geval van permanente fouten",
-        "fr": "Ralentissez les demandes en cas d'erreurs permanentes",
-        "it": "Rallentare le richieste in caso di errori permanenti",
-        "es": "Reduzca las solicitudes en caso de errores permanentes",
-        "pl": "Zmniejszenie żądań dotyczących trwałych błędów",
-        "uk": "Повільні запити у разі постійних помилок",
-        "zh-cn": "长期错误请求下降"
-      }
+    "common": {
+        "name": "alpha-ess",
+        "version": "0.5.0",
+        "news": {
+            "0.5.0": {
+                "en": "Remove no more supported states at startup automatically\nPrepared data migration for future versions",
+                "de": "Entfernen Sie keine unterstützten Zustände beim Start automatisch\nVorbereitete Datenmigration für zukünftige Versionen",
+                "ru": "Удалить больше не поддерживаемых состояний при запуске автоматически\nПодготовленная миграция данных для будущих версий",
+                "pt": "Remover estados não mais suportados na inicialização automaticamente\nMigração de dados preparada para versões futuras",
+                "nl": "Verwijder geen ondersteunende staten bij start-up automatisch\nVertaling:",
+                "fr": "Enlever plus d'états supportés au démarrage automatiquement\nMigration de données préparée pour les versions futures",
+                "it": "Non rimuovere più stati supportati all'avvio automaticamente\nMigrazione dei dati preparata per le versioni future",
+                "es": "Eliminar no más estados compatibles en el inicio automáticamente\nMigración de datos preparada para futuras versiones",
+                "pl": "Remove nie będzie więcej wspieranych państw\nWstępna migracja danych do przyszłych wersji",
+                "uk": "Видаліть не більше підтримуваних держав при запуску автоматично\nПідготовка міграції даних для майбутніх версій",
+                "zh-cn": "自动取消不再支持的开办国家\n今后版本的准备数据迁移"
+            },
+            "0.4.0": {
+                "en": "Optimized deletion of group states\nAdded new Realtime state for pmeter_dc",
+                "de": "Optimiertes Löschen von Gruppenzuständen\nNeuer Realtime-Zustand für pmeter_dc hinzugefügt",
+                "ru": "Оптимизированное удаление групповых государств\nДобавлено новое состояние в режиме реального времени для pmeter_dc",
+                "pt": "Eliminação otimizada de estados de grupo\nAdicionado novo estado em tempo real para pmeter_dc",
+                "nl": "Optimaal deletie van de groepsstaat\nVoegde nieuwe Realtime staat toe voor begraafplaats",
+                "fr": "Suppression optimisée des états de groupe\nAjout d'un nouvel état en temps réel pour pmeter_dc",
+                "it": "Eliminazione ottimizzata degli stati di gruppo\nAggiunto nuovo stato in tempo reale per pmeter_dc",
+                "es": "Eliminación optimizada de estados de grupo\nNuevo estado en tiempo real añadido para pmeter_dc",
+                "pl": "Ostateczne delecje grupowych stanów\nNowy stan rzeczywisty",
+                "uk": "Оптимальне видалення групових станів\nДодано новий стан в режимі реального часу для pmeter_dc",
+                "zh-cn": "删除集团国家\n添加新实时状态"
+            },
+            "0.3.0": {
+                "en": "Rearranged statistical data and added more values. Many thanks to [Thorsten](https://github.com/ThorstenBoettler) for his valuable contribution in testing the early alpha versions of this release and providing informative suggestions and recommendations for new data points.\nAdded Summary data \nRefactored complete implementation\nChanged the unit of settings for all intervals, except of realtime data, to minutes (Caution: settings are reset to defaults)\nRemove disabled states at adapter startup\nRemoved no more supported value 'createtime' (state ID Realtime.Last_update). \nOptimized rounding for selected values",
+                "de": "Rearrangierte statistische Daten und fügte weitere Werte hinzu. Vielen Dank an [Thorsten](https://github.com/ThorstenBoettler) für seinen wertvollen Beitrag bei der Prüfung der frühen Alpha-Versionen dieser Veröffentlichung und Bereitstellung informativer Vorschläge und Empfehlungen für neue Datenpunkte.\nZusammenfassung Daten\nRefactored complete Implementation\nÄnderte die Einheit der Einstellungen für alle Intervalle, mit Ausnahme von Echtzeitdaten, in Minuten (Vorsicht: Einstellungen werden auf Standardeinstellungen zurückgesetzt)\nEntfernen von deaktivierten Zuständen bei Adapter-Start\nKeine unterstützte Wert-Erstellung entfernt (state ID Realtime.Last_update).\nOptimierte Rundung für ausgewählte Werte",
+                "ru": "Переопределены статистические данные и добавлены более значения. Большое спасибо [Thorsten](https://github.com/ThorstenBoettler) за его ценный вклад в тестирование ранних альфа-версий этого релиза и предоставление информативных предложений и рекомендаций для новых точек данных.\nДобавлены сводные данные\nРефакторная полная реализация\nИзменена единица настроек для всех интервалов, за исключением данных в режиме реального времени, до минут (завершение: настройки сбрасываются по умолчанию)\nУдалить состояния инвалидов при запуске адаптера\nУдалено больше не поддерживается создание ценности (государственный ID в режиме реального времени.Last_update).\nОптимизированный округление для выбранных значений",
+                "pt": "Dados estatísticos reorganizados e adicionados mais valores. Muito obrigado a [Thorsten](https://github.com/ThorstenBoettler) por sua valiosa contribuição para testar as primeiras versões alfa desta versão e fornecer sugestões e recomendações informativas para novos pontos de dados.\nDados resumidos\nImplementação completa refatorada\nAlterou a unidade de configurações para todos os intervalos, exceto dados em tempo real, para minutos (Caução: as configurações são redefinidas para padrão)\nRemover estados desabilitados na inicialização do adaptador\nRemovido não mais tempo de criação de valor suportado (ID de estado em tempo real.Last_update).\nArredondamento otimizado para valores selecionados",
+                "nl": "Rearrangeerde statistische gegevens en voegde meer waarden toe. Veel dankzij dank aan het testen van de vroege alfa versies van deze vrijlating en het leveren van informatie en aanbevelingen voor nieuwe gegevens.\nVertaling:\nVertaling:\nVeranderde de eenheid van de instellingen voor alle intervals, behalve realtime gegevens, tot minuten (Caution) de instellingen zijn herstart tot defaults\nVerwijder de gehandicapten staten bij adapter startup\nVerwijderde geen gesteunde waarde creëer tijd.\nGeoptimiseerde ronde voor geselecteerde waarden",
+                "fr": "Rearranged statistical data and added more values. De nombreux remerciements à [Thorsten](https://github.com/ThorstenBoettler) pour sa précieuse contribution aux essais des versions alpha précoces de cette version et fournissant des suggestions et des recommandations informatives pour les nouveaux points de données.\nDonnées sommaires\nMise en œuvre intégrale\nChangement de l'unité de paramètres pour tous les intervalles, à l'exception des données en temps réel, à quelques minutes (Attention : les paramètres sont réinitialisés par défaut)\nRetirer les états handicapés au démarrage de l'adaptateur\nEnlevé aucune valeur supportée createtime (état ID Realtime.Last_update).\nArrondissement optimisé pour des valeurs sélectionnées",
+                "it": "Dati statistici riordinati e ulteriori valori. Molte grazie a [Thorsten](https://github.com/ThorstenBoettler) per il suo prezioso contributo nel testare le prime versioni alfa di questa release e fornire suggerimenti e raccomandazioni informativi per nuovi punti di dati.\nDati di sintesi\nAttuazione completa\nModificato l'unità di impostazioni per tutti gli intervalli, ad eccezione dei dati in tempo reale, a minuti (Valutazione: le impostazioni vengono ripristinate ai default)\nRimuovere gli stati disabilitati all'avvio dell'adattatore\nRimosso nessun valore più supportato createtime (state ID Realtime.Last_update).\nArrotondamento ottimizzato per valori selezionati",
+                "es": "Reordenó los datos estadísticos y añadió más valores. Muchas gracias a [Thorsten](https://github.com/ThorstenBoettler) por su valiosa contribución en la prueba de las primeras versiones alfa de esta publicación y en la presentación de sugerencias informativas y recomendaciones para nuevos puntos de datos.\nDatos resumidos\nEjecución completa refactorizada\nCambia la unidad de configuración para todos los intervalos, excepto los datos en tiempo real, a minutos (Caution: settings are reset to defaults)\nEliminar estados discapacitados en la puesta en marcha del adaptador\nEliminado no más tiempo de creación de valor compatible (identidad del estado en tiempo real.\nRedondeo optimizado para valores seleccionados",
+                "pl": "Powtórne dane statystyczne i dodały więcej wartości. Wiele dzięki Thorsten(https:/github.com/ThorstenBoettler) za swój cenny wkład w testowanie wczesnych wersji alfa tego wydania oraz zapewnianie sugestii i rekomendacji dla nowych punktów danych.\nAdded Summary data\nRefaktor kompletny\nZmienił jednostkę ustawień dla wszystkich odstępów, z wyjątkiem danych czasu rzeczywistego, do minut (wspomnienia: ustawienia są resetowane domyślnie)\nRemove stany niepełnosprawne na początku reaktywacji\nPrzewiduje się, że nie będzie więcej wspieranych wartości tworzenia czasu (stanowego ID Realtime).\nOptymizowana runda dla wybranych wartości",
+                "uk": "Зменшення статистичних даних та додано більше значень. Дуже дякую [Torsten](https://github.com/ThorstenBoettler) за його цінний внесок у тестування ранніх альфа-версій цього релізу та надання інформативних пропозицій та рекомендацій для нових точок даних.\nДодаткові дані\nРефакторна повна реалізація\nЗмінено блок налаштувань для всіх інтервалів, крім даних в режимі реального часу, до хвилин (Налаштування: налаштування скидаються на за замовчуванням)\nВидалити відключені стани при запуску адаптера\nВилучено не більше підтримуваних значень (державний ID Realtime.Last_update).\nОптимізований округлення для вибраних значень",
+                "zh-cn": "调整统计数据和增加更多的价值。 许多人由于[保加利亚](https://github.com/Thorsten Boettler)在试验该释放的早期版本方面作出了宝贵贡献,并为新的数据点提出信息建议和建议。.\n增加总数据\n令人满意的全面实施\n除实时数据外,整整整整整整整整整整整整整整整整整整整整整整整套环境,每次都用天数计算(aution:环境重新出现违约)。\nB. 残疾人的开端\n取消无更多支持的价值创造时间(国际清算日。.\nB. 对某些价值的预测"
+            },
+            "0.2.1-beta.0": {
+                "en": "Read selected statistical data",
+                "de": "Ausgewählte statistische Daten",
+                "ru": "Прочитать выбранные статистические данные",
+                "pt": "Leia dados estatísticos selecionados",
+                "nl": "Vertaling:",
+                "fr": "Lire les données statistiques sélectionnées",
+                "it": "Dati statistici selezionati",
+                "es": "Lea los datos estadísticos seleccionados",
+                "pl": "Czytamy dane statystyczne",
+                "uk": "Читати вибрані статистичні дані",
+                "zh-cn": "阅读选定的统计数据"
+            },
+            "0.2.0": {
+                "en": "Added states EV1_power, EV2_power, EV3_power and EV4_power to Realtime folder",
+                "de": "EV1_power, EV2_power, EV3_power und EV4_power in Echtzeit-Ordner",
+                "ru": "Добавлены состояния EV1_power, EV2_power, EV3_power и EV4_power в папку Realtime",
+                "pt": "Estados adicionados EV1_power, EV2_power, EV3_power e EV4_power para pasta em tempo real",
+                "nl": "Vertaling:",
+                "fr": "Ajout des états EV1_power, EV2_power, EV3_power et EV4_power dans le dossier Realtime",
+                "it": "Aggiunti stati EV1_power, EV2_power, EV3_power e EV4_power nella cartella in tempo reale",
+                "es": "Estados adicionales EV1_power, EV2_power, EV3_power y EV4_power a carpeta en tiempo real",
+                "pl": "EV1_power, EV2_power, EV3_power i EV4_power do Realtime folder",
+                "uk": "Додано стани EV1_power, EV2_power, EV3_power і EV4_power до папки реального часу",
+                "zh-cn": "增加国家EV1:能力,EV2_ 能力, EV3_ 权力和EV4_ 实际工作时间的能力"
+            },
+            "0.1.0": {
+                "en": "First release for Latest repository\nCorrected typo in state ID Battery_SOC\nImplemented improvements as suggested in code review",
+                "de": "Erste Veröffentlichung für Neueste Repository\nKorrigierte Typo im Zustand ID Battery_SOC\nImplementierte Verbesserungen wie in der Code-Review vorgeschlagen",
+                "ru": "Первый выпуск для последней репозитории\nИсправлена опечатка в штате ID Батарея_SOC\nВнедренные улучшения, как предлагается в обзоре кода",
+                "pt": "Primeiro lançamento para o repositório mais recente\nTipo corrigido no estado ID Battery_SOC\nMelhorias implementadas conforme sugerido na revisão de código",
+                "nl": "Eerste vrijlating voor Latest\nQuality over Quantity (QoQ) Releases Vertaling: ID Battery\nVerbeteringen zoals geadviseerd in codereview",
+                "fr": "Première version pour Dernier dépôt\nTypo corrigé en état ID Battery_SOC\nAméliorations mises en œuvre comme suggéré dans l ' examen des codes",
+                "it": "Prima release per gli ultimi repository\nTipo corretto in stato ID Battery_SOC\nMiglioramenti attuati come suggerito nella revisione del codice",
+                "es": "Primer lanzamiento para el repositorio más reciente\nTypo corregido en estado ID Battery_SOC\nMejoras aplicadas como se sugiere en el examen del código",
+                "pl": "Pierwsze wydanie repozytorium Latest\nKary w państwie Bateria IDSOC\nImplementacja poprawek, jak zasugerowano w przegląd kodowy",
+                "uk": "Перший реліз для останніх репозиторій\nВиправлено типо в стані Акумулятор ID_SOC\nРеалізовані вдосконалення, як пропонуються в перегляді коду",
+                "zh-cn": "第一批La证存放处的释放\n州的打字 ID Battery_SOC\n实施守则审查建议的改进"
+            },
+            "0.0.6-beta.5": {
+                "en": "Slow down requests in case of permanent errors",
+                "de": "Langsame Anträge bei dauerhaften Fehlern",
+                "ru": "Замедлить запросы в случае постоянных ошибок",
+                "pt": "Reduzir pedidos em caso de erros permanentes",
+                "nl": "Langzamer verzoeken in geval van permanente fouten",
+                "fr": "Ralentissez les demandes en cas d'erreurs permanentes",
+                "it": "Rallentare le richieste in caso di errori permanenti",
+                "es": "Reduzca las solicitudes en caso de errores permanentes",
+                "pl": "Zmniejszenie żądań dotyczących trwałych błędów",
+                "uk": "Повільні запити у разі постійних помилок",
+                "zh-cn": "长期错误请求下降"
+            }
+        },
+        "titleLang": {
+            "en": "Alpha ESS",
+            "de": "Alpha-ESS",
+            "ru": "Альфа ЭСС",
+            "pt": "Alfa ESS",
+            "nl": "Alfa ESS",
+            "fr": "Alpha SSE",
+            "it": "Alfa ESS",
+            "es": "Alfa ESS",
+            "pl": "Alfa ESS",
+            "zh-cn": "阿尔法 ESS",
+            "uk": "Альфа ESS"
+        },
+        "desc": {
+            "en": "Read and write data from and to Alpha ESS systems.",
+            "de": "Lesen und schreiben Sie Daten von und zu Alpha ESS-Systemen.",
+            "ru": "Чтение и запись данных из и в системы Alpha ESS.",
+            "pt": "Ler e gravar dados de e para sistemas Alpha ESS.",
+            "nl": "Gegevens lezen en schrijven van en naar Alpha ESS-systemen.",
+            "fr": "Lire et écrire des données depuis et vers les systèmes Alpha ESS.",
+            "it": "Leggere e scrivere dati da e verso sistemi Alpha ESS.",
+            "es": "Lea y escriba datos desde y hacia los sistemas Alpha ESS.",
+            "pl": "Odczytywanie i zapisywanie danych zi do systemów Alpha ESS.",
+            "zh-cn": "在 Alpha ESS 系统中读取和写入数据。",
+            "uk": "Читання та запис даних із систем Alpha ESS і до них."
+        },
+        "authors": [
+            "Gaspode <gaspode69@online.de>"
+        ],
+        "keywords": [
+            "photovoltaik"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "main": "main.js",
+        "icon": "alpha-ess.png",
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/Gaspode69/ioBroker.alpha-ess/main/admin/alpha-ess.png",
+        "readme": "https://github.com/Gaspode69/ioBroker.alpha-ess/blob/main/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "energy",
+        "compact": true,
+        "connectionType": "cloud",
+        "dataSource": "poll",
+        "adminUI": {
+            "config": "json"
+        },
+        "dependencies": [
+            {
+                "js-controller": ">=3.3.22"
+            }
+        ],
+        "globalDependencies": [
+            {
+                "admin": ">=5.1.13"
+            }
+        ]
     },
-    "titleLang": {
-      "en": "Alpha ESS",
-      "de": "Alpha-ESS",
-      "ru": "Альфа ЭСС",
-      "pt": "Alfa ESS",
-      "nl": "Alfa ESS",
-      "fr": "Alpha SSE",
-      "it": "Alfa ESS",
-      "es": "Alfa ESS",
-      "pl": "Alfa ESS",
-      "zh-cn": "阿尔法 ESS",
-      "uk": "Альфа ESS"
-    },
-    "desc": {
-      "en": "Read and write data from and to Alpha ESS systems.",
-      "de": "Lesen und schreiben Sie Daten von und zu Alpha ESS-Systemen.",
-      "ru": "Чтение и запись данных из и в системы Alpha ESS.",
-      "pt": "Ler e gravar dados de e para sistemas Alpha ESS.",
-      "nl": "Gegevens lezen en schrijven van en naar Alpha ESS-systemen.",
-      "fr": "Lire et écrire des données depuis et vers les systèmes Alpha ESS.",
-      "it": "Leggere e scrivere dati da e verso sistemi Alpha ESS.",
-      "es": "Lea y escriba datos desde y hacia los sistemas Alpha ESS.",
-      "pl": "Odczytywanie i zapisywanie danych zi do systemów Alpha ESS.",
-      "zh-cn": "在 Alpha ESS 系统中读取和写入数据。",
-      "uk": "Читання та запис даних із систем Alpha ESS і до них."
-    },
-    "authors": [
-      "Gaspode <gaspode69@online.de>"
+    "encryptedNative": [
+        "password",
+        "appSecret"
     ],
-    "keywords": [
-      "photovoltaik"
+    "protectedNative": [
+        "username",
+        "password",
+        "appID",
+        "appSecret"
     ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "main": "main.js",
-    "icon": "alpha-ess.png",
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/Gaspode69/ioBroker.alpha-ess/main/admin/alpha-ess.png",
-    "readme": "https://github.com/Gaspode69/ioBroker.alpha-ess/blob/main/README.md",
-    "loglevel": "info",
-    "mode": "daemon",
-    "type": "energy",
-    "compact": true,
-    "connectionType": "cloud",
-    "dataSource": "poll",
-    "adminUI": {
-      "config": "json"
+    "native": {
+        "username": "demo",
+        "password": "",
+        "systemId": "AL2002017100021",
+        "enableRealtimedata": true,
+        "intervalRealtimedata": 30,
+        "enableEnergydata": true,
+        "intervalEnergydataMins": 5,
+        "enableSettingsdata": false,
+        "enableSettingsCharge": false,
+        "enableSettingsDischarge": false,
+        "intervalSettingsdataMins": 5,
+        "enableStatisticalTodaydata": false,
+        "intervalStatisticalTodaydataMins": 5,
+        "enableSummarydata": false,
+        "intervalSummarydataMins": 5,
+        "updateUnchangedStates": false,
+        "appID": "",
+        "appSecret": "",
+        "apiType": 1,
+        "oAEnableRealtime": true,
+        "oAIntervalRealtime": 30,
+        "oAEnableEnergy": true,
+        "oAIntervalEnergyMins": 5,
+        "oAEnableSettings": false,
+        "oAIntervalSettingsMins": 5,
+        "oAEnableSettingsCharge": true,
+        "oAIntervalSettingsChargeMins": 5,
+        "oAEnableSettingsDischarge": true,
+        "oAIntervalSettingsDischargeMins": 5,
+        "oAEnableStatisticsToday": false,
+        "oAIntervalStatisticsTodayMins": 5,
+        "oAEnableSummary": true,
+        "oAIntervalSummaryMins": 5
     },
-    "dependencies": [
-      {
-        "js-controller": ">=3.3.22"
-      }
-    ],
-    "globalDependencies": [
-      {
-        "admin": ">=5.1.13"
-      }
+    "objects": [],
+    "instanceObjects": [
+        {
+            "_id": "info",
+            "type": "channel",
+            "common": {
+                "name": "Information"
+            },
+            "native": {}
+        },
+        {
+            "_id": "info.connection",
+            "type": "state",
+            "common": {
+                "role": "indicator.connected",
+                "name": "Device or service connected",
+                "type": "boolean",
+                "read": true,
+                "write": false,
+                "def": false
+            },
+            "native": {}
+        }
     ]
-  },
-  "encryptedNative": [
-    "password"
-  ],
-  "protectedNative": [
-    "username",
-    "password"
-  ],
-  "native": {
-    "username": "demo",
-    "password": "",
-    "systemId": "AL2002017100021",
-    "enableRealtimedata": true,
-    "intervalRealtimedata": 30,
-    "enableEnergydata": true,
-    "intervalEnergydataMins": 5,
-    "enableSettingsdata": false,
-    "intervalSettingsdataMins": 5,
-    "enableStatisticalTodaydata": false,
-    "intervalStatisticalTodaydataMins": 5,
-    "enableSummarydata": false,
-    "intervalSummarydataMins": 5,
-    "updateUnchangedStates": false
-  },
-  "objects": [],
-  "instanceObjects": [
-    {
-      "_id": "info",
-      "type": "channel",
-      "common": {
-        "name": "Information"
-      },
-      "native": {}
-    },
-    {
-      "_id": "info.connection",
-      "type": "state",
-      "common": {
-        "role": "indicator.connected",
-        "name": "Device or service connected",
-        "type": "boolean",
-        "read": true,
-        "write": false,
-        "def": false
-      },
-      "native": {}
-    }
-  ]
 }

@@ -8,5 +8,9 @@
     "Interval to read settings data": "Intervalle pour lire les données de paramètres [min]",
     "Interval to read statistical data (today)": "Intervalle pour lire les données statistiques (aujourd'hui) [min]",
     "Interval to read summary data": "Intervalle pour lire les données récapitulatives [min]",
-    "Update unchanged states": "Mettre à jour les états inchangés"
+    "Update unchanged states": "Mettre à jour les états inchangés",
+    "Personal APP ID": "ID de candidature personnel",
+    "Personal APP Secret": "Secret d'application personnel",
+    "Interval to read charging settings": "Intervalle pour lire les paramètres de charge",
+    "Interval to read discharging settings": "Intervalle pour lire les paramètres de décharge"
 }

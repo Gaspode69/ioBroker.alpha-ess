@@ -8,5 +8,9 @@
     "Interval to read settings data": "Interval to read settings data [min]",
     "Interval to read statistical data (today)": "Interval to read statistical data (today) [min]",
     "Interval to read summary data": "Interval to read summary data [min]",
-    "Update unchanged states": "Update unchanged states"
+    "Update unchanged states": "Update unchanged states",
+	"Personal APP ID": "Personal Application ID",
+	"Personal APP Secret": "Personal Application Secret",
+	"Interval to read charging settings": "Interval to read charging settings [min]",
+	"Interval to read discharging settings": "Interval to read discharging settings [min]"
 }
