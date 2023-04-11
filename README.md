@@ -41,6 +41,7 @@ It is possible to use a demo account provided by Alpha ESS. The credentials (use
 The password is stored encrypted and must therefore be entered manually: demo
 
 **Open API Settings:**
+
 To be able to use the new Open API you have to register your Alpha-ESS device unter https://open.alphaess.com. Once registered, you get a developer ID and a developer key (called "Secret"). You will need these to have access to the Open API. Currently I have no information if this will be changed in the future.
 
 -   **Personal application ID:** The application ID (see above)
@@ -57,6 +58,7 @@ To be able to use the new Open API you have to register your Alpha-ESS device un
 **All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
 
 ## Changelog
+
 ### 1.0.0-alpha.0 (2023-04-11)
 
 -   (Gaspode) Support also the new official OpenAPI provided by Alpha-ESS
