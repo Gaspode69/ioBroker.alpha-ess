@@ -59,6 +59,10 @@ To be able to use the new Open API you have to register your Alpha-ESS device un
 
 ## Changelog
 
+### **WORK IN PROGRESS**
+
+-   (Gaspode) Writing charging and discharging settings implemented (OpenAPI only)
+
 ### 1.0.0-alpha.0 (2023-04-11)
 
 -   (Gaspode) Support also the new official OpenAPI provided by Alpha-ESS

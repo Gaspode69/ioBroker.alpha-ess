@@ -17,6 +17,9 @@ const CA_AUTHSUFFIX = 'ui893ed';
 const CA_BaseURI = 'https://cloud.alphaess.com/';
 const OA_BaseURI = 'https://openapi.alphaess.com/api';
 
+const WriteTimeoutIntervalInS = 5;
+const ReadAfterWriteTimeoutIntervalInS = 2;
+
 const REQUEST_TIMEOUT = 10000;
 
 /**
@@ -143,6 +146,7 @@ class OpenAPI {
                 }]
         },
         {
+            // Just a dummy to ensure that this group is deleted
             Group: 'Settings'
             , fnct: this.getSettingsDataDummy.bind(this)
             , enabledName: 'oAEnableSettings'
@@ -160,6 +164,8 @@ class OpenAPI {
         {
             Group: 'Settings_Charge'
             , fnct: this.getChargeConfigInfo.bind(this)
+            , writeFnct: this.writeConfigInfo.bind(this)
+            , requestName: 'updateChargeConfigInfo'
             , enabledName: 'oAEnableSettingsCharge'
             , intervalName: 'oAIntervalSettingsChargeMins'
             , states: [
@@ -170,7 +176,7 @@ class OpenAPI {
                     , name: 'Battery Charging enabled'
                     , type: 'boolean'
                     , unit: ''
-                    , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'timeChaf1'
@@ -179,7 +185,7 @@ class OpenAPI {
                     , name: 'Charging period 1 start'
                     , type: 'string'
                     , unit: ''
-                    , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'timeChae1'
@@ -188,7 +194,7 @@ class OpenAPI {
                     , name: 'Charging period 1 end'
                     , type: 'string'
                     , unit: ''
-                    , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'timeChaf2'
@@ -197,7 +203,7 @@ class OpenAPI {
                     , name: 'Charging period 2 start'
                     , type: 'string'
                     , unit: ''
-                    , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'timeChae2'
@@ -206,7 +212,7 @@ class OpenAPI {
                     , name: 'Charging period 2 end'
                     , type: 'string'
                     , unit: ''
-                    , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'batHighCap'
@@ -215,12 +221,14 @@ class OpenAPI {
                     , name: 'Charging stopps at SOC'
                     , type: 'number'
                     , unit: '%'
-                    , dayIndex: false
+                    , writeable: true
                 }]
         },
         {
             Group: 'Settings_Discharge'
             , fnct: this.getDisChargeConfigInfo.bind(this)
+            , writeFnct: this.writeConfigInfo.bind(this)
+            , requestName: 'updateDisChargeConfigInfo'
             , enabledName: 'oAEnableSettingsDischarge'
             , intervalName: 'oAIntervalSettingsDischargeMins'
             , states: [
@@ -231,7 +239,7 @@ class OpenAPI {
                     , name: 'Battery Discharging enabled'
                     , type: 'boolean'
                     , unit: ''
-                    , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'timeDisf1'
@@ -240,7 +248,7 @@ class OpenAPI {
                     , name: 'Discharging period 1 start'
                     , type: 'string'
                     , unit: ''
-                    , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'timeDise1'
@@ -249,7 +257,7 @@ class OpenAPI {
                     , name: 'Discharging period 1 end'
                     , type: 'string'
                     , unit: ''
-                    , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'timeDisf2'
@@ -258,7 +266,7 @@ class OpenAPI {
                     , name: 'Discharging period 2 start'
                     , type: 'string'
                     , unit: ''
-                    , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'timeDise2'
@@ -267,7 +275,7 @@ class OpenAPI {
                     , name: 'Discharging period 2 end'
                     , type: 'string'
                     , unit: ''
-                    , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'batUseCap'
@@ -276,7 +284,7 @@ class OpenAPI {
                     , name: 'Discharging Cutoff SOC'
                     , type: 'number'
                     , unit: '%'
-                    , dayIndex: false
+                    , writeable: true
                 }]
         },
         {
@@ -454,6 +462,11 @@ class OpenAPI {
         }
     }
 
+    /**
+     * @param {string} path
+     * @param {{ sysSn: any; }} sndBody
+     * @param {{ [x: string]: string; }} headers
+     */
     async postRequest(path, sndBody, headers) {
         try {
             const url = `${OA_BaseURI}/${path}`;
@@ -474,6 +487,9 @@ class OpenAPI {
         }
     }
 
+    /**
+     * @param {string} group
+     */
     async getLastPowerData(group) {
         try {
             this.adapter.stopGroupTimeout(group);
@@ -488,14 +504,12 @@ class OpenAPI {
             else {
                 await this.handleError(res);
             }
-
-            await this.startGroupTimeout(1, group);
-
         }
         catch (e) {
             this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody);
         }
+        await this.startGroupTimeout(1, group);
     }
 
     async getOneDateEnergyBySn(group) {
@@ -514,14 +528,12 @@ class OpenAPI {
             else {
                 await this.handleError(res);
             }
-
-            await this.startGroupTimeout(60, group);
-
         }
         catch (e) {
             this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody);
         }
+        await this.startGroupTimeout(60, group);
     }
 
     async getOneDayPowerBySnDummy(group) {
@@ -546,14 +558,12 @@ class OpenAPI {
             else {
                 await this.handleError(res);
             }
-
-            await this.startGroupTimeout(60, group);
-
         }
         catch (e) {
             this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody);
         }
+        await this.startGroupTimeout(60, group);
     }
 
     async getDisChargeConfigInfo(group) {
@@ -570,14 +580,12 @@ class OpenAPI {
             else {
                 await this.handleError(res);
             }
-
-            await this.startGroupTimeout(60, group);
-
         }
         catch (e) {
             this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody);
         }
+        await this.startGroupTimeout(60, group);
     }
 
     async getSumDataForCustomer(group) {
@@ -594,14 +602,51 @@ class OpenAPI {
             else {
                 await this.handleError(res);
             }
-
-            await this.startGroupTimeout(60, group);
-
         }
         catch (e) {
             this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody);
         }
+        await this.startGroupTimeout(60, group);
+    }
+
+    /**
+     * @param {string} group
+     */
+    async writeConfigInfo(group) {
+        try {
+            this.adapter.stopGroupWriteTimeout(group);
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Writing ' + group + ' data...');
+
+            const body = {};
+            const gidx = this.adapter.getStateInfoList().findIndex(i => i.Group == group);
+            if (gidx >= 0) {
+                const states = this.adapter.getStateInfoList()[gidx].states;
+                for (let i = 0; i < states.length; i++) {
+                    this.adapter.log.debug('State ' + group + '.' + states[i].alphaAttrName + ' - ' + states[i].id);
+                    const value = (await this.adapter.getStateAsync(group + '.' + states[i].id)).val;
+                    body[states[i].alphaAttrName] = states[i].type != 'boolean' ? value : value ? 1 : 0;
+                }
+            }
+            body['sysSn'] = this.adapter.config.systemId;
+
+            this.adapter.log.debug(`Write group ${group}: ${JSON.stringify(body)}`);
+
+            const res = await this.postRequest(this.adapter.getStateInfoList()[gidx].requestName, body, {});
+            if (res && res['status'] == 200 && res.data) {
+                this.adapter.log.info('Written values fror group ' + group);
+            }
+            else {
+                await this.handleError(res);
+            }
+        }
+        catch (e) {
+            this.adapter.log.error('Writing data for group ' + group + ': Exception occurred: ' + e);
+            await this.handleError(this.emptyBody);
+        }
+        await this.adapter.startGroupTimeout(ReadAfterWriteTimeoutIntervalInS, group);
     }
 
     async startGroupTimeout(multiplyer, group) {
@@ -626,7 +671,7 @@ class OpenAPI {
     async handleError(res) {
         await this.adapter.setStateChangedAsync('info.connection', false, true);
         if (res.data && res.data.code && res.data.code != 0) {
-            this.adapter.log.error('Alpha ESS Api returns an error! Adapter won\'t try again to fetch any data.');
+            this.adapter.log.error('Alpha ESS Api returns an error!');
             switch (res.data.code) {
                 case 6001: this.adapter.log.error('Error: ' + res.data.code + ' - Parameter error'); break;
                 case 6002: this.adapter.log.error('Error: ' + res.data.code + ' - The SN is not bound to the user'); break;
@@ -643,7 +688,17 @@ class OpenAPI {
                 case 6046: this.adapter.log.error('Error: ' + res.data.code + ' - Verification code error'); break;
                 default: this.adapter.log.error('Error: ' + res.data.code + ' - Unknown error');
             }
-            this.adapter.wrongCredentials = true;
+            if (res.data.code == 6002 ||
+                res.data.code == 6003 ||
+                res.data.code == 6005 ||
+                res.data.code == 6007 ||
+                res.data.code == 6010 ||
+                res.data.code == 6011 ||
+                res.data.code == 6012 ||
+                res.data.code == 6046) {
+                this.adapter.log.error(' Adapter won\'t try again to fetch any data.');
+                this.adapter.wrongCredentials = true;
+            }
         }
         else {
             this.adapter.log.error('Unknown error occurred: ' + JSON.stringify(res.data));
@@ -1769,6 +1824,7 @@ class AlphaEss extends utils.Adapter {
             // Clear all timers
             for (const gidx of Object.keys(this.getStateInfoList())) {
                 this.stopGroupTimeout(this.getStateInfoList()[gidx].Group);
+                this.stopGroupWriteTimeout(this.getStateInfoList()[gidx].Group);
             }
 
             this.closedApi.resetAuth();
@@ -1786,11 +1842,96 @@ class AlphaEss extends utils.Adapter {
      */
     onStateChange(id, state) {
         if (state) {
-            // The state was changed
-            this.log.debug(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
-        } else {
+            if (!state.ack) {
+                const lastIdx = id.lastIndexOf('.');
+                const group = id.substring(id.lastIndexOf('.', lastIdx - 1) + 1, lastIdx);
+                const attribute = id.substring(lastIdx + 1);
+                this.log.debug(`group: ${group}, attribute: ${attribute}, state ${id} changed: ${state.val} (ack = ${state.ack})`);
+
+                const stateInfo = this.getStateInfoById(group, attribute);
+                if (stateInfo) {
+
+                    if (!stateInfo['validationInProgress']) {
+                        this.log.info('Validate');
+                        this.stopGroupTimeout(group);
+                        this.stopGroupWriteTimeout(group);
+
+                        this.verifyValue(state.val, group, stateInfo);
+
+                        this.startGroupWriteTimeout(WriteTimeoutIntervalInS, group);
+                    }
+                    else {
+                        this.log.debug(`Validation already in progress: ${id}`);
+                        stateInfo['validationInProgress'] = false;
+                    }
+                }
+                else {
+                    this.log.warn(`Internal problem: No definition for ${group}.${id} found!`);
+                }
+            }
+        }
+        else {
             // The state was deleted
             this.log.debug(`state ${id} deleted`);
+        }
+    }
+
+    /**
+     * @param {any} value
+     * @param {string} group
+     * @param {{ alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; writeable: boolean; } | { alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; round: number; factor?: undefined; } | { alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; factor: number; round: number; } | { alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; round?: undefined; factor?: undefined; }} stateInfo
+     */
+    verifyValue(value, group, stateInfo) {
+        if (stateInfo.unit == '%') {
+            let newValue = Math.round(value);
+            if (newValue > 100) {
+                newValue = 100;
+            }
+            else if (newValue < 5) {
+                newValue = 5;
+            }
+            if (value != newValue) {
+                stateInfo['validationInProgress'] = true;
+                this.setStateAsync(`${group}.${this.osn(stateInfo.id)}`, newValue, false);
+                this.log.debug(`Replaced value ${value} with ${newValue} for ${group}.${this.osn(stateInfo.id)}`);
+            }
+        } else if (stateInfo.alphaAttrName.indexOf('time') == 0) {
+            const parts = value.split(':');
+            let newValue = '00:00';
+            if (parts.length > 0) {
+                // only one part, we assume thats the hour
+                let hour = parseInt(parts[0]);
+                let minuteStr = '00';
+                if (!isNaN(hour)) {
+                    if (hour < 0) {
+                        hour = 0;
+                    }
+                    else if (hour > 23) {
+                        hour = 23;
+                    }
+                }
+                if (parts.length > 1) {
+                    // at least two partes, we use the first two parts and ignore the rest
+                    const minute = parseInt(parts[1]);
+                    if (!isNaN(minute)) {
+                        if (minute > 7 && minute <= 22) {
+                            minuteStr = '15';
+                        }
+                        else if (minute <= 37 && minute > 22) {
+                            minuteStr = '30';
+                        }
+                        else {
+                            minuteStr = '45';
+                        }
+                    }
+                }
+                newValue = ('0' + hour).slice(-2) + ':' + minuteStr;
+                if (value != newValue) {
+                    stateInfo['validationInProgress'] = true;
+                    this.setStateAsync(`${group}.${this.osn(stateInfo.id)}`, newValue, false);
+                    this.log.debug(`Replaced value ${value} with ${newValue} for ${group}.${this.osn(stateInfo.id)}`);
+                }
+            }
         }
     }
 
@@ -1831,7 +1972,33 @@ class AlphaEss extends utils.Adapter {
         }
     }
 
+    /**
+     * Stop a timer for a given group
+     *
+     * @param {string} group
+     */
+    stopGroupWriteTimeout(group) {
+        const gidx = this.getStateInfoList().findIndex(i => i.Group == group);
+        if (this.getStateInfoList()[gidx].writeTimeoutHandle) {
+            this.log.debug('Write Timeout cleared for group ' + group);
+            clearTimeout(this.getStateInfoList()[gidx].writeTimeoutHandle);
+            this.getStateInfoList()[gidx].writeTimeoutHandle = 0;
+        }
+    }
 
+    /**
+     * Start a timer for a given group
+     * @param {number} intervalInS
+     * @param {string} group
+     */
+    startGroupWriteTimeout(intervalInS, group) {
+        const gidx = this.getStateInfoList().findIndex(i => i.Group == group);
+        if (!this.getStateInfoList()[gidx].writeTimeoutHandle) {
+            const interval = intervalInS * 1000;
+            this.log.debug('Write Timeout with interval ' + interval + ' ms started for group ' + group);
+            this.getStateInfoList()[gidx].writeTimeoutHandle = setTimeout(() => { this.getStateInfoList()[gidx].writeFnct(group); }, interval);
+        }
+    }
 
     /**
      * Answer if the states shall be migrated, i.e. overwritten.
@@ -1842,6 +2009,10 @@ class AlphaEss extends utils.Adapter {
         if (oldVersionState) {
             const oldVersion = '' + oldVersionState.val;
             const vParts = oldVersion.split('.');
+            if (vParts.length >= 4) {
+                // more than 3 parts mean alpha or beta version, we migrate these everytime
+                return true;
+            }
             if (vParts.length >= 3) {
                 const major = Number.parseInt(vParts[0]);
                 const minor = Number.parseInt(vParts[1]);
@@ -1895,7 +2066,7 @@ class AlphaEss extends utils.Adapter {
 
                     // Create all states for received elements
                     for (const [alphaAttrName, rawValue] of Object.entries(data)) {
-                        const stateInfo = this.getStateInfo(group, alphaAttrName);
+                        const stateInfo = this.getStateInfoByAlphaAttrName(group, alphaAttrName);
                         if (stateInfo) {
                             await setObjectFunc(group + '.' + this.osn(stateInfo.id), {
                                 type: 'state',
@@ -1905,12 +2076,16 @@ class AlphaEss extends utils.Adapter {
                                     , role: stateInfo.role
                                     // @ts-ignore
                                     , read: true
-                                    , write: false
+                                    , write: stateInfo.writeable ? stateInfo.writeable : false
                                     , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit === '{moneyType}' ? data['moneyType'] : stateInfo.unit
                                     , desc: stateInfo.alphaAttrName
                                 },
                                 native: {},
                             });
+                            if (stateInfo.writeable) {
+                                await this.subscribeStatesAsync(`${group}.${stateInfo.id}`);
+                                this.log.debug(`Subscribed State: ${group}.${stateInfo.id}`);
+                            }
                         }
                         else {
                             this.log.debug('Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue);
@@ -1922,7 +2097,7 @@ class AlphaEss extends utils.Adapter {
 
                 // Set values for received states
                 for (const [alphaAttrName, rawValue] of Object.entries(data)) {
-                    const stateInfo = this.getStateInfo(group, alphaAttrName);
+                    const stateInfo = this.getStateInfoByAlphaAttrName(group, alphaAttrName);
                     if (stateInfo) {
                         let value = '';
                         if (stateInfo.dayIndex) {
@@ -1978,7 +2153,7 @@ class AlphaEss extends utils.Adapter {
      * @param {string} Group
      * @param {string} alphaAttrName
      */
-    getStateInfo(Group, alphaAttrName) {
+    getStateInfoByAlphaAttrName(Group, alphaAttrName) {
         try {
             const gidx = this.getStateInfoList().findIndex(i => i.Group == Group);
             if (gidx >= 0) {
@@ -1994,6 +2169,31 @@ class AlphaEss extends utils.Adapter {
             this.log.error('getStateInfo Exception occurred: ' + e);
             this.log.info('Group: ' + Group);
             this.log.info('alphaAttrName: ' + alphaAttrName);
+            return null;
+        }
+    }
+
+    /**
+     * Answer the state description object for a given group and id
+     * @param {string} Group
+     * @param {string} id
+     */
+    getStateInfoById(Group, id) {
+        try {
+            const gidx = this.getStateInfoList().findIndex(i => i.Group == Group);
+            if (gidx >= 0) {
+                const currentList = this.getStateInfoList()[gidx].states;
+                const sidx = currentList.findIndex(i => i.id == id);
+                if (sidx >= 0) {
+                    return currentList[sidx];
+                }
+            }
+            return null;
+        }
+        catch (e) {
+            this.log.error('getStateInfo Exception occurred: ' + e);
+            this.log.info('Group: ' + Group);
+            this.log.info('alphaAttrName: ' + id);
             return null;
         }
     }
