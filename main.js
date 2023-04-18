@@ -26,6 +26,9 @@ const REQUEST_TIMEOUT = 10000;
  * Functions and definitions using the Alpha-ESS official "open" API.
  */
 class OpenAPI {
+    /**
+     * @param {AlphaEss} adapter
+     */
     constructor(adapter) {
         this.stateInfoList = [{
             Group: 'Realtime'
@@ -512,6 +515,9 @@ class OpenAPI {
         await this.startGroupTimeout(1, group);
     }
 
+    /**
+     * @param {string} group
+     */
     async getOneDateEnergyBySn(group) {
         try {
             this.adapter.stopGroupTimeout(group);
@@ -536,14 +542,23 @@ class OpenAPI {
         await this.startGroupTimeout(60, group);
     }
 
+    /**
+     * @param {any} group
+     */
     async getOneDayPowerBySnDummy(group) {
         this.adapter.log.warn(`Internal error (group ${group}): function getOneDayPowerBySnDummy should never be called.`);
     }
 
+    /**
+     * @param {any} group
+     */
     async getSettingsDataDummy(group) {
         this.adapter.log.warn(`Internal error (group ${group}): function getSettingsDataDummy should never be called.`);
     }
 
+    /**
+     * @param {string} group
+     */
     async getChargeConfigInfo(group) {
         try {
             this.adapter.stopGroupTimeout(group);
@@ -566,6 +581,9 @@ class OpenAPI {
         await this.startGroupTimeout(60, group);
     }
 
+    /**
+     * @param {string} group
+     */
     async getDisChargeConfigInfo(group) {
         try {
             this.adapter.stopGroupTimeout(group);
@@ -588,6 +606,9 @@ class OpenAPI {
         await this.startGroupTimeout(60, group);
     }
 
+    /**
+     * @param {string} group
+     */
     async getSumDataForCustomer(group) {
         try {
             this.adapter.stopGroupTimeout(group);
@@ -621,13 +642,17 @@ class OpenAPI {
             this.adapter.log.debug('Writing ' + group + ' data...');
 
             const body = {};
-            const gidx = this.adapter.getStateInfoList().findIndex(i => i.Group == group);
+            const gidx = this.adapter.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
             if (gidx >= 0) {
-                const states = this.adapter.getStateInfoList()[gidx].states;
-                for (let i = 0; i < states.length; i++) {
-                    this.adapter.log.debug('State ' + group + '.' + states[i].alphaAttrName + ' - ' + states[i].id);
-                    const value = (await this.adapter.getStateAsync(group + '.' + states[i].id)).val;
-                    body[states[i].alphaAttrName] = states[i].type != 'boolean' ? value : value ? 1 : 0;
+                const groupStates = this.adapter.getStateInfoList()[gidx].states;
+                for (let i = 0; i < groupStates.length; i++) {
+                    this.adapter.log.debug('State ' + group + '.' + groupStates[i].alphaAttrName + ' - ' + groupStates[i].id);
+                    const state = await this.adapter.getStateAsync(group + '.' + groupStates[i].id);
+                    let value = null;
+                    if (state) {
+                        value = state.val;
+                    }
+                    body[groupStates[i].alphaAttrName] = groupStates[i].type != 'boolean' ? value : value ? 1 : 0;
                 }
             }
             body['sysSn'] = this.adapter.config.systemId;
@@ -646,9 +671,13 @@ class OpenAPI {
             this.adapter.log.error('Writing data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody);
         }
-        await this.adapter.startGroupTimeout(ReadAfterWriteTimeoutIntervalInS, group);
+        this.adapter.startGroupTimeout(ReadAfterWriteTimeoutIntervalInS, group);
     }
 
+    /**
+     * @param {number} multiplyer
+     * @param {string} group
+     */
     async startGroupTimeout(multiplyer, group) {
         if (!this.adapter.wrongCredentials) {
             const gidx = this.stateInfoList.findIndex(i => i.Group == group);
@@ -710,6 +739,9 @@ class OpenAPI {
  * Functions and definitions using the Alpha-ESS inofficial "closed" API.
  */
 class ClosedAPI {
+    /**
+     * @param {AlphaEss} adapter
+     */
     constructor(adapter) {
         this.stateInfoList = [{
             Group: 'Realtime'
@@ -1565,10 +1597,16 @@ class ClosedAPI {
         }
     }
 
+    /**
+     * @param {any} group
+     */
     async fetchSettingsChargeDataDummy(group) {
         this.adapter.log.warn(`Internal error (group ${group}): function fetchSettingsChargeDataDummy should never be called.`);
     }
 
+    /**
+     * @param {any} group
+     */
     async fetchSettingsDischargeDataDummy(group) {
         this.adapter.log.warn(`Internal error (group ${group}): function fetchSettingsDischargeDataDummy should never be called.`);
     }
@@ -1852,7 +1890,7 @@ class AlphaEss extends utils.Adapter {
                 if (stateInfo) {
 
                     if (!stateInfo['validationInProgress']) {
-                        this.log.info('Validate');
+                        this.log.debug(`Validate ${id}`);
                         this.stopGroupTimeout(group);
                         this.stopGroupWriteTimeout(group);
 
@@ -1914,7 +1952,10 @@ class AlphaEss extends utils.Adapter {
                     // at least two partes, we use the first two parts and ignore the rest
                     const minute = parseInt(parts[1]);
                     if (!isNaN(minute)) {
-                        if (minute > 7 && minute <= 22) {
+                        if (minute <= 7) {
+                            minuteStr = '00';
+                        }
+                        else if (minute > 7 && minute <= 22) {
                             minuteStr = '15';
                         }
                         else if (minute <= 37 && minute > 22) {
@@ -1950,7 +1991,7 @@ class AlphaEss extends utils.Adapter {
      * @param {string} group
      */
     stopGroupTimeout(group) {
-        const gidx = this.getStateInfoList().findIndex(i => i.Group == group);
+        const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
         if (this.getStateInfoList()[gidx].timeoutHandle) {
             this.log.debug('Timeout cleared for group ' + group);
             clearTimeout(this.getStateInfoList()[gidx].timeoutHandle);
@@ -1964,7 +2005,7 @@ class AlphaEss extends utils.Adapter {
      * @param {string} group
      */
     startGroupTimeout(intervalInS, group) {
-        const gidx = this.getStateInfoList().findIndex(i => i.Group == group);
+        const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
         if (!this.getStateInfoList()[gidx].timeoutHandle) {
             const interval = this.calculateIntervalInMs(intervalInS, group);
             this.log.debug('Timeout with interval ' + interval + ' ms started for group ' + group);
@@ -1978,7 +2019,7 @@ class AlphaEss extends utils.Adapter {
      * @param {string} group
      */
     stopGroupWriteTimeout(group) {
-        const gidx = this.getStateInfoList().findIndex(i => i.Group == group);
+        const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
         if (this.getStateInfoList()[gidx].writeTimeoutHandle) {
             this.log.debug('Write Timeout cleared for group ' + group);
             clearTimeout(this.getStateInfoList()[gidx].writeTimeoutHandle);
@@ -1992,7 +2033,7 @@ class AlphaEss extends utils.Adapter {
      * @param {string} group
      */
     startGroupWriteTimeout(intervalInS, group) {
-        const gidx = this.getStateInfoList().findIndex(i => i.Group == group);
+        const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
         if (!this.getStateInfoList()[gidx].writeTimeoutHandle) {
             const interval = intervalInS * 1000;
             this.log.debug('Write Timeout with interval ' + interval + ' ms started for group ' + group);
@@ -2037,14 +2078,14 @@ class AlphaEss extends utils.Adapter {
                 if (!this.createdStates[group]) {
 
                     // Delete no longer supported states for this group
-                    const gidx = this.getStateInfoList().findIndex(i => i.Group == group);
+                    const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
                     if (gidx >= 0) {
                         const groupStateList = this.getStateInfoList()[gidx].states;
                         const states = await this.getStatesAsync(group + '.*');
                         for (const sid in states) {
                             const parts = sid.split('.');
                             const id = parts[parts.length - 1];
-                            if (groupStateList.findIndex(i => i.id == id) == -1) {
+                            if (groupStateList.findIndex((/** @type {{ id: string; }} */ i) => i.id == id) == -1) {
                                 this.log.info('State ' + group + '.' + id + ' removed, no longer supported.');
                                 await this.delObjectAsync(group + '.' + id);
                             }
@@ -2155,10 +2196,10 @@ class AlphaEss extends utils.Adapter {
      */
     getStateInfoByAlphaAttrName(Group, alphaAttrName) {
         try {
-            const gidx = this.getStateInfoList().findIndex(i => i.Group == Group);
+            const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == Group);
             if (gidx >= 0) {
                 const currentList = this.getStateInfoList()[gidx].states;
-                const sidx = currentList.findIndex(i => i.alphaAttrName == alphaAttrName);
+                const sidx = currentList.findIndex((/** @type {{ alphaAttrName: string; }} */ i) => i.alphaAttrName == alphaAttrName);
                 if (sidx >= 0) {
                     return currentList[sidx];
                 }
@@ -2180,10 +2221,10 @@ class AlphaEss extends utils.Adapter {
      */
     getStateInfoById(Group, id) {
         try {
-            const gidx = this.getStateInfoList().findIndex(i => i.Group == Group);
+            const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == Group);
             if (gidx >= 0) {
                 const currentList = this.getStateInfoList()[gidx].states;
-                const sidx = currentList.findIndex(i => i.id == id);
+                const sidx = currentList.findIndex((/** @type {{ id: string; }} */ i) => i.id == id);
                 if (sidx >= 0) {
                     return currentList[sidx];
                 }
