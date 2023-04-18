@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "alpha-ess",
-        "version": "1.0.0-alpha.1",
+        "version": "1.0.0-alpha.2",
         "news": {
+            "1.0.0-alpha.2": {
+                "en": "Fixed state verification for time values (OpenAPI only)",
+                "de": "Verifizierung von Zeitwerten korrigiert (nur OpenAPI)",
+                "ru": "Исправлена проверка состояния на временные значения (только OpenAPI)",
+                "pt": "Verificação de estado fixo para valores de tempo (apenas OpenAPI)",
+                "nl": "Verificatie van de staat voor tijdwaarden (OpenAPI)",
+                "fr": "Vérification de l'état fixe pour les valeurs temporelles (OpenAPI seulement)",
+                "it": "Verifica fissa dello stato per i valori temporali (solo OpenAPI)",
+                "es": "Verificación estatal fija para valores de tiempo (sólo OpenAPI)",
+                "pl": "Weryfikacja stanu na wartości czasowe (OpenAPI tylko)",
+                "uk": "Виправлена перевірка стану для значень часу (тільки OpenAPI)",
+                "zh-cn": "固定国家对时间价值的核查(只有OpenAPI)"
+            },
             "1.0.0-alpha.1": {
                 "en": "Writing charging and discharging settings implemented (OpenAPI only)",
                 "de": "Schreiben von Lade- und Entladeeinstellungen implementiert (nur OpenAPI)",
@@ -80,19 +93,6 @@
                 "pl": "Czytamy dane statystyczne",
                 "uk": "Читати вибрані статистичні дані",
                 "zh-cn": "阅读选定的统计数据"
-            },
-            "0.2.0": {
-                "en": "Added states EV1_power, EV2_power, EV3_power and EV4_power to Realtime folder",
-                "de": "EV1_power, EV2_power, EV3_power und EV4_power in Echtzeit-Ordner",
-                "ru": "Добавлены состояния EV1_power, EV2_power, EV3_power и EV4_power в папку Realtime",
-                "pt": "Estados adicionados EV1_power, EV2_power, EV3_power e EV4_power para pasta em tempo real",
-                "nl": "Vertaling:",
-                "fr": "Ajout des états EV1_power, EV2_power, EV3_power et EV4_power dans le dossier Realtime",
-                "it": "Aggiunti stati EV1_power, EV2_power, EV3_power e EV4_power nella cartella in tempo reale",
-                "es": "Estados adicionales EV1_power, EV2_power, EV3_power y EV4_power a carpeta en tiempo real",
-                "pl": "EV1_power, EV2_power, EV3_power i EV4_power do Realtime folder",
-                "uk": "Додано стани EV1_power, EV2_power, EV3_power і EV4_power до папки реального часу",
-                "zh-cn": "增加国家EV1:能力,EV2_ 能力, EV3_ 权力和EV4_ 实际工作时间的能力"
             }
         },
         "titleLang": {
