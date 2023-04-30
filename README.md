@@ -58,7 +58,7 @@ To be able to use the new Open API you have to register your Alpha-ESS device un
 **All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
 
 ## Changelog
-### **WORK IN PROGRESS**
+### 1.0.0-alpha.3 (2023-04-30)
 
 -   (Gaspode) Slow down requests in case of permanent errors for OpenAPI
 

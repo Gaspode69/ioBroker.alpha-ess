@@ -1,8 +1,21 @@
 {
     "common": {
         "name": "alpha-ess",
-        "version": "1.0.0-alpha.2",
+        "version": "1.0.0-alpha.3",
         "news": {
+            "1.0.0-alpha.3": {
+                "en": "Slow down requests in case of permanent errors for OpenAPI",
+                "de": "Verlnagsamen von Online-Abfragen bei permanent auftretenden Fehlern (OpenAPI)",
+                "ru": "Замедлить запросы в случае постоянных ошибок для OpenAPI",
+                "pt": "Abranda os pedidos em caso de erros permanentes para o OpenAPI",
+                "nl": "Vertragen verzoeken in geval van permanente fouten voor OpenAPI",
+                "fr": "Ralentissez les requêtes en cas d'erreurs permanentes pour OpenAPI",
+                "it": "Rallentare le richieste in caso di errori permanenti per OpenAPI",
+                "es": "Reduzca las solicitudes en caso de errores permanentes para OpenAPI",
+                "pl": "Slow down requests as permanent error for OpenAPI",
+                "uk": "Повільні запити у разі постійних помилок для OpenAPI",
+                "zh-cn": "对开放式企业投机的长期错误请求下降"
+            },
             "1.0.0-alpha.2": {
                 "en": "Fixed state verification for time values (OpenAPI only)",
                 "de": "Verifizierung von Zeitwerten korrigiert (nur OpenAPI)",
@@ -80,19 +93,6 @@
                 "pl": "Powtórne dane statystyczne i dodały więcej wartości. Wiele dzięki Thorsten(https:/github.com/ThorstenBoettler) za swój cenny wkład w testowanie wczesnych wersji alfa tego wydania oraz zapewnianie sugestii i rekomendacji dla nowych punktów danych.\nAdded Summary data\nRefaktor kompletny\nZmienił jednostkę ustawień dla wszystkich odstępów, z wyjątkiem danych czasu rzeczywistego, do minut (wspomnienia: ustawienia są resetowane domyślnie)\nRemove stany niepełnosprawne na początku reaktywacji\nPrzewiduje się, że nie będzie więcej wspieranych wartości tworzenia czasu (stanowego ID Realtime).\nOptymizowana runda dla wybranych wartości",
                 "uk": "Зменшення статистичних даних та додано більше значень. Дуже дякую [Torsten](https://github.com/ThorstenBoettler) за його цінний внесок у тестування ранніх альфа-версій цього релізу та надання інформативних пропозицій та рекомендацій для нових точок даних.\nДодаткові дані\nРефакторна повна реалізація\nЗмінено блок налаштувань для всіх інтервалів, крім даних в режимі реального часу, до хвилин (Налаштування: налаштування скидаються на за замовчуванням)\nВидалити відключені стани при запуску адаптера\nВилучено не більше підтримуваних значень (державний ID Realtime.Last_update).\nОптимізований округлення для вибраних значень",
                 "zh-cn": "调整统计数据和增加更多的价值。 许多人由于[保加利亚](https://github.com/Thorsten Boettler)在试验该释放的早期版本方面作出了宝贵贡献,并为新的数据点提出信息建议和建议。.\n增加总数据\n令人满意的全面实施\n除实时数据外,整整整整整整整整整整整整整整整整整整整整整整整套环境,每次都用天数计算(aution:环境重新出现违约)。\nB. 残疾人的开端\n取消无更多支持的价值创造时间(国际清算日。.\nB. 对某些价值的预测"
-            },
-            "0.2.1-beta.0": {
-                "en": "Read selected statistical data",
-                "de": "Ausgewählte statistische Daten",
-                "ru": "Прочитать выбранные статистические данные",
-                "pt": "Leia dados estatísticos selecionados",
-                "nl": "Vertaling:",
-                "fr": "Lire les données statistiques sélectionnées",
-                "it": "Dati statistici selezionati",
-                "es": "Lea los datos estadísticos seleccionados",
-                "pl": "Czytamy dane statystyczne",
-                "uk": "Читати вибрані статистичні дані",
-                "zh-cn": "阅读选定的统计数据"
             }
         },
         "titleLang": {
@@ -121,12 +121,8 @@
             "zh-cn": "在 Alpha ESS 系统中读取和写入数据。",
             "uk": "Читання та запис даних із систем Alpha ESS і до них."
         },
-        "authors": [
-            "Gaspode <gaspode69@online.de>"
-        ],
-        "keywords": [
-            "photovoltaik"
-        ],
+        "authors": ["Gaspode <gaspode69@online.de>"],
+        "keywords": ["photovoltaik"],
         "license": "MIT",
         "platform": "Javascript/Node.js",
         "main": "main.js",
@@ -154,16 +150,8 @@
             }
         ]
     },
-    "encryptedNative": [
-        "password",
-        "appSecret"
-    ],
-    "protectedNative": [
-        "username",
-        "password",
-        "appID",
-        "appSecret"
-    ],
+    "encryptedNative": ["password", "appSecret"],
+    "protectedNative": ["username", "password", "appID", "appSecret"],
     "native": {
         "username": "demo",
         "password": "",
