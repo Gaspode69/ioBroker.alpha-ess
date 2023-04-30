@@ -502,7 +502,6 @@ class OpenAPI {
             const res = await this.getRequest(`getLastPowerData?sysSn=${this.adapter.config.systemId}`, {});
             if (res && res['status'] == 200 && res.data && res.data.data) {
                 await this.adapter.createAndUpdateStates(group, res.data.data);
-                await this.adapter.setStateChangedAsync('info.connection', true, true);
             }
             else {
                 await this.handleError(res);
@@ -529,7 +528,6 @@ class OpenAPI {
             const res = await this.getRequest(`getOneDateEnergyBySn?sysSn=${this.adapter.config.systemId}&queryDate=${dts}`, {});
             if (res && res['status'] == 200 && res.data && res.data.data) {
                 await this.adapter.createAndUpdateStates(group, res.data.data);
-                await this.adapter.setStateChangedAsync('info.connection', true, true);
             }
             else {
                 await this.handleError(res);
@@ -568,7 +566,6 @@ class OpenAPI {
             const res = await this.getRequest(`getChargeConfigInfo?sysSn=${this.adapter.config.systemId}`, {});
             if (res && res['status'] == 200 && res.data && res.data.data) {
                 await this.adapter.createAndUpdateStates(group, res.data.data);
-                await this.adapter.setStateChangedAsync('info.connection', true, true);
             }
             else {
                 await this.handleError(res);
@@ -593,7 +590,6 @@ class OpenAPI {
             const res = await this.getRequest(`getDisChargeConfigInfo?sysSn=${this.adapter.config.systemId}`, {});
             if (res && res['status'] == 200 && res.data && res.data.data) {
                 await this.adapter.createAndUpdateStates(group, res.data.data);
-                await this.adapter.setStateChangedAsync('info.connection', true, true);
             }
             else {
                 await this.handleError(res);
@@ -618,7 +614,6 @@ class OpenAPI {
             const res = await this.getRequest(`getSumDataForCustomer?sysSn=${this.adapter.config.systemId}`, {});
             if (res && res['status'] == 200 && res.data && res.data.data) {
                 await this.adapter.createAndUpdateStates(group, res.data.data);
-                await this.adapter.setStateChangedAsync('info.connection', true, true);
             }
             else {
                 await this.handleError(res);
@@ -682,7 +677,8 @@ class OpenAPI {
         if (!this.adapter.wrongCredentials) {
             const gidx = this.stateInfoList.findIndex(i => i.Group == group);
             if (gidx >= 0 && this.adapter.config[this.stateInfoList[gidx].intervalName] > 0) {
-                this.adapter.startGroupTimeout(multiplyer * this.adapter.config[this.stateInfoList[gidx].intervalName], group);
+                const intervalInS = multiplyer * this.adapter.config[this.stateInfoList[gidx].intervalName];
+                this.adapter.startGroupTimeout(intervalInS, group);
             }
             else {
                 this.adapter.log.error('Internal Error for group ' + group + ': No timeout configuration found!');
@@ -699,23 +695,24 @@ class OpenAPI {
      */
     async handleError(res) {
         await this.adapter.setStateChangedAsync('info.connection', false, true);
+        this.adapter.errorCount++;
         if (res.data && res.data.code && res.data.code != 0) {
             this.adapter.log.error('Alpha ESS Api returns an error!');
             switch (res.data.code) {
-                case 6001: this.adapter.log.error('Error: ' + res.data.code + ' - Parameter error'); break;
-                case 6002: this.adapter.log.error('Error: ' + res.data.code + ' - The SN is not bound to the user'); break;
-                case 6003: this.adapter.log.error('Error: ' + res.data.code + ' - You have bound this SN'); break;
-                case 6004: this.adapter.log.error('Error: ' + res.data.code + ' - CheckCode error'); break;
-                case 6005: this.adapter.log.error('Error: ' + res.data.code + ' - This appId is not bound to the SN'); break;
-                case 6006: this.adapter.log.error('Error: ' + res.data.code + ' - Timestamp error'); break;
-                case 6007: this.adapter.log.error('Error: ' + res.data.code + ' - Sign verification error'); break;
-                case 6008: this.adapter.log.error('Error: ' + res.data.code + ' - Set failed'); break;
-                case 6009: this.adapter.log.error('Error: ' + res.data.code + ' - Whitelist verification failed'); break;
-                case 6010: this.adapter.log.error('Error: ' + res.data.code + ' - Sign is empty'); break;
-                case 6011: this.adapter.log.error('Error: ' + res.data.code + ' - timestamp is empty'); break;
-                case 6012: this.adapter.log.error('Error: ' + res.data.code + ' - AppId is empty'); break;
-                case 6046: this.adapter.log.error('Error: ' + res.data.code + ' - Verification code error'); break;
-                default: this.adapter.log.error('Error: ' + res.data.code + ' - Unknown error');
+                case 6001: this.adapter.log.error(`Error: ${res.data.code} - Parameter error (#${this.adapter.errorCount})`); break;
+                case 6002: this.adapter.log.error(`Error: ${res.data.code} - The SN is not bound to the user (#${this.adapter.errorCount})`); break;
+                case 6003: this.adapter.log.error(`Error: ${res.data.code} - You have bound this SN (#${this.adapter.errorCount})`); break;
+                case 6004: this.adapter.log.error(`Error: ${res.data.code} - CheckCode error (#${this.adapter.errorCount})`); break;
+                case 6005: this.adapter.log.error(`Error: ${res.data.code} - This appId is not bound to the SN (#${this.adapter.errorCount})`); break;
+                case 6006: this.adapter.log.error(`Error: ${res.data.code} - Timestamp error (#${this.adapter.errorCount})`); break;
+                case 6007: this.adapter.log.error(`Error: ${res.data.code} - Sign verification error (#${this.adapter.errorCount})`); break;
+                case 6008: this.adapter.log.error(`Error: ${res.data.code} - Set failed (#${this.adapter.errorCount})`); break;
+                case 6009: this.adapter.log.error(`Error: ${res.data.code} - Whitelist verification failed (#${this.adapter.errorCount})`); break;
+                case 6010: this.adapter.log.error(`Error: ${res.data.code} - Sign is empty (#${this.adapter.errorCount})`); break;
+                case 6011: this.adapter.log.error(`Error: ${res.data.code} - timestamp is empty (#${this.adapter.errorCount})`); break;
+                case 6012: this.adapter.log.error(`Error: ${res.data.code} - AppId is empty (#${this.adapter.errorCount})`); break;
+                case 6046: this.adapter.log.error(`Error: ${res.data.code} - Verification code error (#${this.adapter.errorCount})`); break;
+                default: this.adapter.log.error(`Error: ${res.data.code} - Unknown error`);
             }
             if (res.data.code == 6002 ||
                 res.data.code == 6003 ||
@@ -730,7 +727,7 @@ class OpenAPI {
             }
         }
         else {
-            this.adapter.log.error('Unknown error occurred: ' + JSON.stringify(res.data));
+            this.adapter.log.error(`Unknown error occurred: ${JSON.stringify(res.data)} (#${this.adapter.errorCount})`);
         }
     }
 }
@@ -2073,6 +2070,9 @@ class AlphaEss extends utils.Adapter {
     async createAndUpdateStates(group, data) {
         try {
             if (data) {
+                await this.setStateChangedAsync('info.connection', true, true);
+                this.errorCount = 0;
+
                 const idx = new Date().getDate() - 1;
 
                 if (!this.createdStates[group]) {
