@@ -902,6 +902,7 @@ class ClosedAPI {
         {
             Group: 'Settings'
             , fnct: this.fetchSettingsData.bind(this)
+            , writeFnct: this.writeSettingsData.bind(this)
             , enabledName: 'enableSettingsdata'
             , states: [
                 {
@@ -912,6 +913,7 @@ class ClosedAPI {
                     , type: 'boolean'
                     , unit: ''
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'time_disf1a'
@@ -921,6 +923,7 @@ class ClosedAPI {
                     , type: 'string'
                     , unit: ''
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'time_dise1a'
@@ -930,6 +933,7 @@ class ClosedAPI {
                     , type: 'string'
                     , unit: ''
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'time_disf2a'
@@ -939,6 +943,7 @@ class ClosedAPI {
                     , type: 'string'
                     , unit: ''
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'time_dise2a'
@@ -948,6 +953,7 @@ class ClosedAPI {
                     , type: 'string'
                     , unit: ''
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'bat_use_cap'
@@ -957,6 +963,7 @@ class ClosedAPI {
                     , type: 'number'
                     , unit: '%'
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'grid_charge'
@@ -966,6 +973,7 @@ class ClosedAPI {
                     , type: 'boolean'
                     , unit: ''
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'time_chaf1a'
@@ -975,6 +983,7 @@ class ClosedAPI {
                     , type: 'string'
                     , unit: ''
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'time_chae1a'
@@ -984,6 +993,7 @@ class ClosedAPI {
                     , type: 'string'
                     , unit: ''
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'time_chaf2a'
@@ -993,6 +1003,7 @@ class ClosedAPI {
                     , type: 'string'
                     , unit: ''
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'time_chae2a'
@@ -1002,6 +1013,7 @@ class ClosedAPI {
                     , type: 'string'
                     , unit: ''
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'bat_high_cap'
@@ -1011,6 +1023,7 @@ class ClosedAPI {
                     , type: 'number'
                     , unit: '%'
                     , dayIndex: false
+                    , writeable: true
                 }
                 , {
                     alphaAttrName: 'upsReserve'
@@ -1020,6 +1033,7 @@ class ClosedAPI {
                     , type: 'boolean'
                     , unit: ''
                     , dayIndex: false
+                    , writeable: true
                 }]
         },
         {
@@ -1033,7 +1047,7 @@ class ClosedAPI {
             // Just a dummy to ensure that this group is deleted
             Group: 'Settings_Discharge'
             , fnct: this.fetchSettingsDischargeDataDummy.bind(this)
-            , enabledName: 'enableSettingsDischarge'
+            , enabledName: 'enableSettingsDisCharge'
             , states: []
         },
         {
@@ -1349,6 +1363,7 @@ class ClosedAPI {
             Expires: 0,
             RefreshToken: ''
         };
+        this.system_id = '';
         this.adapter = adapter;
     }
 
@@ -1532,6 +1547,7 @@ class ClosedAPI {
             return emptyBody;
         }
     }
+
 
     /**
      * Reset authentication data to defaults. Login must be performed afterwards.
@@ -1727,6 +1743,77 @@ class ClosedAPI {
             this.adapter.log.error('fetchSummaryData Exception occurred: ' + e);
         }
     }
+
+    /**
+     * @param {string} group
+     */
+    async writeSettingsData(group) {
+        try {
+            this.adapter.stopGroupWriteTimeout(group);
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.info('Writing ' + group + ' data...');
+
+            // We need the system id here
+            if (this.system_id.length == 0) {
+                const custListBody = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSList?noLoading=true');
+                if (custListBody && custListBody.data) {
+                    for (let i = 0; i < custListBody.data.length; i++) {
+                        if (custListBody.data[i].sys_sn === this.adapter.config.systemId) {
+                            this.system_id = custListBody.data[i].system_id;
+                            this.adapter.log.debug(`Found system_id ${this.system_id}`);
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (this.system_id.length > 0) {
+                // First we read the whole data set and update our values:
+                const body = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.adapter.config.systemId + '&noLoading=true');
+                if (body && body.data) {
+                    const data = body.data;
+                    const gidx = this.adapter.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
+                    if (gidx >= 0) {
+                        const groupStates = this.adapter.getStateInfoList()[gidx].states;
+                        for (let i = 0; i < groupStates.length; i++) {
+                            if (groupStates[i].writeable) {
+                                this.adapter.log.debug('State ' + group + '.' + groupStates[i].alphaAttrName + ' - ' + groupStates[i].id);
+                                const state = await this.adapter.getStateAsync(group + '.' + groupStates[i].id);
+                                let value = null;
+                                if (state) {
+                                    value = state.val;
+                                }
+                                data[groupStates[i].alphaAttrName] = groupStates[i].type != 'boolean' ? value : value ? 1 : 0;
+                            }
+                        }
+                    }
+                    data['system_id'] = this.system_id;
+
+                    this.adapter.log.debug(`Write group ${group}: ${JSON.stringify(data)}`);
+
+                    const res = await this.postData(CA_BaseURI + 'api/Account/CustomUseESSSetting', JSON.stringify(data));
+                    if (res && res['code'] == 200) {
+                        this.adapter.log.debug('Written values fror group ' + group);
+                    }
+                    else {
+                        this.adapter.log.error('Error writing settings data for group ' + group + 'Status: ' + res['status']);
+                    }
+                }
+                else {
+                    this.adapter.log.error('Error writing settings data for group ' + group + ' (unable to get data)');
+                }
+            }
+            else {
+                this.adapter.log.error('Error writing settings data for group ' + group + ' (unable to find system id for sys_sn ' + this.adapter.config.systemId + ')');
+            }
+        }
+        catch (e) {
+            this.adapter.log.error('Writing settings data for group ' + group + ': Exception occurred: ' + e);
+        }
+        this.adapter.startGroupTimeout(ReadAfterWriteTimeoutIntervalInS, group);
+    }
+
 }
 
 class AlphaEss extends utils.Adapter {
@@ -2034,7 +2121,10 @@ class AlphaEss extends utils.Adapter {
         if (!this.getStateInfoList()[gidx].writeTimeoutHandle) {
             const interval = intervalInS * 1000;
             this.log.debug('Write Timeout with interval ' + interval + ' ms started for group ' + group);
-            this.getStateInfoList()[gidx].writeTimeoutHandle = setTimeout(() => { this.getStateInfoList()[gidx].writeFnct(group); }, interval);
+            const wf = this.getStateInfoList()[gidx].writeFnct;
+            if (wf) {
+                this.getStateInfoList()[gidx].writeTimeoutHandle = setTimeout(() => { wf(group); }, interval);
+            }
         }
     }
 
