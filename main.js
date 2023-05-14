@@ -611,7 +611,9 @@ class OpenAPI {
 
             this.adapter.log.debug('Fetching ' + group + ' data...');
 
-            const res = await this.getRequest(`getSumDataForCustomer?sysSn=${this.adapter.config.systemId}`, {});
+            const dt = new Date();
+            const dts = (dt.getFullYear() + '-' + ('0' + (dt.getMonth() + 1)).slice(-2) + '-' + ('0' + dt.getDate()).slice(-2));
+            const res = await this.getRequest(`getSumDataForCustomer?sysSn=${this.adapter.config.systemId}&queryDate=${dts}`, {});
             if (res && res['status'] == 200 && res.data && res.data.data) {
                 await this.adapter.createAndUpdateStates(group, res.data.data);
             }
@@ -676,8 +678,8 @@ class OpenAPI {
     async startGroupTimeout(multiplyer, group) {
         if (!this.adapter.wrongCredentials) {
             const gidx = this.stateInfoList.findIndex(i => i.Group == group);
-            if (gidx >= 0 && this.adapter.config[this.stateInfoList[gidx].intervalName] > 0) {
-                const intervalInS = multiplyer * this.adapter.config[this.stateInfoList[gidx].intervalName];
+            if (gidx >= 0 && this.stateInfoList[gidx].interval > 0) {
+                const intervalInS = multiplyer * this.stateInfoList[gidx].interval;
                 this.adapter.startGroupTimeout(intervalInS, group);
             }
             else {
@@ -711,8 +713,10 @@ class OpenAPI {
                 case 6010: this.adapter.log.error(`Error: ${res.data.code} - Sign is empty (#${this.adapter.errorCount})`); break;
                 case 6011: this.adapter.log.error(`Error: ${res.data.code} - timestamp is empty (#${this.adapter.errorCount})`); break;
                 case 6012: this.adapter.log.error(`Error: ${res.data.code} - AppId is empty (#${this.adapter.errorCount})`); break;
+                case 6026: this.adapter.log.error(`Error: ${res.data.code} - Internal Error (#${this.adapter.errorCount})`); break;
                 case 6046: this.adapter.log.error(`Error: ${res.data.code} - Verification code error (#${this.adapter.errorCount})`); break;
-                default: this.adapter.log.error(`Error: ${res.data.code} - Unknown error`);
+                case 6053: this.adapter.log.error(`Error: ${res.data.code} - The request was too fast, please try again later (#${this.adapter.errorCount})`); break;
+                default: this.adapter.log.error(`Error: ${res.data.code} - Unknown error (#${this.adapter.errorCount})`);
             }
             if (res.data.code == 6002 ||
                 res.data.code == 6003 ||
@@ -744,6 +748,7 @@ class ClosedAPI {
             Group: 'Realtime'
             , fnct: this.fetchRealtimeData.bind(this)
             , enabledName: 'enableRealtimedata'
+            , intervalName: 'intervalRealtimedata'
             , states: [
                 {
                     alphaAttrName: 'pbat'
@@ -904,6 +909,7 @@ class ClosedAPI {
             , fnct: this.fetchSettingsData.bind(this)
             , writeFnct: this.writeSettingsData.bind(this)
             , enabledName: 'enableSettingsdata'
+            , intervalName: 'intervalSettingsdataMins'
             , states: [
                 {
                     alphaAttrName: 'ctr_dis'
@@ -1041,6 +1047,7 @@ class ClosedAPI {
             Group: 'Settings_Charge'
             , fnct: this.fetchSettingsChargeDataDummy.bind(this)
             , enabledName: 'enableSettingsCharge'
+            , intervalName: 'intervalSettingsChargeMins'
             , states: []
         },
         {
@@ -1048,12 +1055,14 @@ class ClosedAPI {
             Group: 'Settings_Discharge'
             , fnct: this.fetchSettingsDischargeDataDummy.bind(this)
             , enabledName: 'enableSettingsDisCharge'
+            , intervalName: 'intervalSettingsDisChargeMins'
             , states: []
         },
         {
             Group: 'Energy'
             , fnct: this.fetchEnergyData.bind(this)
             , enabledName: 'enableEnergydata'
+            , intervalName: 'intervalEnergydataMins'
             , states: [
                 {
                     alphaAttrName: 'Eloads'
@@ -1114,6 +1123,7 @@ class ClosedAPI {
             Group: 'StatisticsToday'
             , fnct: this.fetchStatisticalTodayData.bind(this)
             , enabledName: 'enableStatisticalTodaydata'
+            , intervalName: 'intervalStatisticalTodaydataMins'
             , states: [
                 {
                     alphaAttrName: 'EpvT'
@@ -1261,6 +1271,7 @@ class ClosedAPI {
             Group: 'Summary'
             , fnct: this.fetchSummaryData.bind(this)
             , enabledName: 'enableSummarydata'
+            , intervalName: 'intervalSummarydataMins'
             , states: [
                 {
                     alphaAttrName: 'Epvtoday'
@@ -1637,7 +1648,7 @@ class ClosedAPI {
             const body = await this.getData(CA_BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.adapter.config.systemId + '&noLoading=true');
             await this.adapter.createAndUpdateStates(group, body.data);
 
-            this.adapter.startGroupTimeout(this.adapter.config.intervalRealtimedata, group);
+            this.startGroupTimeout(1, group);
         }
         catch (e) {
             this.adapter.log.error('fetchRealtimeData Exception occurred: ' + e);
@@ -1666,7 +1677,7 @@ class ClosedAPI {
             const body = await this.postData(CA_BaseURI + 'api/Statistic/SystemStatistic', JSON.stringify(json));
             await this.adapter.createAndUpdateStates(group, body.data);
 
-            this.adapter.startGroupTimeout(this.adapter.config.intervalEnergydataMins * 60, group);
+            this.startGroupTimeout(60, group);
         }
         catch (e) {
             this.adapter.log.error('fetchEnergyData Exception occurred: ' + e);
@@ -1686,7 +1697,7 @@ class ClosedAPI {
             const body = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.adapter.config.systemId + '&noLoading=true');
             await this.adapter.createAndUpdateStates(group, body.data);
 
-            this.adapter.startGroupTimeout(this.adapter.config.intervalSettingsdataMins * 60, group);
+            this.startGroupTimeout(60, group);
         }
         catch (e) {
             this.adapter.log.error('fetchSettingsData Exception occurred: ' + e);
@@ -1711,7 +1722,7 @@ class ClosedAPI {
 
             await this.adapter.createAndUpdateStates(group, body.data);
 
-            this.adapter.startGroupTimeout(this.adapter.config.intervalStatisticalTodaydataMins * 60, group);
+            this.startGroupTimeout(60, group);
         }
         catch (e) {
             this.adapter.log.error('fetchStatisticalTodayData Exception occurred: ' + e);
@@ -1737,7 +1748,7 @@ class ClosedAPI {
             await this.adapter.createAndUpdateStates(group, body.data);
 
             // Configuration is in minutes, so multiply with 60
-            this.adapter.startGroupTimeout(this.adapter.config.intervalSummarydataMins * 60, group);
+            this.startGroupTimeout(60, group);
         }
         catch (e) {
             this.adapter.log.error('fetchSummaryData Exception occurred: ' + e);
@@ -1814,6 +1825,26 @@ class ClosedAPI {
         this.adapter.startGroupTimeout(ReadAfterWriteTimeoutIntervalInS, group);
     }
 
+    /**
+     * @param {number} multiplyer
+     * @param {string} group
+     */
+    async startGroupTimeout(multiplyer, group) {
+        if (!this.adapter.wrongCredentials) {
+            const gidx = this.stateInfoList.findIndex(i => i.Group == group);
+            if (gidx >= 0 && this.stateInfoList[gidx].interval > 0) {
+                const intervalInS = multiplyer * this.stateInfoList[gidx].interval;
+                this.adapter.startGroupTimeout(intervalInS, group);
+            }
+            else {
+                this.adapter.log.error('Internal Error for group ' + group + ': No timeout configuration found!');
+                await this.handleError();
+            }
+        }
+        else {
+            this.adapter.log.debug('Group ' + group + ': No new timer started, wrong credentials!');
+        }
+    }
 }
 
 class AlphaEss extends utils.Adapter {
@@ -1827,6 +1858,8 @@ class AlphaEss extends utils.Adapter {
             ...options,
             name: 'alpha-ess',
         });
+
+        this.jsonConfig = require('./admin/jsonConfig.json');
 
         this.openApi = new OpenAPI(this);
         this.closedApi = new ClosedAPI(this);
@@ -1912,6 +1945,20 @@ class AlphaEss extends utils.Adapter {
 
                 for (const gidx of Object.keys(this.getStateInfoList())) {
                     const groupInfo = this.getStateInfoList()[gidx];
+
+                    groupInfo.interval = this.config[groupInfo.intervalName];
+                    this.log.debug(`${groupInfo.intervalName}: ${groupInfo.interval}`);
+
+                    if (this.jsonConfig.items[groupInfo.intervalName] && this.jsonConfig.items[groupInfo.intervalName].min) {
+                        if (groupInfo.interval < this.jsonConfig.items[groupInfo.intervalName].min) {
+                            const oldVal = groupInfo.interval;
+                            groupInfo.interval = this.jsonConfig.items[groupInfo.intervalName].min;
+                            if (this.config[groupInfo.enabledName]) {
+                                this.log.warn(`Configured interval ${oldVal} for ${groupInfo.Group} no longer supported. Changed to ${groupInfo.interval}. Please change your configuration!`);
+                            }
+                        }
+                    }
+
                     if (this.config[groupInfo.enabledName]) {
                         await groupInfo.fnct(groupInfo.Group);
                     }
