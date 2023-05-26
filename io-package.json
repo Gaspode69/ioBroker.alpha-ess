@@ -153,9 +153,9 @@
     "encryptedNative": ["password", "appSecret"],
     "protectedNative": ["username", "password", "appID", "appSecret"],
     "native": {
-        "username": "demo",
+        "username": "",
         "password": "",
-        "systemId": "AL2002017100021",
+        "systemId": "",
         "enableRealtimedata": true,
         "intervalRealtimedata": 30,
         "enableEnergydata": true,

@@ -21,6 +21,7 @@ const WriteTimeoutIntervalInS = 5;
 const ReadAfterWriteTimeoutIntervalInS = 2;
 
 const REQUEST_TIMEOUT = 10000;
+const WATCHDOG_TIMER = 60000;
 
 /**
  * Functions and definitions using the Alpha-ESS official "open" API.
@@ -35,6 +36,7 @@ class OpenAPI {
             , fnct: this.getLastPowerData.bind(this)
             , enabledName: 'oAEnableRealtime'
             , intervalName: 'oAIntervalRealtime'
+            , intervalFactor: 1
             , states: [
                 {
                     alphaAttrName: 'ppv'
@@ -90,6 +92,7 @@ class OpenAPI {
             , fnct: this.getOneDateEnergyBySn.bind(this)
             , enabledName: 'oAEnableEnergy'
             , intervalName: 'oAIntervalEnergyMins'
+            , intervalFactor: 60
             , states: [
                 {
                     alphaAttrName: 'eCharge'
@@ -154,6 +157,7 @@ class OpenAPI {
             , fnct: this.getSettingsDataDummy.bind(this)
             , enabledName: 'oAEnableSettings'
             , intervalName: 'oAIntervalSettingsMins'
+            , intervalFactor: 60
             , states: []
         },
         {
@@ -162,6 +166,7 @@ class OpenAPI {
             , fnct: this.getOneDayPowerBySnDummy.bind(this)
             , enabledName: 'oAEnableStatisticsToday'
             , intervalName: 'oAIntervalStatisticsTodayMins'
+            , intervalFactor: 60
             , states: []
         },
         {
@@ -171,6 +176,7 @@ class OpenAPI {
             , requestName: 'updateChargeConfigInfo'
             , enabledName: 'oAEnableSettingsCharge'
             , intervalName: 'oAIntervalSettingsChargeMins'
+            , intervalFactor: 60
             , states: [
                 {
                     alphaAttrName: 'gridCharge'
@@ -234,6 +240,7 @@ class OpenAPI {
             , requestName: 'updateDisChargeConfigInfo'
             , enabledName: 'oAEnableSettingsDischarge'
             , intervalName: 'oAIntervalSettingsDischargeMins'
+            , intervalFactor: 60
             , states: [
                 {
                     alphaAttrName: 'ctrDis'
@@ -295,6 +302,7 @@ class OpenAPI {
             , fnct: this.getSumDataForCustomer.bind(this)
             , enabledName: 'oAEnableSummary'
             , intervalName: 'oAIntervalSummaryMins'
+            , intervalFactor: 60
             , states: [
                 {
                     alphaAttrName: 'epvtoday'
@@ -504,14 +512,14 @@ class OpenAPI {
                 await this.adapter.createAndUpdateStates(group, res.data.data);
             }
             else {
-                await this.handleError(res);
+                await this.handleError(res, group);
             }
         }
         catch (e) {
             this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
-            await this.handleError(this.emptyBody);
+            await this.handleError(this.emptyBody, group);
         }
-        await this.startGroupTimeout(1, group);
+        await this.startGroupTimeout(group);
     }
 
     /**
@@ -530,14 +538,14 @@ class OpenAPI {
                 await this.adapter.createAndUpdateStates(group, res.data.data);
             }
             else {
-                await this.handleError(res);
+                await this.handleError(res, group);
             }
         }
         catch (e) {
             this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
-            await this.handleError(this.emptyBody);
+            await this.handleError(this.emptyBody, group);
         }
-        await this.startGroupTimeout(60, group);
+        await this.startGroupTimeout(group);
     }
 
     /**
@@ -568,14 +576,14 @@ class OpenAPI {
                 await this.adapter.createAndUpdateStates(group, res.data.data);
             }
             else {
-                await this.handleError(res);
+                await this.handleError(res, group);
             }
         }
         catch (e) {
             this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
-            await this.handleError(this.emptyBody);
+            await this.handleError(this.emptyBody, group);
         }
-        await this.startGroupTimeout(60, group);
+        await this.startGroupTimeout(group);
     }
 
     /**
@@ -592,14 +600,14 @@ class OpenAPI {
                 await this.adapter.createAndUpdateStates(group, res.data.data);
             }
             else {
-                await this.handleError(res);
+                await this.handleError(res, group);
             }
         }
         catch (e) {
             this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
-            await this.handleError(this.emptyBody);
+            await this.handleError(this.emptyBody, group);
         }
-        await this.startGroupTimeout(60, group);
+        await this.startGroupTimeout(group);
     }
 
     /**
@@ -618,14 +626,14 @@ class OpenAPI {
                 await this.adapter.createAndUpdateStates(group, res.data.data);
             }
             else {
-                await this.handleError(res);
+                await this.handleError(res, group);
             }
         }
         catch (e) {
             this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
-            await this.handleError(this.emptyBody);
+            await this.handleError(this.emptyBody, group);
         }
-        await this.startGroupTimeout(60, group);
+        await this.startGroupTimeout(group);
     }
 
     /**
@@ -661,30 +669,29 @@ class OpenAPI {
                 this.adapter.log.info('Written values fror group ' + group);
             }
             else {
-                await this.handleError(res);
+                await this.handleError(res, group);
             }
         }
         catch (e) {
             this.adapter.log.error('Writing data for group ' + group + ': Exception occurred: ' + e);
-            await this.handleError(this.emptyBody);
+            await this.handleError(this.emptyBody, group);
         }
         this.adapter.startGroupTimeout(ReadAfterWriteTimeoutIntervalInS, group);
     }
 
     /**
-     * @param {number} multiplyer
      * @param {string} group
      */
-    async startGroupTimeout(multiplyer, group) {
+    async startGroupTimeout(group) {
         if (!this.adapter.wrongCredentials) {
             const gidx = this.stateInfoList.findIndex(i => i.Group == group);
             if (gidx >= 0 && this.stateInfoList[gidx].interval > 0) {
-                const intervalInS = multiplyer * this.stateInfoList[gidx].interval;
+                const intervalInS = this.stateInfoList[gidx].interval;
                 this.adapter.startGroupTimeout(intervalInS, group);
             }
             else {
                 this.adapter.log.error('Internal Error for group ' + group + ': No timeout configuration found!');
-                await this.handleError(this.emptyBody);
+                await this.handleError(this.emptyBody, group);
             }
         }
         else {
@@ -694,8 +701,9 @@ class OpenAPI {
 
     /**
      * @param {import("axios").AxiosResponse<any, any> | { data: null; }} res
+     * @param {string} group
      */
-    async handleError(res) {
+    async handleError(res, group) {
         await this.adapter.setStateChangedAsync('info.connection', false, true);
         this.adapter.errorCount++;
         if (res.data && res.data.code && res.data.code != 0) {
@@ -733,6 +741,7 @@ class OpenAPI {
         else {
             this.adapter.log.error(`Unknown error occurred: ${JSON.stringify(res.data)} (#${this.adapter.errorCount})`);
         }
+        await this.adapter.setQualityForGroup(group, 0x44);
     }
 }
 
@@ -749,6 +758,7 @@ class ClosedAPI {
             , fnct: this.fetchRealtimeData.bind(this)
             , enabledName: 'enableRealtimedata'
             , intervalName: 'intervalRealtimedata'
+            , intervalFactor: 1
             , states: [
                 {
                     alphaAttrName: 'pbat'
@@ -910,6 +920,7 @@ class ClosedAPI {
             , writeFnct: this.writeSettingsData.bind(this)
             , enabledName: 'enableSettingsdata'
             , intervalName: 'intervalSettingsdataMins'
+            , intervalFactor: 60
             , states: [
                 {
                     alphaAttrName: 'ctr_dis'
@@ -1048,6 +1059,7 @@ class ClosedAPI {
             , fnct: this.fetchSettingsChargeDataDummy.bind(this)
             , enabledName: 'enableSettingsCharge'
             , intervalName: 'intervalSettingsChargeMins'
+            , intervalFactor: 60
             , states: []
         },
         {
@@ -1056,6 +1068,7 @@ class ClosedAPI {
             , fnct: this.fetchSettingsDischargeDataDummy.bind(this)
             , enabledName: 'enableSettingsDisCharge'
             , intervalName: 'intervalSettingsDisChargeMins'
+            , intervalFactor: 60
             , states: []
         },
         {
@@ -1063,6 +1076,7 @@ class ClosedAPI {
             , fnct: this.fetchEnergyData.bind(this)
             , enabledName: 'enableEnergydata'
             , intervalName: 'intervalEnergydataMins'
+            , intervalFactor: 60
             , states: [
                 {
                     alphaAttrName: 'Eloads'
@@ -1124,6 +1138,7 @@ class ClosedAPI {
             , fnct: this.fetchStatisticalTodayData.bind(this)
             , enabledName: 'enableStatisticalTodaydata'
             , intervalName: 'intervalStatisticalTodaydataMins'
+            , intervalFactor: 60
             , states: [
                 {
                     alphaAttrName: 'EpvT'
@@ -1272,6 +1287,7 @@ class ClosedAPI {
             , fnct: this.fetchSummaryData.bind(this)
             , enabledName: 'enableSummarydata'
             , intervalName: 'intervalSummarydataMins'
+            , intervalFactor: 60
             , states: [
                 {
                     alphaAttrName: 'Epvtoday'
@@ -1476,15 +1492,16 @@ class ClosedAPI {
     /**
      * Perform a get request and return the received body.
      * @param {string} uri
+     * @param {string} group
      */
-    async getData(uri) {
+    async getData(uri, group) {
         const emptyBody = { data: null };
         try {
             if (this.adapter.wrongCredentials) {
                 return emptyBody;
             }
             if (!await this.checkAuthentication()) {
-                await this.handleError();
+                await this.handleError(group);
                 this.adapter.log.warn('Error in Authorization (error count: ' + this.adapter.errorCount + ')');
                 await this.adapter.setStateChangedAsync('info.connection', false, true);
                 return emptyBody;
@@ -1503,13 +1520,13 @@ class ClosedAPI {
                 return res.data;
             }
             else {
-                await this.handleError();
+                await this.handleError(group);
                 this.adapter.log.error('Error when fetching data for ' + this.adapter.config.systemId + ', status code: ' + res.status + ' (error count: ' + this.adapter.errorCount + ')');
                 return emptyBody;
             }
         }
         catch (e) {
-            await this.handleError();
+            await this.handleError(group);
             this.adapter.log.error('fetchData Exception occurred: ' + e + ' (error count: ' + this.adapter.errorCount + ')');
             return emptyBody;
         }
@@ -1519,15 +1536,16 @@ class ClosedAPI {
      * Perform a post request and return the received body.
     * @param {string} uri
     * @param {string} sndBody
+    * @param {string} group
     */
-    async postData(uri, sndBody) {
+    async postData(uri, sndBody, group) {
         const emptyBody = { data: null };
         try {
             if (this.adapter.wrongCredentials) {
                 return emptyBody;
             }
             if (!await this.checkAuthentication()) {
-                await this.handleError();
+                await this.handleError(group);
                 this.adapter.log.warn('Error in Authorization (error count: ' + this.adapter.errorCount + ')');
                 await this.adapter.setStateChangedAsync('info.connection', false, true);
                 return emptyBody;
@@ -1547,13 +1565,13 @@ class ClosedAPI {
                 return res.data;
             }
             else {
-                await this.handleError();
+                await this.handleError(group);
                 this.adapter.log.error('Error when fetching data for ' + this.adapter.config.systemId + ', status code: ' + res.status + ' (error count: ' + this.adapter.errorCount + ')');
                 return emptyBody;
             }
         }
         catch (e) {
-            await this.handleError();
+            await this.handleError(group);
             this.adapter.log.error('fetchData Exception occurred: ' + e + ' (error count: ' + this.adapter.errorCount + ')');
             return emptyBody;
         }
@@ -1609,11 +1627,13 @@ class ClosedAPI {
 
     /**
      * Will be called if during any request an error occurs
+     * @param {string} group
      */
-    async handleError() {
+    async handleError(group) {
         try {
             // Increase error count, will be reset with the next successful connection
             this.adapter.errorCount++;
+            await this.adapter.setQualityForGroup(group, 0x44);
             await this.resetAuth();
         }
         catch (e) {
@@ -1622,14 +1642,14 @@ class ClosedAPI {
     }
 
     /**
-     * @param {any} group
+     * @param {string} group
      */
     async fetchSettingsChargeDataDummy(group) {
         this.adapter.log.warn(`Internal error (group ${group}): function fetchSettingsChargeDataDummy should never be called.`);
     }
 
     /**
-     * @param {any} group
+     * @param {string} group
      */
     async fetchSettingsDischargeDataDummy(group) {
         this.adapter.log.warn(`Internal error (group ${group}): function fetchSettingsDischargeDataDummy should never be called.`);
@@ -1645,10 +1665,10 @@ class ClosedAPI {
 
             this.adapter.log.debug('Fetching ' + group + ' data...');
 
-            const body = await this.getData(CA_BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.adapter.config.systemId + '&noLoading=true');
+            const body = await this.getData(CA_BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.adapter.config.systemId + '&noLoading=true', group);
             await this.adapter.createAndUpdateStates(group, body.data);
 
-            this.startGroupTimeout(1, group);
+            this.startGroupTimeout(group);
         }
         catch (e) {
             this.adapter.log.error('fetchRealtimeData Exception occurred: ' + e);
@@ -1674,10 +1694,10 @@ class ClosedAPI {
                 'sn': this.adapter.config.systemId,
                 'userId': '',
             };
-            const body = await this.postData(CA_BaseURI + 'api/Statistic/SystemStatistic', JSON.stringify(json));
+            const body = await this.postData(CA_BaseURI + 'api/Statistic/SystemStatistic', JSON.stringify(json), group);
             await this.adapter.createAndUpdateStates(group, body.data);
 
-            this.startGroupTimeout(60, group);
+            this.startGroupTimeout(group);
         }
         catch (e) {
             this.adapter.log.error('fetchEnergyData Exception occurred: ' + e);
@@ -1694,10 +1714,10 @@ class ClosedAPI {
 
             this.adapter.log.debug('Fetching ' + group + ' data...');
 
-            const body = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.adapter.config.systemId + '&noLoading=true');
+            const body = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.adapter.config.systemId + '&noLoading=true', group);
             await this.adapter.createAndUpdateStates(group, body.data);
 
-            this.startGroupTimeout(60, group);
+            this.startGroupTimeout(group);
         }
         catch (e) {
             this.adapter.log.error('fetchSettingsData Exception occurred: ' + e);
@@ -1718,11 +1738,11 @@ class ClosedAPI {
             const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
 
             const body = await this.getData(CA_BaseURI + 'api/Power/SticsByPeriod?beginDay=' + dts + '&endDay=' + dts +
-                '&tDay=' + dts + '&SN=' + this.adapter.config.systemId + '&noLoading=true');
+                '&tDay=' + dts + '&SN=' + this.adapter.config.systemId + '&noLoading=true', group);
 
             await this.adapter.createAndUpdateStates(group, body.data);
 
-            this.startGroupTimeout(60, group);
+            this.startGroupTimeout(group);
         }
         catch (e) {
             this.adapter.log.error('fetchStatisticalTodayData Exception occurred: ' + e);
@@ -1743,12 +1763,12 @@ class ClosedAPI {
             const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
 
             const body = await this.getData(CA_BaseURI + 'api/ESS/SticsSummeryDataForCustomer?sn=' + this.adapter.config.systemId +
-                '&tday=' + dts + '&noLoading=true');
+                '&tday=' + dts + '&noLoading=true', group);
 
             await this.adapter.createAndUpdateStates(group, body.data);
 
             // Configuration is in minutes, so multiply with 60
-            this.startGroupTimeout(60, group);
+            this.startGroupTimeout(group);
         }
         catch (e) {
             this.adapter.log.error('fetchSummaryData Exception occurred: ' + e);
@@ -1767,7 +1787,7 @@ class ClosedAPI {
 
             // We need the system id here
             if (this.system_id.length == 0) {
-                const custListBody = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSList?noLoading=true');
+                const custListBody = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSList?noLoading=true', group);
                 if (custListBody && custListBody.data) {
                     for (let i = 0; i < custListBody.data.length; i++) {
                         if (custListBody.data[i].sys_sn === this.adapter.config.systemId) {
@@ -1781,7 +1801,7 @@ class ClosedAPI {
 
             if (this.system_id.length > 0) {
                 // First we read the whole data set and update our values:
-                const body = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.adapter.config.systemId + '&noLoading=true');
+                const body = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.adapter.config.systemId + '&noLoading=true', group);
                 if (body && body.data) {
                     const data = body.data;
                     const gidx = this.adapter.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
@@ -1803,7 +1823,7 @@ class ClosedAPI {
 
                     this.adapter.log.debug(`Write group ${group}: ${JSON.stringify(data)}`);
 
-                    const res = await this.postData(CA_BaseURI + 'api/Account/CustomUseESSSetting', JSON.stringify(data));
+                    const res = await this.postData(CA_BaseURI + 'api/Account/CustomUseESSSetting', JSON.stringify(data), group);
                     if (res && res['code'] == 200) {
                         this.adapter.log.debug('Written values fror group ' + group);
                     }
@@ -1826,19 +1846,18 @@ class ClosedAPI {
     }
 
     /**
-     * @param {number} multiplyer
      * @param {string} group
      */
-    async startGroupTimeout(multiplyer, group) {
+    async startGroupTimeout(group) {
         if (!this.adapter.wrongCredentials) {
             const gidx = this.stateInfoList.findIndex(i => i.Group == group);
             if (gidx >= 0 && this.stateInfoList[gidx].interval > 0) {
-                const intervalInS = multiplyer * this.stateInfoList[gidx].interval;
+                const intervalInS = this.stateInfoList[gidx].interval;
                 this.adapter.startGroupTimeout(intervalInS, group);
             }
             else {
                 this.adapter.log.error('Internal Error for group ' + group + ': No timeout configuration found!');
-                await this.handleError();
+                await this.handleError(group);
             }
         }
         else {
@@ -1872,6 +1891,8 @@ class AlphaEss extends utils.Adapter {
         this.errorCount = 0;
 
         this.wrongCredentials = false;
+
+        this.watchDogIntervalHandle = null;
 
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
@@ -1946,13 +1967,13 @@ class AlphaEss extends utils.Adapter {
                 for (const gidx of Object.keys(this.getStateInfoList())) {
                     const groupInfo = this.getStateInfoList()[gidx];
 
-                    groupInfo.interval = this.config[groupInfo.intervalName];
+                    groupInfo.interval = this.config[groupInfo.intervalName] * groupInfo.intervalFactor;
                     this.log.debug(`${groupInfo.intervalName}: ${groupInfo.interval}`);
 
                     if (this.jsonConfig.items[groupInfo.intervalName] && this.jsonConfig.items[groupInfo.intervalName].min) {
-                        if (groupInfo.interval < this.jsonConfig.items[groupInfo.intervalName].min) {
+                        if (groupInfo.interval < this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor) {
                             const oldVal = groupInfo.interval;
-                            groupInfo.interval = this.jsonConfig.items[groupInfo.intervalName].min;
+                            groupInfo.interval = this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor;
                             if (this.config[groupInfo.enabledName]) {
                                 this.log.warn(`Configured interval ${oldVal} for ${groupInfo.Group} no longer supported. Changed to ${groupInfo.interval}. Please change your configuration!`);
                             }
@@ -1960,6 +1981,7 @@ class AlphaEss extends utils.Adapter {
                     }
 
                     if (this.config[groupInfo.enabledName]) {
+                        await this.setQualityForGroup(groupInfo.Group, 0x2);
                         await groupInfo.fnct(groupInfo.Group);
                     }
                     else {
@@ -1982,6 +2004,8 @@ class AlphaEss extends utils.Adapter {
         catch (e) {
             this.log.error('onReady Exception occurred: ' + e);
         }
+        this.watchDogIntervalHandle = this.setInterval(this.watchDog.bind(this), WATCHDOG_TIMER);
+        this.log.debug('Watchdog interval started!');
     }
 
     /**
@@ -1992,8 +2016,16 @@ class AlphaEss extends utils.Adapter {
         try {
             // Clear all timers
             for (const gidx of Object.keys(this.getStateInfoList())) {
-                this.stopGroupTimeout(this.getStateInfoList()[gidx].Group);
-                this.stopGroupWriteTimeout(this.getStateInfoList()[gidx].Group);
+                const group = this.getStateInfoList()[gidx].Group;
+                this.stopGroupTimeout(group);
+                this.stopGroupWriteTimeout(group);
+                this.setQualityForGroup(group, 0x12);
+            }
+
+            if (this.watchDogIntervalHandle) {
+                this.clearInterval(this.watchDogIntervalHandle);
+                this.watchDogIntervalHandle = null;
+                this.log.debug('Watchdog interval cleared!');
             }
 
             this.closedApi.resetAuth();
@@ -2177,7 +2209,7 @@ class AlphaEss extends utils.Adapter {
 
     /**
      * Answer if the states shall be migrated, i.e. overwritten.
-     * This is called a view times at startup only.
+     * This is called a few times at startup only.
      */
     async isMigrationNecessary() {
         const oldVersionState = await this.getStateAsync('info.version');
@@ -2311,11 +2343,12 @@ class AlphaEss extends utils.Adapter {
                                 tvalue = value;
                         }
                         if (this.config.updateUnchangedStates) {
-                            await this.setStateAsync(group + '.' + this.osn(stateInfo.id), tvalue, true);
+                            await this.setStateAsync(group + '.' + this.osn(stateInfo.id), { val: tvalue, q: 0 }, true);
                         }
                         else {
-                            await this.setStateChangedAsync(group + '.' + this.osn(stateInfo.id), tvalue, true);
+                            await this.setStateChangedAsync(group + '.' + this.osn(stateInfo.id), { val: tvalue, q: 0 }, true);
                         }
+                        stateInfo.lastUpdateTs = Date.now();
                         this.log.debug('Received object ' + group + '.' + this.osn(stateInfo.alphaAttrName) + ' with value ' + rawValue);
                     }
                 }
@@ -2377,7 +2410,61 @@ class AlphaEss extends utils.Adapter {
     }
 
     /**
-     *  otimize state name (i.e. remove forbidden characters for ioBroker state names)
+     * Set quality for all existing states of given group
+     * @param {string} group
+     * @param {number} q
+     */
+    async setQualityForGroup(group, q) {
+        const states = await this.getStatesAsync(group + '.*');
+        for (const sid in states) {
+            const newState = states[sid];
+            newState.q = q;
+            this.log.debug(`Set state ${sid} to val: ${newState.val}; q: ${newState.q}`);
+            await this.setStateAsync(sid, newState);
+        }
+    }
+
+    /**
+     * Called to verify if states were fetched in given intervals
+     * Set quality to 0x01 if not
+     */
+    async watchDog() {
+        this.log.debug('Watchdog check ...');
+        for (const gidx of Object.keys(this.getStateInfoList())) {
+            const groupInfo = this.getStateInfoList()[gidx];
+            const groupStates = groupInfo.states;
+            for (let i = 0; i < groupStates.length; i++) {
+                if (groupStates[i].lastUpdateTs) {
+                    if (Date.now() - groupStates[i].lastUpdateTs > (groupInfo.interval * 1000 + REQUEST_TIMEOUT)) {
+                        this.log.warn(`Watchdog: State ${groupInfo.Group}.${groupStates[i].id} not updated for ${Date.now() - groupStates[i].lastUpdateTs} ms`);
+                        const newState = await this.getStateAsync(`${groupInfo.Group}.${groupStates[i].id}`);
+                        if (newState) {
+                            if (newState.q != 0) {
+                                // Change quality only if it was OK before
+                                newState.q = 0x01;
+                                this.log.debug(`Watchdog: Set state ${groupInfo.Group}.${groupStates[i].id} to val: ${newState.val}; q: ${newState.q}`);
+                                await this.setStateAsync(`${groupInfo.Group}.${groupStates[i].id}`, newState);
+                            }
+                            else {
+                                this.log.silly(`Watchdog: Quality of state ${groupInfo.Group}.${groupStates[i].id} not changed, was already set to ${newState.q}!`);
+                            }
+                        }
+                        else {
+                            this.log.warn(`Watchdog: State ${groupInfo.Group}.${groupStates[i].id} not found!`);
+                        }
+                    }
+                    else {
+                        this.log.silly(`Watchdog: State ${groupInfo.Group}.${groupStates[i].id} last updated ${Date.now() - groupStates[i].lastUpdateTs} ms ago`);
+                    }
+                }
+            }
+        }
+    }
+
+    //   lastUpdateTs
+
+    /**
+     * Otimize state name (i.e. remove forbidden characters for ioBroker state names)
      * @param {string} sn
      */
     osn(sn) {

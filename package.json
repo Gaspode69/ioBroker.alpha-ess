@@ -20,7 +20,8 @@
     },
     "dependencies": {
         "@iobroker/adapter-core": "^2.6.8",
-        "axios": "^1.4.0"
+        "axios": "^1.4.0",
+        "iobroker.alpha-ess": "^1.0.0-alpha.4"
     },
     "devDependencies": {
         "@alcalzone/release-script": "^3.5.9",
