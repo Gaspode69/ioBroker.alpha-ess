@@ -640,6 +640,7 @@ class OpenAPI {
      * @param {string} group
      */
     async writeConfigInfo(group) {
+        let nextReadTimeout = ReadAfterWriteTimeoutIntervalInS;
         try {
             this.adapter.stopGroupWriteTimeout(group);
             this.adapter.stopGroupTimeout(group);
@@ -647,10 +648,16 @@ class OpenAPI {
             this.adapter.log.debug('Writing ' + group + ' data...');
 
             const body = {};
-            const gidx = this.adapter.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
+            const gidx = this.stateInfoList.findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
             if (gidx >= 0) {
-                const groupStates = this.adapter.getStateInfoList()[gidx].states;
+
+                const groupInfo = this.stateInfoList[gidx];
+                nextReadTimeout = this.adapter.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor;
+
+                const groupStates = this.stateInfoList[gidx].states;
                 for (let i = 0; i < groupStates.length; i++) {
+                    // Ensure that watchdog does not fire, because timeout may be delayed
+                    groupStates[i].lastUpdateTs = Date.now();
                     this.adapter.log.debug('State ' + group + '.' + groupStates[i].alphaAttrName + ' - ' + groupStates[i].id);
                     const state = await this.adapter.getStateAsync(group + '.' + groupStates[i].id);
                     let value = null;
@@ -676,7 +683,7 @@ class OpenAPI {
             this.adapter.log.error('Writing data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody, group);
         }
-        this.adapter.startGroupTimeout(ReadAfterWriteTimeoutIntervalInS, group);
+        this.adapter.startGroupTimeout(nextReadTimeout, group);
     }
 
     /**
@@ -1886,6 +1893,8 @@ class AlphaEss extends utils.Adapter {
         this.setObjectNormalAsync = this.setObjectNotExistsAsync.bind(this);
         this.setObjectMigrationAsync = this.setObjectAsync.bind(this);
 
+        this.watchDogFunction = this.watchDog.bind(this);
+
         this.createdStates = [];
 
         this.errorCount = 0;
@@ -2004,7 +2013,7 @@ class AlphaEss extends utils.Adapter {
         catch (e) {
             this.log.error('onReady Exception occurred: ' + e);
         }
-        this.watchDogIntervalHandle = this.setInterval(this.watchDog.bind(this), WATCHDOG_TIMER);
+        this.watchDogIntervalHandle = this.setInterval(this.watchDogFunction, WATCHDOG_TIMER);
         this.log.debug('Watchdog interval started!');
     }
 
@@ -2418,9 +2427,14 @@ class AlphaEss extends utils.Adapter {
         const states = await this.getStatesAsync(group + '.*');
         for (const sid in states) {
             const newState = states[sid];
-            newState.q = q;
-            this.log.debug(`Set state ${sid} to val: ${newState.val}; q: ${newState.q}`);
-            await this.setStateAsync(sid, newState);
+            if (newState.ack) {
+                newState.q = q;
+                this.log.debug(`Set state ${sid} to val: ${newState.val}; q: ${newState.q}; ack: ${newState.ack}}`);
+                await this.setStateAsync(sid, newState, true);
+            }
+            else {
+                this.log.debug(`Set state ${sid} NOT to val: ${newState.val}; q: ${newState.q} because ack of this state is ${newState.ack}`);
+            }
         }
     }
 
@@ -2439,14 +2453,14 @@ class AlphaEss extends utils.Adapter {
                         this.log.warn(`Watchdog: State ${groupInfo.Group}.${groupStates[i].id} not updated for ${Date.now() - groupStates[i].lastUpdateTs} ms`);
                         const newState = await this.getStateAsync(`${groupInfo.Group}.${groupStates[i].id}`);
                         if (newState) {
-                            if (newState.q != 0) {
+                            if (newState.q != 0 && newState.ack) {
                                 // Change quality only if it was OK before
                                 newState.q = 0x01;
                                 this.log.debug(`Watchdog: Set state ${groupInfo.Group}.${groupStates[i].id} to val: ${newState.val}; q: ${newState.q}`);
-                                await this.setStateAsync(`${groupInfo.Group}.${groupStates[i].id}`, newState);
+                                await this.setStateAsync(`${groupInfo.Group}.${groupStates[i].id}`, newState, true);
                             }
                             else {
-                                this.log.silly(`Watchdog: Quality of state ${groupInfo.Group}.${groupStates[i].id} not changed, was already set to ${newState.q}!`);
+                                this.log.silly(`Watchdog: Quality of state ${groupInfo.Group}.${groupStates[i].id} not changed, was already set to ${newState.q} and ack is ${newState.ack}!`);
                             }
                         }
                         else {

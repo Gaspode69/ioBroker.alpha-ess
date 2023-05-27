@@ -14,12 +14,19 @@
 This adapter logs into the web API of [Alpha ESS](https://www.alphaess.com/) and retrieves information for your Alpha ESS equipment.\
 Depending on your Alpha ESS product, it is possible to get realtime data and configuration data for your equipment. Which data points are returned by the API depends on your Alpha ESS equipment.
 
-This adapter is based on the great work of [Charles Gillanders](https://github.com/CharlesGillanders/alphaess), who reverse engineered the Alpha ESS Web API. This is an internal API which may be changed at any time by Alpha ESS.
+This adapter supports two APIs, the internal Alpha ESS Web API, which may be changed at any time by Alpha ESS, and the Alpha ESS Open API, which provides less functionality but is on official and documented API to Alpha ESS devices.
 
-Currently this adapter creates a state with a hopefully self explaining name for each data point, which I was able to identify.\
-All other data points are ignored. During adapter start these data points are logged as info message.
+Currently this adapter creates a state with a hopefully self explaining name for each suppoerted data point.\
+All other data points are ignored. During adapter start these data points are logged as debug message.
 
-Basically, it is possible to change selected configuration settings using the Alpha ESS Web API. This is not implemented yet.
+Staring with version 1.0.0-alpha.5, the quality attribute of each state is set accordingly to its status:
+| Quality | meaning |
+|:--------|:--------------------------------------------------|
+|0x00 |OK and up to date |
+|0x01 |value not updated due to unknown reason, see log |
+|0x02 |problem with online connection for this data point |
+|0x12 |adapter disconnected or stopped |
+|0x44 |API returned error or internal error, see log |
 
 ## Settings:
 
