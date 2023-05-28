@@ -5,7 +5,7 @@
     "news": {
       "1.0.0-beta.0": {
         "en": "Changed allowed intervals for OpenAPI according to new specs by Alpha-ESS\nSet state quality accordingly to status of data",
-        "de": "Zulässige Intervalle für OpenAPI an die neuen Spezifikationen von Alpha-ESS angepasst\nQuality Attribut für States wird jetz entsprechend dem Zustand der Daten gesetzt",
+        "de": "Zulässige Intervalle für OpenAPI an die neuen Spezifikationen von Alpha-ESS angepasst\nQuality Attribut für States wird jetzt entsprechend dem Zustand der Daten gesetzt",
         "ru": "Изменены допустимые интервалы для OpenAPI в соответствии с новыми спецификациями Alpha-ESS\nУстановите государственное качество в соответствии с статусом данных",
         "pt": "Variados permitidos para OpenAPI de acordo com novas especificações por Alpha-ESS\nDefina a qualidade do estado de acordo com o status dos dados",
         "nl": "Veranderde toegestaan interval voor OpenAPI volgens nieuwe specificaties door Alpha-ESS\nZet de staatskwaliteit in aanmerking van gegevens",
