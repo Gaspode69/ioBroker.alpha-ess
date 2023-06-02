@@ -2450,12 +2450,12 @@ class AlphaEss extends utils.Adapter {
             for (let i = 0; i < groupStates.length; i++) {
                 if (groupStates[i].lastUpdateTs) {
                     if (Date.now() - groupStates[i].lastUpdateTs > (groupInfo.interval * 1000 + REQUEST_TIMEOUT)) {
-                        this.log.warn(`Watchdog: State ${groupInfo.Group}.${groupStates[i].id} not updated for ${Date.now() - groupStates[i].lastUpdateTs} ms`);
                         const newState = await this.getStateAsync(`${groupInfo.Group}.${groupStates[i].id}`);
                         if (newState) {
                             if (newState.q != 0 && newState.ack) {
                                 // Change quality only if it was OK before
                                 newState.q = 0x01;
+                                this.log.warn(`Watchdog: State ${groupInfo.Group}.${groupStates[i].id} not updated for ${Date.now() - groupStates[i].lastUpdateTs} ms`);
                                 this.log.debug(`Watchdog: Set state ${groupInfo.Group}.${groupStates[i].id} to val: ${newState.val}; q: ${newState.q}`);
                                 await this.setStateAsync(`${groupInfo.Group}.${groupStates[i].id}`, newState, true);
                             }
