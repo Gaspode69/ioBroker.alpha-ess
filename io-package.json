@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "1.0.0-beta.0",
+    "version": "1.0.0",
     "news": {
+      "1.0.0": {
+        "en": "Support also the new official OpenAPI provided by Alpha-ESS\nSet state quality accordingly to status of data\nWriting charging and discharging settings implemented for 'Closed API' and OpenAPI\nRemove no more supported states at startup automatically",
+        "de": "Unterstützung der neuen offiziellen OpenAPI von Alpha-ESS\nQuality von States wird jetzt entsprechend des Zustands der Daten gesetzt\nSchreiben von Lade- und Entladeeinstellungen für 'Closed API' und OpenAPI implementiert\nNicht mehr unterstützte States werden bei Adapter-Neustart automatisch gelöscht",
+        "ru": "Поддержка также новый официальный OpenAPI, предоставленный Alpha-ESS\nУстановите государственное качество в соответствии с статусом данных\nНаписание зарядки и разгрузки настроек, реализованных для 'Closed API' и OpenAPI\nУдалить больше не поддерживаемых состояний при запуске автоматически",
+        "pt": "Suporte também o novo OpenAPI oficial fornecido pela Alpha-ESS\nDefina a qualidade do estado de acordo com o status dos dados\nEscrevendo as configurações de carregamento e descarregamento implementadas para ' API fechada' e OpenAPI\nRemover estados não mais suportados na inicialização automaticamente",
+        "nl": "Vertaling:\nZet de staatskwaliteit in aanmerking van gegevens\nSchrijven en ontladen opstellingen voor 'Closed API' en OpenAPI'\nVerwijder geen ondersteunende staten bij start-up automatisch",
+        "fr": "Soutien également le nouveau OpenAPI officiel fourni par Alpha-ESS\nDéfinir la qualité de l'état en conséquence à l'état des données\nRédaction des paramètres de chargement et de déchargement mis en œuvre pour 'API perdu' et OpenAPI\nEnlever plus d'états supportés au démarrage automatiquement",
+        "it": "Supporto anche il nuovo OpenAPI ufficiale fornito da Alpha-ESS\nImpostare la qualità dello stato di conseguenza allo stato dei dati\nScrivere le impostazioni di ricarica e discarica implementate per 'Closed API' e OpenAPI\nNon rimuovere più stati supportati all'avvio automaticamente",
+        "es": "Apoyar también el nuevo OpenAPI oficial proporcionado por Alpha-ESS\nEstablecer la calidad del estado en consecuencia al estado de los datos\nEscribir ajustes de carga y descarga implementados para 'Closed API' y OpenAPI\nEliminar no más estados compatibles en el inicio automáticamente",
+        "pl": "Wspiera również nowy oficjalny interfejs OpenAPI zapewniany przez Alpha-ESS\nUstalono jakość państwa zgodnie z statusem danych\nPisanie ładowania i rozładowania wdrożonych ustawień API oraz OpenAPI\nRemove nie będzie więcej wspieranych państw",
+        "uk": "Підтримка також нових офіційних OpenAPI, що надається Альфа-ESS\nВстановити якість держави відповідно до стану даних\nНаписання параметрів зарядки та відключення, що реалізовані для \"Closed API\" та OpenAPI\nВидаліть не більше підтримуваних держав при запуску автоматично",
+        "zh-cn": "还支持阿尔法-萨斯新官方开放协会\n相应地确定数据状况的国家质量\n确定和履行执行的消费和开放的消费者协会和开放协会环境\n自动取消不再支持的开办国家"
+      },
       "1.0.0-beta.0": {
         "en": "Changed allowed intervals for OpenAPI according to new specs by Alpha-ESS\nSet state quality accordingly to status of data",
         "de": "Zulässige Intervalle für OpenAPI an die neuen Spezifikationen von Alpha-ESS angepasst\nQuality Attribut für States wird jetzt entsprechend dem Zustand der Daten gesetzt",
@@ -80,19 +93,6 @@
         "pl": "Wspiera również nowy oficjalny interfejs OpenAPI zapewniany przez Alpha-ESS",
         "uk": "Підтримка також нових офіційних OpenAPI, що надається Альфа-ESS",
         "zh-cn": "还支持阿尔法-萨斯新官方开放协会"
-      },
-      "0.5.0": {
-        "en": "Remove no more supported states at startup automatically\nPrepared data migration for future versions",
-        "de": "Nicht länger unterstützte Zustände werden beim Start automatisch gelöscht\nVorbereitungen einer Datenmigration für zukünftige Versionen",
-        "ru": "Удалить больше не поддерживаемых состояний при запуске автоматически\nПодготовленная миграция данных для будущих версий",
-        "pt": "Remover estados não mais suportados na inicialização automaticamente\nMigração de dados preparada para versões futuras",
-        "nl": "Verwijder geen ondersteunende staten bij start-up automatisch\nVertaling:",
-        "fr": "Enlever plus d'états supportés au démarrage automatiquement\nMigration de données préparée pour les versions futures",
-        "it": "Non rimuovere più stati supportati all'avvio automaticamente\nMigrazione dei dati preparata per le versioni future",
-        "es": "Eliminar no más estados compatibles en el inicio automáticamente\nMigración de datos preparada para futuras versiones",
-        "pl": "Remove nie będzie więcej wspieranych państw\nWstępna migracja danych do przyszłych wersji",
-        "uk": "Видаліть не більше підтримуваних держав при запуску автоматично\nПідготовка міграції даних для майбутніх версій",
-        "zh-cn": "自动取消不再支持的开办国家\n今后版本的准备数据迁移"
       }
     },
     "titleLang": {
