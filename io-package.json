@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "news": {
+      "1.0.1": {
+        "en": "Adapted fetching energy values using 'Closed API' to latest API changes by Alpha-ESS",
+        "de": "Closed API: Energiewerte an neueste API-Änderungen von Alpha-ESS angepasst",
+        "ru": "Адаптированные выкачивание энергетических ценностей с помощью 'Closed API' для последних изменений API от Alpha-ESS",
+        "pt": "Valores de energia de busca adaptados usando ' API fechada' para as últimas alterações de API por Alpha-ESS",
+        "nl": "API verandert door Alpha-ESSS",
+        "fr": "Récupération des valeurs d'énergie à l'aide de 'API fermée' aux dernières modifications de l'API par Alpha-ESS",
+        "it": "Adattato l'ottenimento di valori energetici utilizzando 'API archiviate' alle ultime modifiche API di Alpha-ESS",
+        "es": "Valores de energía adaptados de búsqueda usando 'Closed API' para los últimos cambios de API por Alpha-ESS",
+        "pl": "Adapted fetching energy values używając 'Closed API' do najnowszych zmian API przez Alpha-ESS",
+        "uk": "Адаптивовані коефіцієнти відтікання енергії за допомогою 'Closed API' для останніх змін API від Alpha-ESS",
+        "zh-cn": "利用“无能”的能源价值降低到Alpha-ESS新生动的改变"
+      },
       "1.0.0": {
         "en": "Support also the new official OpenAPI provided by Alpha-ESS\nSet state quality accordingly to status of data\nWriting charging and discharging settings implemented for 'Closed API' and OpenAPI\nRemove no more supported states at startup automatically",
         "de": "Unterstützung der neuen offiziellen OpenAPI von Alpha-ESS\nQuality von States wird jetzt entsprechend des Zustands der Daten gesetzt\nSchreiben von Lade- und Entladeeinstellungen für 'Closed API' und OpenAPI implementiert\nNicht mehr unterstützte States werden bei Adapter-Neustart automatisch gelöscht",
@@ -80,19 +93,6 @@
         "pl": "Pisanie ładowania i rozładowania wdrożone (OpenAPI)",
         "uk": "Написання параметрів зарядки та розвантаження (OpenAPI тільки)",
         "zh-cn": "标定和执行的慈善环境(仅为泛美卫生组织)"
-      },
-      "1.0.0-alpha.0": {
-        "en": "Support also the new official OpenAPI provided by Alpha-ESS",
-        "de": "Unterstützung jetzt auch die neue offizielle OpenAPI von Alpha-ESS",
-        "ru": "Поддержка также новый официальный OpenAPI, предоставленный Alpha-ESS",
-        "pt": "Suporte também o novo OpenAPI oficial fornecido pela Alpha-ESS",
-        "nl": "Vertaling:",
-        "fr": "Soutien également le nouveau OpenAPI officiel fourni par Alpha-ESS",
-        "it": "Supporto anche il nuovo OpenAPI ufficiale fornito da Alpha-ESS",
-        "es": "Apoyar también el nuevo OpenAPI oficial proporcionado por Alpha-ESS",
-        "pl": "Wspiera również nowy oficjalny interfejs OpenAPI zapewniany przez Alpha-ESS",
-        "uk": "Підтримка також нових офіційних OpenAPI, що надається Альфа-ESS",
-        "zh-cn": "还支持阿尔法-萨斯新官方开放协会"
       }
     },
     "titleLang": {
