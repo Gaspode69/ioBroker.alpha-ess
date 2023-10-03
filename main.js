@@ -1086,58 +1086,58 @@ class ClosedAPI {
             , intervalFactor: 60
             , states: [
                 {
-                    alphaAttrName: 'Eloads'
+                    alphaAttrName: 'Eload'
                     , role: 'value.power.consumption'
                     , id: 'Consumption_today'
                     , name: 'Today\'s consumption'
                     , type: 'number'
                     , unit: 'kWh'
-                    , dayIndex: true
+                    , dayIndex: false
                 }
                 , {
-                    alphaAttrName: 'Epvs'
+                    alphaAttrName: 'Epvtoday'
                     , role: 'value.power.consumption'
                     , id: 'Generation_today'
                     , name: 'Today\'s generation'
                     , type: 'number'
                     , unit: 'kWh'
-                    , dayIndex: true
+                    , dayIndex: false
                 }
                 , {
-                    alphaAttrName: 'Eoutputs'
+                    alphaAttrName: 'Eoutput'
                     , role: 'value.power.consumption'
                     , id: 'Grid_feed_in_today'
                     , name: 'Today\'s grid feed in'
                     , type: 'number'
                     , unit: 'kWh'
-                    , dayIndex: true
+                    , dayIndex: false
                 }
                 , {
-                    alphaAttrName: 'Einputs'
+                    alphaAttrName: 'Einput'
                     , role: 'value.power.consumption'
                     , id: 'Grid_consumption_today'
                     , name: 'Today\'s grid consumption'
                     , type: 'number'
                     , unit: 'kWh'
-                    , dayIndex: true
+                    , dayIndex: false
                 }
                 , {
-                    alphaAttrName: 'ECharge'
+                    alphaAttrName: 'Echarge'
                     , role: 'value.power.consumption'
                     , id: 'Battery_charge_today'
                     , name: 'Today\'s battery charge'
                     , type: 'number'
                     , unit: 'kWh'
-                    , dayIndex: true
+                    , dayIndex: false
                 }
                 , {
-                    alphaAttrName: 'EDischarge'
+                    alphaAttrName: 'EDisCharge'
                     , role: 'value.power.consumption'
                     , id: 'Battery_discharge_today'
                     , name: 'Today\'s battery discharge'
                     , type: 'number'
                     , unit: 'kWh'
-                    , dayIndex: true
+                    , dayIndex: false
                 }]
         },
         {
@@ -1690,20 +1690,17 @@ class ClosedAPI {
         try {
             this.adapter.stopGroupTimeout(group);
 
-            this.adapter.log.debug('Fetching ' + group + ' data...');
+            this.adapter.log.debug('Fetching summary data...');
 
             const dt = new Date();
-            const dts = (dt.getFullYear() + '-0' + (dt.getMonth() + 1) + '-01');
-            const json = {
-                'statisticBy': 'month',
-                'sDate': dts,
-                'isOEM': 0,
-                'sn': this.adapter.config.systemId,
-                'userId': '',
-            };
-            const body = await this.postData(CA_BaseURI + 'api/Statistic/SystemStatistic', JSON.stringify(json), group);
+            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
+
+            const body = await this.getData(CA_BaseURI + 'api/ESS/SticsSummeryDataForCustomer?sn=' + this.adapter.config.systemId +
+                '&tday=' + dts + '&noLoading=true', group);
+
             await this.adapter.createAndUpdateStates(group, body.data);
 
+            // Configuration is in minutes, so multiply with 60
             this.startGroupTimeout(group);
         }
         catch (e) {
