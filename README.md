@@ -62,6 +62,11 @@ To be able to use the new Open API you have to register your Alpha-ESS device un
 **All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+
+-   (mcm1957) Updated required node version to 16 or newer
+
 ### 1.0.1 (2023-10-03)
 
 -   (Gaspode) Adapted fetching energy values using 'Closed API' to latest API changes by Alpha-ESS
