@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "1.0.1",
+    "version": "1.0.2",
     "news": {
+      "1.0.2": {
+        "en": "Updated required node version to 16 or newer",
+        "de": "Erforderliche Node Version auf 16 oder neuer aktualisiert",
+        "ru": "Обновленная необходимая версия узла до 16 или новее",
+        "pt": "Versão de nó atualizada necessária para 16 ou mais recente",
+        "nl": "Verouderd vereiste node versie van 16 of nieuw",
+        "fr": "Mise à jour de la version node requise à 16 ou plus",
+        "it": "Versione nodo richiesta aggiornata a 16 o più recente",
+        "es": "Versión actualizada de nodos requeridos a 16 o más",
+        "pl": "Wymagana wersja węzła do 16 lub nowa",
+        "uk": "Оновлено необхідну версію вершини до 16 або нових",
+        "zh-cn": "A. 最新要求的无误版本到16个或新成员"
+      },
       "1.0.1": {
         "en": "Adapted fetching energy values using 'Closed API' to latest API changes by Alpha-ESS",
         "de": "Closed API: Energiewerte an neueste API-Änderungen von Alpha-ESS angepasst",
@@ -80,19 +93,6 @@
         "pl": "Weryfikacja stanu na wartości czasowe (OpenAPI tylko)",
         "uk": "Виправлена перевірка стану для значень часу (тільки OpenAPI)",
         "zh-cn": "固定国家对时间价值的核查(只有OpenAPI)"
-      },
-      "1.0.0-alpha.1": {
-        "en": "Writing charging and discharging settings implemented (OpenAPI only)",
-        "de": "Schreiben von Lade- und Entladeeinstellungen implementiert (nur OpenAPI)",
-        "ru": "Написание зарядки и сброса настроек реализованных (только OpenAPI)",
-        "pt": "Escrevendo as configurações de carregamento e descarga implementadas (apenas OpenAPI)",
-        "nl": "Schrijven en ontladen opstellingen geïnformeerd",
-        "fr": "Rédaction des paramètres de charge et de déchargement mis en œuvre (OpenAPI seulement)",
-        "it": "Impostazioni di ricarica e scarico implementate (solo OpenAPI)",
-        "es": "Escribir los ajustes de carga y descarga implementados (OpenAPI solamente)",
-        "pl": "Pisanie ładowania i rozładowania wdrożone (OpenAPI)",
-        "uk": "Написання параметрів зарядки та розвантаження (OpenAPI тільки)",
-        "zh-cn": "标定和执行的慈善环境(仅为泛美卫生组织)"
       }
     },
     "titleLang": {
