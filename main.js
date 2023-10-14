@@ -2005,7 +2005,7 @@ class AlphaEss extends utils.Adapter {
                 }
             }
 
-            await this.setStateAsync('info.version', this.version, true);
+            await this.setStateAsync('info.version', '' + this.version, true);
         }
         catch (e) {
             this.log.error('onReady Exception occurred: ' + e);
@@ -2284,23 +2284,29 @@ class AlphaEss extends utils.Adapter {
                     for (const [alphaAttrName, rawValue] of Object.entries(data)) {
                         const stateInfo = this.getStateInfoByAlphaAttrName(group, alphaAttrName);
                         if (stateInfo) {
-                            await setObjectFunc(group + '.' + this.osn(stateInfo.id), {
-                                type: 'state',
-                                common: {
-                                    name: stateInfo.name + ' [' + stateInfo.alphaAttrName + ']'
-                                    , type: stateInfo.type
-                                    , role: stateInfo.role
-                                    // @ts-ignore
-                                    , read: true
-                                    , write: stateInfo.writeable ? stateInfo.writeable : false
-                                    , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit === '{moneyType}' ? data['moneyType'] : stateInfo.unit
-                                    , desc: stateInfo.alphaAttrName
-                                },
-                                native: {},
-                            });
-                            if (stateInfo.writeable) {
-                                await this.subscribeStatesAsync(`${group}.${stateInfo.id}`);
-                                this.log.debug(`Subscribed State: ${group}.${stateInfo.id}`);
+                            // The type checker has a problem with type: stateInfo.type. I have no clue why.
+                            // All possible types are correct and valid. To get rid of the type checker error, we check for valid types:
+                            if (stateInfo.type == 'string' || stateInfo.type == 'boolean' || stateInfo.type == 'number') {
+                                await setObjectFunc(group + '.' + this.osn(stateInfo.id), {
+                                    type: 'state',
+                                    common: {
+                                        name: stateInfo.name + ' [' + stateInfo.alphaAttrName + ']'
+                                        , type: stateInfo.type
+                                        , role: stateInfo.role
+                                        , read: true
+                                        , write: stateInfo.writeable ? stateInfo.writeable : false
+                                        , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit === '{moneyType}' ? data['moneyType'] : stateInfo.unit
+                                        , desc: stateInfo.alphaAttrName
+                                    },
+                                    native: {},
+                                });
+                                if (stateInfo.writeable) {
+                                    await this.subscribeStatesAsync(`${group}.${stateInfo.id}`);
+                                    this.log.debug(`Subscribed State: ${group}.${stateInfo.id}`);
+                                }
+                            }
+                            else {
+                                this.log.error('Internal error: Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue + ' because of invalid type definition!');
                             }
                         }
                         else {
