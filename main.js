@@ -640,7 +640,7 @@ class OpenAPI {
      * @param {string} group
      */
     async writeConfigInfo(group) {
-        let nextReadTimeout = ReadAfterWriteTimeoutIntervalInS;
+        const nextReadTimeout = ReadAfterWriteTimeoutIntervalInS;
         try {
             this.adapter.stopGroupWriteTimeout(group);
             this.adapter.stopGroupTimeout(group);
@@ -651,8 +651,10 @@ class OpenAPI {
             const gidx = this.stateInfoList.findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
             if (gidx >= 0) {
 
-                const groupInfo = this.stateInfoList[gidx];
-                nextReadTimeout = this.adapter.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor;
+                // The openAPI (and closedAPI anyway) allows smaller intervals again to read data.
+                // Therefore we do no more need to wait the complete intarval to read back the changed value.
+                // const groupInfo = this.stateInfoList[gidx];
+                // nextReadTimeout = this.adapter.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor;
 
                 const groupStates = this.stateInfoList[gidx].states;
                 for (let i = 0; i < groupStates.length; i++) {
