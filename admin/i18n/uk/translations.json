@@ -12,5 +12,6 @@
     "Personal APP ID": "Персональний ID програми",
     "Personal APP Secret": "Особистий секрет програми",
     "Interval to read charging settings": "Інтервал зчитування параметрів заряджання",
-    "Interval to read discharging settings": "Інтервал зчитування параметрів розрядки"
+    "Interval to read discharging settings": "Інтервал зчитування параметрів розрядки",
+    "Interval to read wallbox data": "Інтервал зчитування даних Wallbox [хв]"
 }

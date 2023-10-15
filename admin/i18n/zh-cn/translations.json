@@ -12,5 +12,6 @@
     "Personal APP ID": "个人申请编号",
     "Personal APP Secret": "个人申请秘诀",
     "Interval to read charging settings": "读取充电设置的间隔",
-    "Interval to read discharging settings": "读取放电设置的间隔"
+    "Interval to read discharging settings": "读取放电设置的间隔",
+    "Interval to read wallbox data": "读取 Wallbox 数据的时间间隔 [min]"
 }

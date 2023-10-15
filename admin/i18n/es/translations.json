@@ -12,5 +12,6 @@
     "Personal APP ID": "ID de aplicación personal",
     "Personal APP Secret": "Secreto de aplicación personal",
     "Interval to read charging settings": "Intervalo para leer la configuración de carga",
-    "Interval to read discharging settings": "Intervalo para leer la configuración de descarga"
+    "Interval to read discharging settings": "Intervalo para leer la configuración de descarga",
+    "Interval to read wallbox data": "Intervalo para leer los datos del wallbox [min]"
 }

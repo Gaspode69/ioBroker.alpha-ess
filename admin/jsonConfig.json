@@ -242,6 +242,20 @@
       "disabled": "!data.oAEnableSummary",
       "hidden": "data.apiType == 0"
     },
+    "oAEnableWallbox": {
+      "type": "checkbox",
+      "newLine": true,
+      "hidden": "data.apiType == 0"
+    },
+    "oAIntervalWallboxMins": {
+      "sm": 5,
+      "min": 1,
+      "type": "number",
+      "label": "Interval to read wallbox data",
+      "newLine": false,
+      "disabled": "!data.oAEnableWallbox",
+      "hidden": "data.apiType == 0"
+    },
     "updateUnchangedStates": {
       "type": "checkbox",
       "label": "Update unchanged states",
