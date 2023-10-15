@@ -200,6 +200,7 @@
         "oAIntervalStatisticsTodayMins": 5,
         "oAEnableSummary": true,
         "oAIntervalSummaryMins": 5,
+        "oAEnableWallbox": false,
         "oAIntervalWallboxMins": 5
     },
     "objects": [],

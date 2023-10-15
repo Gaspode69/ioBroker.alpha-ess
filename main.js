@@ -1940,12 +1940,14 @@ class AlphaEss extends utils.Adapter {
                 this.log.debug('config oAIntervalSettingsChargeMins    ' + this.config.oAIntervalSettingsChargeMins);
                 this.log.debug('config oAIntervalSettingsDischargeMins ' + this.config.oAIntervalSettingsDischargeMins);
                 this.log.debug('config oAIntervalSummaryMins:          ' + this.config.oAIntervalSummaryMins);
-                this.log.debug('config enableRealtimedata:             ' + this.config.oAEnableRealtime);
-                this.log.debug('config enableEnergydata:               ' + this.config.oAEnableEnergy);
-                this.log.debug('config enableSettingsdata:             ' + this.config.oAEnableSettingsCharge);
-                this.log.debug('config enableStatisticalTodaydata:     ' + this.config.oAEnableSettingsDischarge);
-                this.log.debug('config enableSummarydata:              ' + this.config.oAEnableSettingsDischarge);
-                this.log.debug('config enableSummarydata:              ' + this.config.oAEnableSummary);
+                this.log.debug('config oAIntervalWallboxMins:          ' + this.config.oAIntervalWallboxMins);
+                this.log.debug('config oAEnableRealtime:               ' + this.config.oAEnableRealtime);
+                this.log.debug('config oAEnableEnergy:                 ' + this.config.oAEnableEnergy);
+                this.log.debug('config oAEnableSettingsCharge:         ' + this.config.oAEnableSettingsCharge);
+                this.log.debug('config oAEnableSettingsCharge:         ' + this.config.oAEnableSettingsCharge);
+                this.log.debug('config oAEnableSettingsDischarge:      ' + this.config.oAEnableSettingsDischarge);
+                this.log.debug('config oAEnableSummary:                ' + this.config.oAEnableSummary);
+                this.log.debug('config oAEnableWallbox:                ' + this.config.oAEnableWallbox);
                 this.log.debug('config updateUnchangedStates:          ' + this.config.updateUnchangedStates);
             }
 
