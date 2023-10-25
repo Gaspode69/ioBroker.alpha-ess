@@ -716,24 +716,24 @@ class OpenAPI {
         await this.adapter.setStateChangedAsync('info.connection', false, true);
         this.adapter.errorCount++;
         if (res.data && res.data.code && res.data.code != 0) {
-            this.adapter.log.error('Alpha ESS Api returns an error!');
+            this.adapter.log.error(`Alpha ESS Api returns an error! Group: ${group}`);
             switch (res.data.code) {
-                case 6001: this.adapter.log.error(`Error: ${res.data.code} - Parameter error (#${this.adapter.errorCount})`); break;
-                case 6002: this.adapter.log.error(`Error: ${res.data.code} - The SN is not bound to the user (#${this.adapter.errorCount})`); break;
-                case 6003: this.adapter.log.error(`Error: ${res.data.code} - You have bound this SN (#${this.adapter.errorCount})`); break;
-                case 6004: this.adapter.log.error(`Error: ${res.data.code} - CheckCode error (#${this.adapter.errorCount})`); break;
-                case 6005: this.adapter.log.error(`Error: ${res.data.code} - This appId is not bound to the SN (#${this.adapter.errorCount})`); break;
-                case 6006: this.adapter.log.error(`Error: ${res.data.code} - Timestamp error (#${this.adapter.errorCount})`); break;
-                case 6007: this.adapter.log.error(`Error: ${res.data.code} - Sign verification error (#${this.adapter.errorCount})`); break;
-                case 6008: this.adapter.log.error(`Error: ${res.data.code} - Set failed (#${this.adapter.errorCount})`); break;
-                case 6009: this.adapter.log.error(`Error: ${res.data.code} - Whitelist verification failed (#${this.adapter.errorCount})`); break;
-                case 6010: this.adapter.log.error(`Error: ${res.data.code} - Sign is empty (#${this.adapter.errorCount})`); break;
-                case 6011: this.adapter.log.error(`Error: ${res.data.code} - timestamp is empty (#${this.adapter.errorCount})`); break;
-                case 6012: this.adapter.log.error(`Error: ${res.data.code} - AppId is empty (#${this.adapter.errorCount})`); break;
-                case 6026: this.adapter.log.error(`Error: ${res.data.code} - Internal Error (#${this.adapter.errorCount})`); break;
-                case 6046: this.adapter.log.error(`Error: ${res.data.code} - Verification code error (#${this.adapter.errorCount})`); break;
-                case 6053: this.adapter.log.error(`Error: ${res.data.code} - The request was too fast, please try again later (#${this.adapter.errorCount})`); break;
-                default: this.adapter.log.error(`Error: ${res.data.code} - Unknown error (#${this.adapter.errorCount})`);
+                case 6001: this.adapter.log.info(`Error code: ${res.data.code} - Parameter error (#${this.adapter.errorCount})`); break;
+                case 6002: this.adapter.log.info(`Error code: ${res.data.code} - The SN is not bound to the user (#${this.adapter.errorCount})`); break;
+                case 6003: this.adapter.log.info(`Error code: ${res.data.code} - You have bound this SN (#${this.adapter.errorCount})`); break;
+                case 6004: this.adapter.log.info(`Error code: ${res.data.code} - CheckCode error (#${this.adapter.errorCount})`); break;
+                case 6005: this.adapter.log.info(`Error code: ${res.data.code} - This appId is not bound to the SN (#${this.adapter.errorCount})`); break;
+                case 6006: this.adapter.log.info(`Error code: ${res.data.code} - Timestamp error (#${this.adapter.errorCount})`); break;
+                case 6007: this.adapter.log.info(`Error code: ${res.data.code} - Sign verification error (#${this.adapter.errorCount})`); break;
+                case 6008: this.adapter.log.info(`Error code: ${res.data.code} - Set failed (#${this.adapter.errorCount})`); break;
+                case 6009: this.adapter.log.info(`Error code: ${res.data.code} - Whitelist verification failed (#${this.adapter.errorCount})`); break;
+                case 6010: this.adapter.log.info(`Error code: ${res.data.code} - Sign is empty (#${this.adapter.errorCount})`); break;
+                case 6011: this.adapter.log.info(`Error code: ${res.data.code} - timestamp is empty (#${this.adapter.errorCount})`); break;
+                case 6012: this.adapter.log.info(`Error code: ${res.data.code} - AppId is empty (#${this.adapter.errorCount})`); break;
+                case 6026: this.adapter.log.info(`Error code: ${res.data.code} - Internal Error (#${this.adapter.errorCount})`); break;
+                case 6046: this.adapter.log.info(`Error code: ${res.data.code} - Verification code error (#${this.adapter.errorCount})`); break;
+                case 6053: this.adapter.log.info(`Error code: ${res.data.code} - The request was too fast, please try again later (#${this.adapter.errorCount})`); break;
+                default: this.adapter.log.info(`Error code: ${res.data.code} - Unknown error (#${this.adapter.errorCount})`);
             }
             if (res.data.code == 6002 ||
                 res.data.code == 6003 ||
@@ -748,7 +748,7 @@ class OpenAPI {
             }
         }
         else {
-            this.adapter.log.error(`Unknown error occurred: ${JSON.stringify(res.data)} (#${this.adapter.errorCount})`);
+            this.adapter.log.error(`Unknown error occurred: ${JSON.stringify(res.data)} (#${this.adapter.errorCount}) Group:${group}`);
         }
         await this.adapter.setQualityForGroup(group, 0x44);
     }
