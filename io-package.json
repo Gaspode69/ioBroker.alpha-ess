@@ -185,7 +185,7 @@
         "updateUnchangedStates": false,
         "appID": "",
         "appSecret": "",
-        "apiType": 1,
+        "apiType": 0,
         "oAEnableRealtime": true,
         "oAIntervalRealtime": 30,
         "oAEnableEnergy": true,
