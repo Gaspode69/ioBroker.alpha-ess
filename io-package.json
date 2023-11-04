@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "1.1.0",
+    "version": "1.1.1",
     "news": {
+      "1.1.1": {
+        "en": "Closed API adapted to latest Alpha-ESS changes and enabled again",
+        "de": "Closed API angepasst an neueste Alpha-ESS-Änderungen und wieder aktiviert",
+        "ru": "Закрытый API адаптирован к последним изменениям Alpha-ESS и включен снова",
+        "pt": "API fechada adaptada às últimas alterações Alpha-ESS e ativada novamente",
+        "nl": "Quality over Quantity (QoQ) Releases Vertaling:",
+        "fr": "API fermée adaptée aux derniers changements Alpha-ESS et réactivée",
+        "it": "API chiusa adattata alle ultime modifiche Alpha-ESS e abilitata di nuovo",
+        "es": "API cerrada adaptada a los últimos cambios de Alpha-ESS y habilitada de nuevo",
+        "pl": "Zamknięty interfejs API zaadaptował się do najnowszych zmian Alpha-ESS i umożliwił powtórzenie się",
+        "uk": "Закритий API, адаптований до останніх змін Альфа-ESS і знову ввімкнено",
+        "zh-cn": "适应最近Alpha-ESS变革的贴近性联谊会再次促成了变革。"
+      },
       "1.1.0": {
         "en": "Closed API disabled (temporarily?) because API has been changed by Alpha-ESS\nRead back changed settings values 2 seconds after they have been changed",
         "de": "Closed API deaktiviert (vorläufig?), weil die API von Alpha-ESS geändert wurde\nLesen Sie zurück geänderte Einstellungen Werte 2 Sekunden nachdem sie geändert wurden",
@@ -80,19 +93,6 @@
         "pl": "Scenariusze zaimplementowali \"zniszczone\" API",
         "uk": "Написання параметрів, реалізованих для \"Closed API\"",
         "zh-cn": "A. 落实的封闭环境"
-      },
-      "1.0.0-alpha.3": {
-        "en": "Slow down requests in case of permanent errors for OpenAPI",
-        "de": "Verlangsamen von Online-Abfragen bei permanent auftretenden Fehlern (OpenAPI)",
-        "ru": "Замедлить запросы в случае постоянных ошибок для OpenAPI",
-        "pt": "Abranda os pedidos em caso de erros permanentes para o OpenAPI",
-        "nl": "Vertragen verzoeken in geval van permanente fouten voor OpenAPI",
-        "fr": "Ralentissez les requêtes en cas d'erreurs permanentes pour OpenAPI",
-        "it": "Rallentare le richieste in caso di errori permanenti per OpenAPI",
-        "es": "Reduzca las solicitudes en caso de errores permanentes para OpenAPI",
-        "pl": "Slow down requests as permanent error for OpenAPI",
-        "uk": "Повільні запити у разі постійних помилок для OpenAPI",
-        "zh-cn": "对开放式企业投机的长期错误请求下降"
       }
     },
     "titleLang": {
