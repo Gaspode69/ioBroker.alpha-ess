@@ -27,8 +27,6 @@ Staring with version 1.0.0-alpha.5, the quality attribute of each state is set a
 
 ## Settings:
 
-<span style="color:red">CAUTION: Currently only Open API is supported because the Closed API was changed by Apha-ESS and cannot be used by third party applications at the moment.</span>
-
 **Used API:** Choose between the inofficial "Closed" API and the official "Open" API
 Depending on the selected API there are different settings available.
 
@@ -65,6 +63,7 @@ How to find SN and Check code for registration is described here: https://github
 **All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
 
 ## Changelog
+
 ### 1.1.1 (2023-11-04)
 
 -   (Gaspode) Closed API adapted to latest Alpha-ESS changes and enabled again
