@@ -14,7 +14,7 @@ const axios = require('axios').default;
 const CA_AUTHPREFIX = 'al8e4s';
 const CA_AUTHCONSTANT = 'LS885ZYDA95JVFQKUIUUUV7PQNODZRDZIS4ERREDS0EED8BCWSS';
 const CA_AUTHSUFFIX = 'ui893ed';
-const CA_BaseURI = 'https://cloud.alphaess.com/';
+const CA_BaseURI = 'https://www.alphaess-cloud.com/';
 const OA_BaseURI = 'https://openapi.alphaess.com/api';
 
 const WriteTimeoutIntervalInS = 5;
@@ -1967,7 +1967,7 @@ class AlphaEss extends utils.Adapter {
                 this.log.info('States will be migrated.');
             }
 
-            if (this.config.apiType == 0) {
+            if (this.config.apiType == 3) { // For future possibility to disable Closed API
                 this.log.error('Closed API: Sorry, Closed API currently not supported because of changes by Alpha-ESS.');
             }
             else {
