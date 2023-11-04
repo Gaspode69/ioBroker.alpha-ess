@@ -12,5 +12,6 @@
 	"Personal APP ID": "Personal Application ID",
 	"Personal APP Secret": "Personal Application Secret",
 	"Interval to read charging settings": "Interval to read charging settings [min]",
-	"Interval to read discharging settings": "Interval to read discharging settings [min]"
+	"Interval to read discharging settings": "Interval to read discharging settings [min]",
+    "Sorry. Closed API currently not supported!": "Sorry. Closed API currently not supported due to changes by Alpha-ESS!"
 }

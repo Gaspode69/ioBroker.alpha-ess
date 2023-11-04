@@ -12,5 +12,6 @@
     "Personal APP ID": "Идентификатор личного приложения",
     "Personal APP Secret": "Секрет личного приложения",
     "Interval to read charging settings": "Интервал чтения настроек зарядки",
-    "Interval to read discharging settings": "Интервал чтения настроек разрядки"
+    "Interval to read discharging settings": "Интервал чтения настроек разрядки",
+    "Sorry. Closed API currently not supported!": "Извини. Закрытый API в настоящее время не поддерживается из-за изменений Alpha-ESS!"
 }

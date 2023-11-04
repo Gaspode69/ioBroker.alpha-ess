@@ -12,5 +12,6 @@
     "Personal APP ID": "Persoonlijke applicatie-ID",
     "Personal APP Secret": "Persoonlijk toepassingsgeheim",
     "Interval to read charging settings": "Interval om laadinstellingen te lezen",
-    "Interval to read discharging settings": "Interval om ontlaadinstellingen te lezen"
+    "Interval to read discharging settings": "Interval om ontlaadinstellingen te lezen",
+    "Sorry. Closed API currently not supported!": "Sorry. Gesloten API momenteel niet ondersteund vanwege wijzigingen door Alpha-ESS!"
 }

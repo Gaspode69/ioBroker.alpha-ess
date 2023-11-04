@@ -12,5 +12,6 @@
     "Personal APP ID": "ID de aplicativo pessoal",
     "Personal APP Secret": "Segredo de aplicativo pessoal",
     "Interval to read charging settings": "Intervalo para ler as configurações de carregamento",
-    "Interval to read discharging settings": "Intervalo para ler as configurações de descarga"
+    "Interval to read discharging settings": "Intervalo para ler as configurações de descarga",
+    "Sorry. Closed API currently not supported!": "Desculpe. API fechada atualmente não suportada devido a alterações do Alpha-ESS!"
 }

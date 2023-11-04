@@ -1967,67 +1967,71 @@ class AlphaEss extends utils.Adapter {
                 this.log.info('States will be migrated.');
             }
 
-            await this.closedApi.resetAuth();
-
-            if (this.config.apiType == 0 && this.config.password && this.config.username && this.config.systemId ||
-                this.config.apiType == 1 && this.config.appID && this.config.appSecret && this.config.systemId) {
-
-                for (const gidx of Object.keys(this.getStateInfoList())) {
-                    const groupInfo = this.getStateInfoList()[gidx];
-
-                    groupInfo.interval = this.config[groupInfo.intervalName] * groupInfo.intervalFactor;
-                    this.log.debug(`${groupInfo.intervalName}: ${groupInfo.interval}`);
-
-                    if (this.jsonConfig.items[groupInfo.intervalName] && this.jsonConfig.items[groupInfo.intervalName].min) {
-                        if (groupInfo.interval < this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor) {
-                            const oldVal = groupInfo.interval;
-                            groupInfo.interval = this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor;
-                            if (this.config[groupInfo.enabledName]) {
-                                this.log.warn(`Configured interval ${oldVal} for ${groupInfo.Group} no longer supported. Changed to ${groupInfo.interval}. Please change your configuration!`);
-                            }
-                        }
-                    }
-
-                    if (this.config[groupInfo.enabledName]) {
-                        await this.setQualityForGroup(groupInfo.Group, 0x2);
-                        await groupInfo.fnct(groupInfo.Group);
-                    }
-                    else {
-                        this.log.info(groupInfo.Group + ' data disabled! Adapter won\'t fetch ' + groupInfo.Group + ' data. According states deleted.');
-                        await this.delObjectAsync(groupInfo.Group, { recursive: true });
-                    }
-                }
+            if (this.config.apiType == 0) {
+                this.log.error('Closed API: Sorry, Closed API currently not supported because of changes by Alpha-ESS.');
             }
             else {
-                if (this.config.apiType == 0) {
-                    this.log.error('Closed API: No username, password and/or system ID set! Adapter won\'t fetch any data.');
+                await this.closedApi.resetAuth();
+
+                if (this.config.apiType == 0 && this.config.password && this.config.username && this.config.systemId ||
+                    this.config.apiType == 1 && this.config.appID && this.config.appSecret && this.config.systemId) {
+
+                    for (const gidx of Object.keys(this.getStateInfoList())) {
+                        const groupInfo = this.getStateInfoList()[gidx];
+
+                        groupInfo.interval = this.config[groupInfo.intervalName] * groupInfo.intervalFactor;
+                        this.log.debug(`${groupInfo.intervalName}: ${groupInfo.interval}`);
+
+                        if (this.jsonConfig.items[groupInfo.intervalName] && this.jsonConfig.items[groupInfo.intervalName].min) {
+                            if (groupInfo.interval < this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor) {
+                                const oldVal = groupInfo.interval;
+                                groupInfo.interval = this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor;
+                                if (this.config[groupInfo.enabledName]) {
+                                    this.log.warn(`Configured interval ${oldVal} for ${groupInfo.Group} no longer supported. Changed to ${groupInfo.interval}. Please change your configuration!`);
+                                }
+                            }
+                        }
+
+                        if (this.config[groupInfo.enabledName]) {
+                            await this.setQualityForGroup(groupInfo.Group, 0x2);
+                            await groupInfo.fnct(groupInfo.Group);
+                        }
+                        else {
+                            this.log.info(groupInfo.Group + ' data disabled! Adapter won\'t fetch ' + groupInfo.Group + ' data. According states deleted.');
+                            await this.delObjectAsync(groupInfo.Group, { recursive: true });
+                        }
+                    }
                 }
                 else {
-                    this.log.error('Open API: No appID, appSecret and/or system ID set! Adapter won\'t fetch any data.');
+                    if (this.config.apiType == 0) {
+                        this.log.error('Closed API: No username, password and/or system ID set! Adapter won\'t fetch any data.');
+                    }
+                    else {
+                        this.log.error('Open API: No appID, appSecret and/or system ID set! Adapter won\'t fetch any data.');
+                    }
                 }
+                this.watchDogIntervalHandle = this.setInterval(this.watchDogFunction, WATCHDOG_TIMER);
+                this.log.debug('Watchdog interval started!');
             }
-
             await this.setStateAsync('info.version', '' + this.version, true);
         }
         catch (e) {
             this.log.error('onReady Exception occurred: ' + e);
         }
-        this.watchDogIntervalHandle = this.setInterval(this.watchDogFunction, WATCHDOG_TIMER);
-        this.log.debug('Watchdog interval started!');
     }
 
     /**
      * Is called when adapter shuts down - callback has to be called under any circumstances!
      * @param {() => void} callback
      */
-    onUnload(callback) {
+    async onUnload(callback) {
         try {
             // Clear all timers
             for (const gidx of Object.keys(this.getStateInfoList())) {
                 const group = this.getStateInfoList()[gidx].Group;
                 this.stopGroupTimeout(group);
                 this.stopGroupWriteTimeout(group);
-                this.setQualityForGroup(group, 0x12);
+                await this.setQualityForGroup(group, 0x12);
             }
 
             if (this.watchDogIntervalHandle) {
@@ -2165,7 +2169,7 @@ class AlphaEss extends utils.Adapter {
         const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
         if (this.getStateInfoList()[gidx].timeoutHandle) {
             this.log.debug('Timeout cleared for group ' + group);
-            clearTimeout(this.getStateInfoList()[gidx].timeoutHandle);
+            this.clearTimeout(this.getStateInfoList()[gidx].timeoutHandle);
             this.getStateInfoList()[gidx].timeoutHandle = 0;
         }
     }
@@ -2180,7 +2184,7 @@ class AlphaEss extends utils.Adapter {
         if (!this.getStateInfoList()[gidx].timeoutHandle) {
             const interval = this.calculateIntervalInMs(intervalInS, group);
             this.log.debug('Timeout with interval ' + interval + ' ms started for group ' + group);
-            this.getStateInfoList()[gidx].timeoutHandle = setTimeout(() => { this.getStateInfoList()[gidx].fnct(group); }, interval);
+            this.getStateInfoList()[gidx].timeoutHandle = this.setTimeout(() => { this.getStateInfoList()[gidx].fnct(group); }, interval);
         }
     }
 
@@ -2193,7 +2197,7 @@ class AlphaEss extends utils.Adapter {
         const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
         if (this.getStateInfoList()[gidx].writeTimeoutHandle) {
             this.log.debug('Write Timeout cleared for group ' + group);
-            clearTimeout(this.getStateInfoList()[gidx].writeTimeoutHandle);
+            this.clearTimeout(this.getStateInfoList()[gidx].writeTimeoutHandle);
             this.getStateInfoList()[gidx].writeTimeoutHandle = 0;
         }
     }
@@ -2210,7 +2214,7 @@ class AlphaEss extends utils.Adapter {
             this.log.debug('Write Timeout with interval ' + interval + ' ms started for group ' + group);
             const wf = this.getStateInfoList()[gidx].writeFnct;
             if (wf) {
-                this.getStateInfoList()[gidx].writeTimeoutHandle = setTimeout(() => { wf(group); }, interval);
+                this.getStateInfoList()[gidx].writeTimeoutHandle = this.setTimeout(() => { wf(group); }, interval);
             }
         }
     }
@@ -2429,17 +2433,24 @@ class AlphaEss extends utils.Adapter {
      * @param {number} q
      */
     async setQualityForGroup(group, q) {
-        const states = await this.getStatesAsync(group + '.*');
-        for (const sid in states) {
-            const newState = states[sid];
-            if (newState.ack) {
-                newState.q = q;
-                this.log.debug(`Set state ${sid} to val: ${newState.val}; q: ${newState.q}; ack: ${newState.ack}}`);
-                await this.setStateAsync(sid, newState, true);
+        try {
+            const states = await this.getStatesAsync(group + '.*');
+            for (const sid in states) {
+                const newState = states[sid];
+                if (newState.ack) {
+                    newState.q = q;
+                    this.log.debug(`Set state ${sid} to val: ${newState.val}; q: ${newState.q}; ack: ${newState.ack}`);
+                    await this.setStateAsync(sid, newState, true);
+                }
+                else {
+                    this.log.debug(`Set state ${sid} NOT to val: ${newState.val}; q: ${newState.q} because ack of this state is ${newState.ack}`);
+                }
             }
-            else {
-                this.log.debug(`Set state ${sid} NOT to val: ${newState.val}; q: ${newState.q} because ack of this state is ${newState.ack}`);
-            }
+        }
+        catch (e) {
+            this.log.error('setQualityForGroup Exception occurred: ' + e);
+            this.log.info('Group: ' + group);
+            return null;
         }
     }
 
