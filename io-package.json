@@ -95,77 +95,136 @@
         "zh-cn": "A. 落实的封闭环境"
       }
     },
-    "encryptedNative": [
-        "password",
-        "appSecret"
-    ],
-    "protectedNative": [
-        "username",
-        "password",
-        "appID",
-        "appSecret"
-    ],
-    "native": {
-        "username": "",
-        "password": "",
-        "systemId": "",
-        "enableRealtimedata": true,
-        "intervalRealtimedata": 30,
-        "enableEnergydata": true,
-        "intervalEnergydataMins": 5,
-        "enableSettingsdata": false,
-        "enableSettingsCharge": false,
-        "intervalSettingsChargeMins": 5,
-        "enableSettingsDisCharge": false,
-        "intervalSettingsDisChargeMins": 5,
-        "intervalSettingsdataMins": 5,
-        "enableStatisticalTodaydata": false,
-        "intervalStatisticalTodaydataMins": 5,
-        "enableSummarydata": false,
-        "intervalSummarydataMins": 5,
-        "updateUnchangedStates": false,
-        "appID": "",
-        "appSecret": "",
-        "apiType": 0,
-        "oAEnableRealtime": true,
-        "oAIntervalRealtime": 30,
-        "oAEnableEnergy": true,
-        "oAIntervalEnergyMins": 5,
-        "oAEnableSettings": false,
-        "oAIntervalSettingsMins": 5,
-        "oAEnableSettingsCharge": true,
-        "oAIntervalSettingsChargeMins": 5,
-        "oAEnableSettingsDischarge": true,
-        "oAIntervalSettingsDischargeMins": 5,
-        "oAEnableStatisticsToday": false,
-        "oAIntervalStatisticsTodayMins": 5,
-        "oAEnableSummary": true,
-        "oAIntervalSummaryMins": 5,
-        "oAEnableWallbox": false,
-        "oAIntervalWallboxMins": 5
+    "titleLang": {
+      "en": "Alpha ESS",
+      "de": "Alpha-ESS",
+      "ru": "Альфа ЭСС",
+      "pt": "Alfa ESS",
+      "nl": "Alfa ESS",
+      "fr": "Alpha SSE",
+      "it": "Alfa ESS",
+      "es": "Alfa ESS",
+      "pl": "Alfa ESS",
+      "zh-cn": "阿尔法 ESS",
+      "uk": "Альфа ESS"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "Device or service connected",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "Read and write data from and to Alpha ESS systems.",
+      "de": "Lesen und schreiben Sie Daten von und zu Alpha ESS-Systemen.",
+      "ru": "Чтение и запись данных из и в системы Alpha ESS.",
+      "pt": "Ler e gravar dados de e para sistemas Alpha ESS.",
+      "nl": "Gegevens lezen en schrijven van en naar Alpha ESS-systemen.",
+      "fr": "Lire et écrire des données depuis et vers les systèmes Alpha ESS.",
+      "it": "Leggere e scrivere dati da e verso sistemi Alpha ESS.",
+      "es": "Lea y escriba datos desde y hacia los sistemas Alpha ESS.",
+      "pl": "Odczytywanie i zapisywanie danych zi do systemów Alpha ESS.",
+      "zh-cn": "在 Alpha ESS 系统中读取和写入数据。",
+      "uk": "Читання та запис даних із систем Alpha ESS і до них."
+    },
+    "authors": [
+      "Gaspode <gaspode69@online.de>"
+    ],
+    "keywords": [
+      "photovoltaik"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "main": "main.js",
+    "icon": "alpha-ess.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Gaspode69/ioBroker.alpha-ess/main/admin/alpha-ess.png",
+    "readme": "https://github.com/Gaspode69/ioBroker.alpha-ess/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "energy",
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=3.3.22"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=5.1.13"
+      }
     ]
+  },
+  "encryptedNative": [
+    "password",
+    "appSecret"
+  ],
+  "protectedNative": [
+    "username",
+    "password",
+    "appID",
+    "appSecret"
+  ],
+  "native": {
+    "username": "",
+    "password": "",
+    "systemId": "",
+    "enableRealtimedata": true,
+    "intervalRealtimedata": 30,
+    "enableEnergydata": true,
+    "intervalEnergydataMins": 5,
+    "enableSettingsdata": false,
+    "enableSettingsCharge": false,
+    "intervalSettingsChargeMins": 5,
+    "enableSettingsDisCharge": false,
+    "intervalSettingsDisChargeMins": 5,
+    "intervalSettingsdataMins": 5,
+    "enableStatisticalTodaydata": false,
+    "intervalStatisticalTodaydataMins": 5,
+    "enableSummarydata": false,
+    "intervalSummarydataMins": 5,
+    "updateUnchangedStates": false,
+    "appID": "",
+    "appSecret": "",
+    "apiType": 0,
+    "oAEnableRealtime": true,
+    "oAIntervalRealtime": 30,
+    "oAEnableEnergy": true,
+    "oAIntervalEnergyMins": 5,
+    "oAEnableSettings": false,
+    "oAIntervalSettingsMins": 5,
+    "oAEnableSettingsCharge": true,
+    "oAIntervalSettingsChargeMins": 5,
+    "oAEnableSettingsDischarge": true,
+    "oAIntervalSettingsDischargeMins": 5,
+    "oAEnableStatisticsToday": false,
+    "oAIntervalStatisticsTodayMins": 5,
+    "oAEnableSummary": true,
+    "oAIntervalSummaryMins": 5,
+    "oAEnableWallbox": false,
+    "oAIntervalWallboxMins": 5
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "Device or service connected",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
