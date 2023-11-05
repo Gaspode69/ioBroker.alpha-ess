@@ -1,158 +1,99 @@
 {
-    "common": {
-        "name": "alpha-ess",
-        "version": "1.0.2",
-        "news": {
-            "1.0.2": {
-                "en": "Updated required node version to 16 or newer",
-                "de": "Erforderliche Node Version auf 16 oder neuer aktualisiert",
-                "ru": "Обновленная необходимая версия узла до 16 или новее",
-                "pt": "Versão de nó atualizada necessária para 16 ou mais recente",
-                "nl": "Verouderd vereiste node versie van 16 of nieuw",
-                "fr": "Mise à jour de la version node requise à 16 ou plus",
-                "it": "Versione nodo richiesta aggiornata a 16 o più recente",
-                "es": "Versión actualizada de nodos requeridos a 16 o más",
-                "pl": "Wymagana wersja węzła do 16 lub nowa",
-                "uk": "Оновлено необхідну версію вершини до 16 або нових",
-                "zh-cn": "A. 最新要求的无误版本到16个或新成员"
-            },
-            "1.0.1": {
-                "en": "Adapted fetching energy values using 'Closed API' to latest API changes by Alpha-ESS",
-                "de": "Closed API: Energiewerte an neueste API-Änderungen von Alpha-ESS angepasst",
-                "ru": "Адаптированные выкачивание энергетических ценностей с помощью 'Closed API' для последних изменений API от Alpha-ESS",
-                "pt": "Valores de energia de busca adaptados usando ' API fechada' para as últimas alterações de API por Alpha-ESS",
-                "nl": "API verandert door Alpha-ESSS",
-                "fr": "Récupération des valeurs d'énergie à l'aide de 'API fermée' aux dernières modifications de l'API par Alpha-ESS",
-                "it": "Adattato l'ottenimento di valori energetici utilizzando 'API archiviate' alle ultime modifiche API di Alpha-ESS",
-                "es": "Valores de energía adaptados de búsqueda usando 'Closed API' para los últimos cambios de API por Alpha-ESS",
-                "pl": "Adapted fetching energy values używając 'Closed API' do najnowszych zmian API przez Alpha-ESS",
-                "uk": "Адаптивовані коефіцієнти відтікання енергії за допомогою 'Closed API' для останніх змін API від Alpha-ESS",
-                "zh-cn": "利用“无能”的能源价值降低到Alpha-ESS新生动的改变"
-            },
-            "1.0.0": {
-                "en": "Support also the new official OpenAPI provided by Alpha-ESS\nSet state quality accordingly to status of data\nWriting charging and discharging settings implemented for 'Closed API' and OpenAPI\nRemove no more supported states at startup automatically",
-                "de": "Unterstützung der neuen offiziellen OpenAPI von Alpha-ESS\nQuality von States wird jetzt entsprechend des Zustands der Daten gesetzt\nSchreiben von Lade- und Entladeeinstellungen für 'Closed API' und OpenAPI implementiert\nNicht mehr unterstützte States werden bei Adapter-Neustart automatisch gelöscht",
-                "ru": "Поддержка также новый официальный OpenAPI, предоставленный Alpha-ESS\nУстановите государственное качество в соответствии с статусом данных\nНаписание зарядки и разгрузки настроек, реализованных для 'Closed API' и OpenAPI\nУдалить больше не поддерживаемых состояний при запуске автоматически",
-                "pt": "Suporte também o novo OpenAPI oficial fornecido pela Alpha-ESS\nDefina a qualidade do estado de acordo com o status dos dados\nEscrevendo as configurações de carregamento e descarregamento implementadas para ' API fechada' e OpenAPI\nRemover estados não mais suportados na inicialização automaticamente",
-                "nl": "Vertaling:\nZet de staatskwaliteit in aanmerking van gegevens\nSchrijven en ontladen opstellingen voor 'Closed API' en OpenAPI'\nVerwijder geen ondersteunende staten bij start-up automatisch",
-                "fr": "Soutien également le nouveau OpenAPI officiel fourni par Alpha-ESS\nDéfinir la qualité de l'état en conséquence à l'état des données\nRédaction des paramètres de chargement et de déchargement mis en œuvre pour 'API perdu' et OpenAPI\nEnlever plus d'états supportés au démarrage automatiquement",
-                "it": "Supporto anche il nuovo OpenAPI ufficiale fornito da Alpha-ESS\nImpostare la qualità dello stato di conseguenza allo stato dei dati\nScrivere le impostazioni di ricarica e discarica implementate per 'Closed API' e OpenAPI\nNon rimuovere più stati supportati all'avvio automaticamente",
-                "es": "Apoyar también el nuevo OpenAPI oficial proporcionado por Alpha-ESS\nEstablecer la calidad del estado en consecuencia al estado de los datos\nEscribir ajustes de carga y descarga implementados para 'Closed API' y OpenAPI\nEliminar no más estados compatibles en el inicio automáticamente",
-                "pl": "Wspiera również nowy oficjalny interfejs OpenAPI zapewniany przez Alpha-ESS\nUstalono jakość państwa zgodnie z statusem danych\nPisanie ładowania i rozładowania wdrożonych ustawień API oraz OpenAPI\nRemove nie będzie więcej wspieranych państw",
-                "uk": "Підтримка також нових офіційних OpenAPI, що надається Альфа-ESS\nВстановити якість держави відповідно до стану даних\nНаписання параметрів зарядки та відключення, що реалізовані для \"Closed API\" та OpenAPI\nВидаліть не більше підтримуваних держав при запуску автоматично",
-                "zh-cn": "还支持阿尔法-萨斯新官方开放协会\n相应地确定数据状况的国家质量\n确定和履行执行的消费和开放的消费者协会和开放协会环境\n自动取消不再支持的开办国家"
-            },
-            "1.0.0-beta.0": {
-                "en": "Changed allowed intervals for OpenAPI according to new specs by Alpha-ESS\nSet state quality accordingly to status of data",
-                "de": "Zulässige Intervalle für OpenAPI an die neuen Spezifikationen von Alpha-ESS angepasst\nQuality Attribut für States wird jetzt entsprechend dem Zustand der Daten gesetzt",
-                "ru": "Изменены допустимые интервалы для OpenAPI в соответствии с новыми спецификациями Alpha-ESS\nУстановите государственное качество в соответствии с статусом данных",
-                "pt": "Variados permitidos para OpenAPI de acordo com novas especificações por Alpha-ESS\nDefina a qualidade do estado de acordo com o status dos dados",
-                "nl": "Veranderde toegestaan interval voor OpenAPI volgens nieuwe specificaties door Alpha-ESS\nZet de staatskwaliteit in aanmerking van gegevens",
-                "fr": "Modifié des intervalles autorisés pour OpenAPI selon de nouvelles spécifications par Alpha-ESS\nDéfinir la qualité de l'état en conséquence à l'état des données",
-                "it": "Intervalli consentiti modificati per OpenAPI secondo nuove specifiche di Alpha-ESS\nImpostare la qualità dello stato di conseguenza allo stato dei dati",
-                "es": "Modificados intervalos permitidos para OpenAPI según nuevas especificaciones por Alpha-ESS\nEstablecer la calidad del estado en consecuencia al estado de los datos",
-                "pl": "Zmienił odstępy dla OpenAPI zgodnie z nowymi specjami Alpha-ESS\nUstalono jakość państwa zgodnie z statusem danych",
-                "uk": "Змінено дозволені інтервали для OpenAPI відповідно до нових специфікацій Альфа-ESS\nВстановити якість держави відповідно до стану даних",
-                "zh-cn": "根据Alpha-ESS的新投机,修改后允许有时间开放性倾向。\n相应地确定数据状况的国家质量"
-            },
-            "1.0.0-alpha.4": {
-                "en": "Writing settings implemented for 'Closed API'",
-                "de": "Schreiben von Settings für 'Closed API' implementiert",
-                "ru": "Настройки написания, реализованные для 'Closed API'",
-                "pt": "Definições de escrita implementadas para ' API fechada'",
-                "nl": "Schrijf instellingen voor 'Closed API'",
-                "fr": "Paramètres de rédaction mis en œuvre pour 'API perdue'",
-                "it": "Impostazioni di scrittura implementate per 'Closed API'",
-                "es": "Configuración de escritura implementada para 'Closed API'",
-                "pl": "Scenariusze zaimplementowali \"zniszczone\" API",
-                "uk": "Написання параметрів, реалізованих для \"Closed API\"",
-                "zh-cn": "A. 落实的封闭环境"
-            },
-            "1.0.0-alpha.3": {
-                "en": "Slow down requests in case of permanent errors for OpenAPI",
-                "de": "Verlangsamen von Online-Abfragen bei permanent auftretenden Fehlern (OpenAPI)",
-                "ru": "Замедлить запросы в случае постоянных ошибок для OpenAPI",
-                "pt": "Abranda os pedidos em caso de erros permanentes para o OpenAPI",
-                "nl": "Vertragen verzoeken in geval van permanente fouten voor OpenAPI",
-                "fr": "Ralentissez les requêtes en cas d'erreurs permanentes pour OpenAPI",
-                "it": "Rallentare le richieste in caso di errori permanenti per OpenAPI",
-                "es": "Reduzca las solicitudes en caso de errores permanentes para OpenAPI",
-                "pl": "Slow down requests as permanent error for OpenAPI",
-                "uk": "Повільні запити у разі постійних помилок для OpenAPI",
-                "zh-cn": "对开放式企业投机的长期错误请求下降"
-            },
-            "1.0.0-alpha.2": {
-                "en": "Fixed state verification for time values (OpenAPI only)",
-                "de": "Verifizierung von Zeitwerten korrigiert (nur OpenAPI)",
-                "ru": "Исправлена проверка состояния на временные значения (только OpenAPI)",
-                "pt": "Verificação de estado fixo para valores de tempo (apenas OpenAPI)",
-                "nl": "Verificatie van de staat voor tijdwaarden (OpenAPI)",
-                "fr": "Vérification de l'état fixe pour les valeurs temporelles (OpenAPI seulement)",
-                "it": "Verifica fissa dello stato per i valori temporali (solo OpenAPI)",
-                "es": "Verificación estatal fija para valores de tiempo (sólo OpenAPI)",
-                "pl": "Weryfikacja stanu na wartości czasowe (OpenAPI tylko)",
-                "uk": "Виправлена перевірка стану для значень часу (тільки OpenAPI)",
-                "zh-cn": "固定国家对时间价值的核查(只有OpenAPI)"
-            }
-        },
-        "titleLang": {
-            "en": "Alpha ESS",
-            "de": "Alpha-ESS",
-            "ru": "Альфа ЭСС",
-            "pt": "Alfa ESS",
-            "nl": "Alfa ESS",
-            "fr": "Alpha SSE",
-            "it": "Alfa ESS",
-            "es": "Alfa ESS",
-            "pl": "Alfa ESS",
-            "zh-cn": "阿尔法 ESS",
-            "uk": "Альфа ESS"
-        },
-        "desc": {
-            "en": "Read and write data from and to Alpha ESS systems.",
-            "de": "Lesen und schreiben Sie Daten von und zu Alpha ESS-Systemen.",
-            "ru": "Чтение и запись данных из и в системы Alpha ESS.",
-            "pt": "Ler e gravar dados de e para sistemas Alpha ESS.",
-            "nl": "Gegevens lezen en schrijven van en naar Alpha ESS-systemen.",
-            "fr": "Lire et écrire des données depuis et vers les systèmes Alpha ESS.",
-            "it": "Leggere e scrivere dati da e verso sistemi Alpha ESS.",
-            "es": "Lea y escriba datos desde y hacia los sistemas Alpha ESS.",
-            "pl": "Odczytywanie i zapisywanie danych zi do systemów Alpha ESS.",
-            "zh-cn": "在 Alpha ESS 系统中读取和写入数据。",
-            "uk": "Читання та запис даних із систем Alpha ESS і до них."
-        },
-        "authors": [
-            "Gaspode <gaspode69@online.de>"
-        ],
-        "keywords": [
-            "photovoltaik"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "main": "main.js",
-        "icon": "alpha-ess.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Gaspode69/ioBroker.alpha-ess/main/admin/alpha-ess.png",
-        "readme": "https://github.com/Gaspode69/ioBroker.alpha-ess/blob/main/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "energy",
-        "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "poll",
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=3.3.22"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=5.1.13"
-            }
-        ]
+  "common": {
+    "name": "alpha-ess",
+    "version": "1.1.1",
+    "news": {
+      "1.1.1": {
+        "en": "Closed API adapted to latest Alpha-ESS changes and enabled again",
+        "de": "Closed API angepasst an neueste Alpha-ESS-Änderungen und wieder aktiviert",
+        "ru": "Закрытый API адаптирован к последним изменениям Alpha-ESS и включен снова",
+        "pt": "API fechada adaptada às últimas alterações Alpha-ESS e ativada novamente",
+        "nl": "Quality over Quantity (QoQ) Releases Vertaling:",
+        "fr": "API fermée adaptée aux derniers changements Alpha-ESS et réactivée",
+        "it": "API chiusa adattata alle ultime modifiche Alpha-ESS e abilitata di nuovo",
+        "es": "API cerrada adaptada a los últimos cambios de Alpha-ESS y habilitada de nuevo",
+        "pl": "Zamknięty interfejs API zaadaptował się do najnowszych zmian Alpha-ESS i umożliwił powtórzenie się",
+        "uk": "Закритий API, адаптований до останніх змін Альфа-ESS і знову ввімкнено",
+        "zh-cn": "适应最近Alpha-ESS变革的贴近性联谊会再次促成了变革。"
+      },
+      "1.1.0": {
+        "en": "Closed API disabled (temporarily?) because API has been changed by Alpha-ESS\nRead back changed settings values 2 seconds after they have been changed",
+        "de": "Closed API deaktiviert (vorläufig?), weil die API von Alpha-ESS geändert wurde\nLesen Sie zurück geänderte Einstellungen Werte 2 Sekunden nachdem sie geändert wurden",
+        "ru": "Закрытый API отключен (временно?) потому что API был изменен Alpha-ESS\nЧитать назад измененные настройки значения 2 секунды после их изменения",
+        "pt": "API fechada desabilitada (temporariamente?) porque a API foi alterada por Alpha-ESS\nLeia novamente os valores das configurações alteradas 2 segundos depois de terem sido alterados",
+        "nl": "Omdat API veranderd is door Alpha-ESSS\nLees terug veranderde instellingen 2 seconden nadat ze veranderd zijn",
+        "fr": "API fermée désactivée (temporairement?) parce que l'API a été changée par Alpha-ESS\nLire les valeurs de paramètres changées 2 secondes après avoir été changées",
+        "it": "Chiuso API disabilitato (temporaneo?) perché API è stato modificato da Alpha-ESS\nLeggi indietro i valori delle impostazioni cambiati 2 secondi dopo che sono stati modificati",
+        "es": "API cerrada deshabilitada (temporalmente?) porque API ha sido cambiado por Alpha-ESS\nLea los valores de configuración cambiados 2 segundos después de haber cambiado",
+        "pl": "Zamknięty API niepełnosprawny (czasowo?) ponieważ interfejs API został zmieniony przez Alpha-ESS\nCzytanie z powrotem zmieniało wartości 2 sekundy po zmianie ich wartości",
+        "uk": "Замкнено API вимкнено (попередньо?) тому, що API було змінено Альфа-ESS\nЧитання змінених значень налаштувань 2 секунд після зміни",
+        "zh-cn": "由于Alpha-ESS已改变API残疾(有时?)\n阅读后的环境价值观2"
+      },
+      "1.0.2": {
+        "en": "Updated required node version to 16 or newer",
+        "de": "Erforderliche Node Version auf 16 oder neuer aktualisiert",
+        "ru": "Обновленная необходимая версия узла до 16 или новее",
+        "pt": "Versão de nó atualizada necessária para 16 ou mais recente",
+        "nl": "Verouderd vereiste node versie van 16 of nieuw",
+        "fr": "Mise à jour de la version node requise à 16 ou plus",
+        "it": "Versione nodo richiesta aggiornata a 16 o più recente",
+        "es": "Versión actualizada de nodos requeridos a 16 o más",
+        "pl": "Wymagana wersja węzła do 16 lub nowa",
+        "uk": "Оновлено необхідну версію вершини до 16 або нових",
+        "zh-cn": "A. 最新要求的无误版本到16个或新成员"
+      },
+      "1.0.1": {
+        "en": "Adapted fetching energy values using 'Closed API' to latest API changes by Alpha-ESS",
+        "de": "Closed API: Energiewerte an neueste API-Änderungen von Alpha-ESS angepasst",
+        "ru": "Адаптированные выкачивание энергетических ценностей с помощью 'Closed API' для последних изменений API от Alpha-ESS",
+        "pt": "Valores de energia de busca adaptados usando ' API fechada' para as últimas alterações de API por Alpha-ESS",
+        "nl": "API verandert door Alpha-ESSS",
+        "fr": "Récupération des valeurs d'énergie à l'aide de 'API fermée' aux dernières modifications de l'API par Alpha-ESS",
+        "it": "Adattato l'ottenimento di valori energetici utilizzando 'API archiviate' alle ultime modifiche API di Alpha-ESS",
+        "es": "Valores de energía adaptados de búsqueda usando 'Closed API' para los últimos cambios de API por Alpha-ESS",
+        "pl": "Adapted fetching energy values używając 'Closed API' do najnowszych zmian API przez Alpha-ESS",
+        "uk": "Адаптивовані коефіцієнти відтікання енергії за допомогою 'Closed API' для останніх змін API від Alpha-ESS",
+        "zh-cn": "利用“无能”的能源价值降低到Alpha-ESS新生动的改变"
+      },
+      "1.0.0": {
+        "en": "Support also the new official OpenAPI provided by Alpha-ESS\nSet state quality accordingly to status of data\nWriting charging and discharging settings implemented for 'Closed API' and OpenAPI\nRemove no more supported states at startup automatically",
+        "de": "Unterstützung der neuen offiziellen OpenAPI von Alpha-ESS\nQuality von States wird jetzt entsprechend des Zustands der Daten gesetzt\nSchreiben von Lade- und Entladeeinstellungen für 'Closed API' und OpenAPI implementiert\nNicht mehr unterstützte States werden bei Adapter-Neustart automatisch gelöscht",
+        "ru": "Поддержка также новый официальный OpenAPI, предоставленный Alpha-ESS\nУстановите государственное качество в соответствии с статусом данных\nНаписание зарядки и разгрузки настроек, реализованных для 'Closed API' и OpenAPI\nУдалить больше не поддерживаемых состояний при запуске автоматически",
+        "pt": "Suporte também o novo OpenAPI oficial fornecido pela Alpha-ESS\nDefina a qualidade do estado de acordo com o status dos dados\nEscrevendo as configurações de carregamento e descarregamento implementadas para ' API fechada' e OpenAPI\nRemover estados não mais suportados na inicialização automaticamente",
+        "nl": "Vertaling:\nZet de staatskwaliteit in aanmerking van gegevens\nSchrijven en ontladen opstellingen voor 'Closed API' en OpenAPI'\nVerwijder geen ondersteunende staten bij start-up automatisch",
+        "fr": "Soutien également le nouveau OpenAPI officiel fourni par Alpha-ESS\nDéfinir la qualité de l'état en conséquence à l'état des données\nRédaction des paramètres de chargement et de déchargement mis en œuvre pour 'API perdu' et OpenAPI\nEnlever plus d'états supportés au démarrage automatiquement",
+        "it": "Supporto anche il nuovo OpenAPI ufficiale fornito da Alpha-ESS\nImpostare la qualità dello stato di conseguenza allo stato dei dati\nScrivere le impostazioni di ricarica e discarica implementate per 'Closed API' e OpenAPI\nNon rimuovere più stati supportati all'avvio automaticamente",
+        "es": "Apoyar también el nuevo OpenAPI oficial proporcionado por Alpha-ESS\nEstablecer la calidad del estado en consecuencia al estado de los datos\nEscribir ajustes de carga y descarga implementados para 'Closed API' y OpenAPI\nEliminar no más estados compatibles en el inicio automáticamente",
+        "pl": "Wspiera również nowy oficjalny interfejs OpenAPI zapewniany przez Alpha-ESS\nUstalono jakość państwa zgodnie z statusem danych\nPisanie ładowania i rozładowania wdrożonych ustawień API oraz OpenAPI\nRemove nie będzie więcej wspieranych państw",
+        "uk": "Підтримка також нових офіційних OpenAPI, що надається Альфа-ESS\nВстановити якість держави відповідно до стану даних\nНаписання параметрів зарядки та відключення, що реалізовані для \"Closed API\" та OpenAPI\nВидаліть не більше підтримуваних держав при запуску автоматично",
+        "zh-cn": "还支持阿尔法-萨斯新官方开放协会\n相应地确定数据状况的国家质量\n确定和履行执行的消费和开放的消费者协会和开放协会环境\n自动取消不再支持的开办国家"
+      },
+      "1.0.0-beta.0": {
+        "en": "Changed allowed intervals for OpenAPI according to new specs by Alpha-ESS\nSet state quality accordingly to status of data",
+        "de": "Zulässige Intervalle für OpenAPI an die neuen Spezifikationen von Alpha-ESS angepasst\nQuality Attribut für States wird jetzt entsprechend dem Zustand der Daten gesetzt",
+        "ru": "Изменены допустимые интервалы для OpenAPI в соответствии с новыми спецификациями Alpha-ESS\nУстановите государственное качество в соответствии с статусом данных",
+        "pt": "Variados permitidos para OpenAPI de acordo com novas especificações por Alpha-ESS\nDefina a qualidade do estado de acordo com o status dos dados",
+        "nl": "Veranderde toegestaan interval voor OpenAPI volgens nieuwe specificaties door Alpha-ESS\nZet de staatskwaliteit in aanmerking van gegevens",
+        "fr": "Modifié des intervalles autorisés pour OpenAPI selon de nouvelles spécifications par Alpha-ESS\nDéfinir la qualité de l'état en conséquence à l'état des données",
+        "it": "Intervalli consentiti modificati per OpenAPI secondo nuove specifiche di Alpha-ESS\nImpostare la qualità dello stato di conseguenza allo stato dei dati",
+        "es": "Modificados intervalos permitidos para OpenAPI según nuevas especificaciones por Alpha-ESS\nEstablecer la calidad del estado en consecuencia al estado de los datos",
+        "pl": "Zmienił odstępy dla OpenAPI zgodnie z nowymi specjami Alpha-ESS\nUstalono jakość państwa zgodnie z statusem danych",
+        "uk": "Змінено дозволені інтервали для OpenAPI відповідно до нових специфікацій Альфа-ESS\nВстановити якість держави відповідно до стану даних",
+        "zh-cn": "根据Alpha-ESS的新投机,修改后允许有时间开放性倾向。\n相应地确定数据状况的国家质量"
+      },
+      "1.0.0-alpha.4": {
+        "en": "Writing settings implemented for 'Closed API'",
+        "de": "Schreiben von Settings für 'Closed API' implementiert",
+        "ru": "Настройки написания, реализованные для 'Closed API'",
+        "pt": "Definições de escrita implementadas para ' API fechada'",
+        "nl": "Schrijf instellingen voor 'Closed API'",
+        "fr": "Paramètres de rédaction mis en œuvre pour 'API perdue'",
+        "it": "Impostazioni di scrittura implementate per 'Closed API'",
+        "es": "Configuración de escritura implementada para 'Closed API'",
+        "pl": "Scenariusze zaimplementowali \"zniszczone\" API",
+        "uk": "Написання параметрів, реалізованих для \"Closed API\"",
+        "zh-cn": "A. 落实的封闭环境"
+      }
     },
     "encryptedNative": [
         "password",

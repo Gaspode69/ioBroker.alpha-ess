@@ -12,19 +12,29 @@
         { "label": "Open API", "value": 1 }
       ]
     },
+    "closedAPINotSupported": {
+      "sm": 5,
+      "type": "staticText",
+      "text": "Sorry. Closed API currently not supported!",
+      "style": {
+          "color": "red"
+      },
+      "newLine": true,
+      "hidden": "data.apiType == 1 || data.apiType == 0"
+    },
     "username": {
       "sm": 5,
       "type": "text",
       "label": "Username",
       "newLine": true,
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "password": {
       "sm": 5,
       "type": "password",
       "label": "Password",
       "newLine": true,
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "appID": {
       "sm": 5,
@@ -44,12 +54,13 @@
       "sm": 5,
       "type": "text",
       "label": "Alpha ESS System ID",
-      "newLine": true
+      "newLine": true,
+      "disabled": "data.apiType == 3"
     },
     "enableRealtimedata": {
       "type": "checkbox",
       "newLine": true,
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "intervalRealtimedata": {
       "sm": 5,
@@ -58,12 +69,12 @@
       "label": "Interval to read realtime data",
       "newLine": false,
       "disabled": "!data.enableRealtimedata",
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "enableEnergydata": {
       "type": "checkbox",
       "newLine": true,
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "intervalEnergydataMins": {
       "sm": 5,
@@ -72,12 +83,12 @@
       "label": "Interval to read energy data",
       "newLine": false,
       "disabled": "!data.enableEnergydata",
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "enableSettingsdata": {
       "type": "checkbox",
       "newLine": true,
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "enableSettingsCharge": {
       "type": "checkbox",
@@ -114,12 +125,12 @@
       "label": "Interval to read settings data",
       "newLine": false,
       "disabled": "!data.enableSettingsdata",
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "enableStatisticalTodaydata": {
       "type": "checkbox",
       "newLine": true,
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "intervalStatisticalTodaydataMins": {
       "sm": 5,
@@ -128,12 +139,12 @@
       "label": "Interval to read statistical data (today)",
       "newLine": false,
       "disabled": "!data.enableStatisticalTodaydata",
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "enableSummarydata": {
       "type": "checkbox",
       "newLine": true,
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "intervalSummarydataMins": {
       "sm": 5,
@@ -142,7 +153,7 @@
       "label": "Interval to read summary data",
       "newLine": false,
       "disabled": "!data.enableSummarydata",
-      "hidden": "data.apiType == 1"
+      "hidden": "data.apiType == 1 || data.apiType == 3"
     },
     "oAEnableRealtime": {
       "type": "checkbox",
@@ -259,7 +270,8 @@
     "updateUnchangedStates": {
       "type": "checkbox",
       "label": "Update unchanged states",
-      "newLine": true
+      "newLine": true,
+      "hidden": "data.apiType == 3"
     }
   }
 }
