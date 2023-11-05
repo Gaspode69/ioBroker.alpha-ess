@@ -13,6 +13,6 @@
     "Personal APP Secret": "Secret d'application personnel",
     "Interval to read charging settings": "Intervalle pour lire les paramètres de charge",
     "Interval to read discharging settings": "Intervalle pour lire les paramètres de décharge",
-    "Interval to read wallbox data": "Intervalle de lecture des données de la wallbox [min]"
+    "Interval to read wallbox data": "Intervalle de lecture des données de la wallbox [min]",
     "Sorry. Closed API currently not supported!": "Désolé. API fermée actuellement non prise en charge en raison de modifications apportées par Alpha-ESS !"
 }
