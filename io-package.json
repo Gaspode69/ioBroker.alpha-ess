@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "1.2.0-beta.0",
+    "version": "1.2.0-beta.1",
     "news": {
-      "1.2.0-beta.0": {
+      "1.2.0-beta.1": {
         "en": "Added additional realtime attributes for OpenAPI",
         "de": "Zusätzliche Echtzeit-Attribute für OpenAPI hinzugefügt",
         "ru": "Добавлены дополнительные атрибуты в реальном времени для OpenAPI",
@@ -80,19 +80,6 @@
         "pl": "Wspiera również nowy oficjalny interfejs OpenAPI zapewniany przez Alpha-ESS\nUstalono jakość państwa zgodnie z statusem danych\nPisanie ładowania i rozładowania wdrożonych ustawień API oraz OpenAPI\nRemove nie będzie więcej wspieranych państw",
         "uk": "Підтримка також нових офіційних OpenAPI, що надається Альфа-ESS\nВстановити якість держави відповідно до стану даних\nНаписання параметрів зарядки та відключення, що реалізовані для \"Closed API\" та OpenAPI\nВидаліть не більше підтримуваних держав при запуску автоматично",
         "zh-cn": "还支持阿尔法-萨斯新官方开放协会\n相应地确定数据状况的国家质量\n确定和履行执行的消费和开放的消费者协会和开放协会环境\n自动取消不再支持的开办国家"
-      },
-      "1.0.0-beta.0": {
-        "en": "Changed allowed intervals for OpenAPI according to new specs by Alpha-ESS\nSet state quality accordingly to status of data",
-        "de": "Zulässige Intervalle für OpenAPI an die neuen Spezifikationen von Alpha-ESS angepasst\nQuality Attribut für States wird jetzt entsprechend dem Zustand der Daten gesetzt",
-        "ru": "Изменены допустимые интервалы для OpenAPI в соответствии с новыми спецификациями Alpha-ESS\nУстановите государственное качество в соответствии с статусом данных",
-        "pt": "Variados permitidos para OpenAPI de acordo com novas especificações por Alpha-ESS\nDefina a qualidade do estado de acordo com o status dos dados",
-        "nl": "Veranderde toegestaan interval voor OpenAPI volgens nieuwe specificaties door Alpha-ESS\nZet de staatskwaliteit in aanmerking van gegevens",
-        "fr": "Modifié des intervalles autorisés pour OpenAPI selon de nouvelles spécifications par Alpha-ESS\nDéfinir la qualité de l'état en conséquence à l'état des données",
-        "it": "Intervalli consentiti modificati per OpenAPI secondo nuove specifiche di Alpha-ESS\nImpostare la qualità dello stato di conseguenza allo stato dei dati",
-        "es": "Modificados intervalos permitidos para OpenAPI según nuevas especificaciones por Alpha-ESS\nEstablecer la calidad del estado en consecuencia al estado de los datos",
-        "pl": "Zmienił odstępy dla OpenAPI zgodnie z nowymi specjami Alpha-ESS\nUstalono jakość państwa zgodnie z statusem danych",
-        "uk": "Змінено дозволені інтервали для OpenAPI відповідно до нових специфікацій Альфа-ESS\nВстановити якість держави відповідно до стану даних",
-        "zh-cn": "根据Alpha-ESS的新投机,修改后允许有时间开放性倾向。\n相应地确定数据状况的国家质量"
       }
     },
     "titleLang": {
