@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "1.1.1",
+    "version": "1.2.0-beta.0",
     "news": {
+      "1.2.0-beta.0": {
+        "en": "Added additional realtime attributes for OpenAPI",
+        "de": "Zusätzliche Echtzeit-Attribute für OpenAPI hinzugefügt",
+        "ru": "Добавлены дополнительные атрибуты в реальном времени для OpenAPI",
+        "pt": "Adicionado atributos em tempo real adicionais para OpenAPI",
+        "nl": "Toegevoegd aanvullingen voor OpenAPI",
+        "fr": "Ajout d'autres attributs en temps réel pour OpenAPI",
+        "it": "Aggiunto attributi in tempo reale aggiuntivi per OpenAPI",
+        "es": "Atributos adicionales en tiempo real para OpenAPI",
+        "pl": "Dodać dodatkowe atrybuty dla OpenAPI",
+        "uk": "Додано додаткові атрибути в режимі реального часу для OpenAPI",
+        "zh-cn": "增加开放协会实时归属"
+      },
       "1.1.1": {
         "en": "Closed API adapted to latest Alpha-ESS changes and enabled again",
         "de": "Closed API angepasst an neueste Alpha-ESS-Änderungen und wieder aktiviert",
@@ -80,19 +93,6 @@
         "pl": "Zmienił odstępy dla OpenAPI zgodnie z nowymi specjami Alpha-ESS\nUstalono jakość państwa zgodnie z statusem danych",
         "uk": "Змінено дозволені інтервали для OpenAPI відповідно до нових специфікацій Альфа-ESS\nВстановити якість держави відповідно до стану даних",
         "zh-cn": "根据Alpha-ESS的新投机,修改后允许有时间开放性倾向。\n相应地确定数据状况的国家质量"
-      },
-      "1.0.0-alpha.4": {
-        "en": "Writing settings implemented for 'Closed API'",
-        "de": "Schreiben von Settings für 'Closed API' implementiert",
-        "ru": "Настройки написания, реализованные для 'Closed API'",
-        "pt": "Definições de escrita implementadas para ' API fechada'",
-        "nl": "Schrijf instellingen voor 'Closed API'",
-        "fr": "Paramètres de rédaction mis en œuvre pour 'API perdue'",
-        "it": "Impostazioni di scrittura implementate per 'Closed API'",
-        "es": "Configuración de escritura implementada para 'Closed API'",
-        "pl": "Scenariusze zaimplementowali \"zniszczone\" API",
-        "uk": "Написання параметрів, реалізованих для \"Closed API\"",
-        "zh-cn": "A. 落实的封闭环境"
       }
     },
     "titleLang": {
