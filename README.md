@@ -64,9 +64,9 @@ How to find SN and Check code for registration is described here: https://github
 
 ## Changelog
 
--   (Gaspode) Add additional realtime attributes for OpenAPI
-
 ### **WORK IN PROGRESS**
+
+-   (Gaspode) Added additional realtime attributes for OpenAPI
 
 ### 1.1.1 (2023-11-04)
 
