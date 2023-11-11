@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "1.2.0",
+    "version": "1.2.1",
     "news": {
+      "1.2.1": {
+        "en": "Fixed severe error in ClosedAPI",
+        "de": "Schweren Fehler in ClosedAPI behoben",
+        "ru": "Исправлена тяжелая ошибка в ClosedAPI",
+        "pt": "Erro grave fixo em ClosedAPI",
+        "nl": "Een ernstige fout in ClosedAPI",
+        "fr": "Erreur sévère fixe dans le fichier FerméAPI",
+        "it": "Risolto grave errore in ClosedAPI",
+        "es": "Error severo corregido en CerradaAPI",
+        "pl": "Szczegółowy błąd w ClosedAPI",
+        "uk": "Виправлено тяжку помилку в ClosedAPI",
+        "zh-cn": "A. 近似严重错误"
+      },
       "1.2.0": {
         "en": "Added additional realtime attributes for OpenAPI",
         "de": "Zusätzliche Echtzeit-Attribute für OpenAPI hinzugefügt",
