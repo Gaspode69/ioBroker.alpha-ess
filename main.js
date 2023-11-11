@@ -47,6 +47,51 @@ class OpenAPI {
                     , unit: 'W'
                 },
                 {
+                    alphaAttrName: 'ppv1'
+                    , role: 'value.power'
+                    , id: 'PV_power_string_1'
+                    , name: 'PV power string 1'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                },
+                {
+                    alphaAttrName: 'ppv2'
+                    , role: 'value.power'
+                    , id: 'PV_power_string_2'
+                    , name: 'PV power string 2'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                },
+                {
+                    alphaAttrName: 'ppv3'
+                    , role: 'value.power'
+                    , id: 'PV_power_string_3'
+                    , name: 'PV power string 3'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                },
+                {
+                    alphaAttrName: 'ppv4'
+                    , role: 'value.power'
+                    , id: 'PV_power_string_4'
+                    , name: 'PV power string 4'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                },
+                {
+                    alphaAttrName: 'pmeterDc'
+                    , role: 'value.power'
+                    , id: 'PV_power_meter'
+                    , name: 'PV power meter'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                },
+                {
                     alphaAttrName: 'pload'
                     , role: 'value.power'
                     , id: 'Load_total'
@@ -61,6 +106,30 @@ class OpenAPI {
                     , name: 'State of charge'
                     , type: 'number'
                     , unit: '%'
+                },
+                {
+                    alphaAttrName: 'pmeterL1'
+                    , role: 'value.power'
+                    , id: 'Grid_power_L1'
+                    , name: 'Grid power L1'
+                    , type: 'number'
+                    , unit: 'W'
+                },
+                {
+                    alphaAttrName: 'pmeterL2'
+                    , role: 'value.power'
+                    , id: 'Grid_power_L2'
+                    , name: 'Grid power L2'
+                    , type: 'number'
+                    , unit: 'W'
+                },
+                {
+                    alphaAttrName: 'pmeterL3'
+                    , role: 'value.power'
+                    , id: 'Grid_power_L3'
+                    , name: 'Grid power L3'
+                    , type: 'number'
+                    , unit: 'W'
                 },
                 {
                     alphaAttrName: 'pgrid'
@@ -81,10 +150,73 @@ class OpenAPI {
                 {
                     alphaAttrName: 'pev'
                     , role: 'value.power'
-                    , id: 'Charging_pile_total'
-                    , name: 'Charging pile (Wallbox) total'
+                    , id: 'Charging_pile_power_total'
+                    , name: 'Charging pile (Wallbox) power total'
                     , type: 'number'
                     , unit: 'W'
+                },
+                {
+                    alphaAttrName: 'prealL1'
+                    , role: 'value.power'
+                    , id: 'Inverter_power_L1'
+                    , name: 'Inverter power L1'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                },
+                {
+                    alphaAttrName: 'prealL2'
+                    , role: 'value.power'
+                    , id: 'Inverter_power_L2'
+                    , name: 'Inverter power L2'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                },
+                {
+                    alphaAttrName: 'prealL3'
+                    , role: 'value.power'
+                    , id: 'Inverter_power_L3'
+                    , name: 'Inverter power L3'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                },
+                {
+                    alphaAttrName: 'ev1Power'
+                    , role: 'value.power'
+                    , id: 'Charging_pile_power_1'
+                    , name: 'Charging pile (Wallbox) power 1'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                },
+                {
+                    alphaAttrName: 'ev2Power'
+                    , role: 'value.power'
+                    , id: 'Charging_pile_power_2'
+                    , name: 'Charging pile (Wallbox) power 2'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                },
+                {
+                    alphaAttrName: 'ev3Power'
+                    , role: 'value.power'
+                    , id: 'Charging_pile_power_3'
+                    , name: 'Charging pile (Wallbox) power 3'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
+                },
+                {
+                    alphaAttrName: 'ev4Power'
+                    , role: 'value.power'
+                    , id: 'Charging_pile_power_4'
+                    , name: 'Charging pile (Wallbox) power 4'
+                    , type: 'number'
+                    , unit: 'W'
+                    , dayIndex: false
                 }]
         },
         {
@@ -2291,34 +2423,17 @@ class AlphaEss extends utils.Adapter {
                     // Create all states for received elements
                     for (const [alphaAttrName, rawValue] of Object.entries(data)) {
                         const stateInfo = this.getStateInfoByAlphaAttrName(group, alphaAttrName);
-                        if (stateInfo) {
-                            // The type checker has a problem with type: stateInfo.type. I have no clue why.
-                            // All possible types are correct and valid. To get rid of the type checker error, we check for valid types:
-                            if (stateInfo.type == 'string' || stateInfo.type == 'boolean' || stateInfo.type == 'number') {
-                                await setObjectFunc(group + '.' + this.osn(stateInfo.id), {
-                                    type: 'state',
-                                    common: {
-                                        name: stateInfo.name + ' [' + stateInfo.alphaAttrName + ']'
-                                        , type: stateInfo.type
-                                        , role: stateInfo.role
-                                        , read: true
-                                        , write: stateInfo.writeable ? stateInfo.writeable : false
-                                        , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit === '{moneyType}' ? data['moneyType'] : stateInfo.unit
-                                        , desc: stateInfo.alphaAttrName
-                                    },
-                                    native: {},
-                                });
-                                if (stateInfo.writeable) {
-                                    await this.subscribeStatesAsync(`${group}.${stateInfo.id}`);
-                                    this.log.debug(`Subscribed State: ${group}.${stateInfo.id}`);
-                                }
-                            }
-                            else {
-                                this.log.error('Internal error: Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue + ' because of invalid type definition!');
-                            }
+                        if (typeof data[alphaAttrName] !== 'object') {
+                            this.createStateForAttribute(group, data, rawValue, alphaAttrName, stateInfo, setObjectFunc);
                         }
                         else {
-                            this.log.debug('Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue);
+                            // Look for subvalues:
+                            if (data[alphaAttrName]) {
+                                for (const [alphaAttrName2, rawValue2] of Object.entries(data[alphaAttrName])) {
+                                    const stateInfo2 = this.getStateInfoByAlphaAttrName(group, alphaAttrName2);
+                                    this.createStateForAttribute(group, data[alphaAttrName], rawValue2, alphaAttrName2, stateInfo2, setObjectFunc);
+                                }
+                            }
                         }
                     }
                     this.log.info('Initialized states for : ' + group);
@@ -2328,54 +2443,118 @@ class AlphaEss extends utils.Adapter {
                 // Set values for received states
                 for (const [alphaAttrName, rawValue] of Object.entries(data)) {
                     const stateInfo = this.getStateInfoByAlphaAttrName(group, alphaAttrName);
-                    if (stateInfo) {
-                        let value = '';
-                        if (stateInfo.dayIndex) {
-                            value = rawValue[idx];
+                    if (typeof data[alphaAttrName] !== 'object') {
+                        this.setValueForAttribute(group, rawValue, stateInfo, idx);
+                    }
+                    else {
+                        // Look for subvalues:
+                        if (data[alphaAttrName]) {
+                            for (const [alphaAttrName2, rawValue2] of Object.entries(data[alphaAttrName])) {
+                                const stateInfo2 = this.getStateInfoByAlphaAttrName(group, alphaAttrName2);
+                                this.setValueForAttribute(group, rawValue2, stateInfo2, idx);
+                            }
                         }
-                        else {
-                            value = rawValue;
-                        }
-                        this.log.silly(group + '.' + this.osn(stateInfo.id) + ':' + value);
-                        let tvalue;
-                        switch (stateInfo.type) {
-                            case 'number':
-                                tvalue = Number.parseFloat(value);
-                                if (stateInfo.factor) {
-                                    tvalue *= stateInfo.factor;
-                                }
-                                if (stateInfo.round) {
-                                    tvalue = (Math.round(tvalue * (10 ** stateInfo.round))) / (10 ** stateInfo.round);
-                                }
-                                break;
-                            case 'boolean':
-                                if (value.toString().toLowerCase() === 'true') {
-                                    tvalue = true;
-                                }
-                                else if (value.toString().toLowerCase() === 'false') {
-                                    tvalue = false;
-                                }
-                                else {
-                                    tvalue = Number.parseInt(value) != 0;
-                                }
-                                break;
-                            default:
-                                tvalue = value;
-                        }
-                        if (this.config.updateUnchangedStates) {
-                            await this.setStateAsync(group + '.' + this.osn(stateInfo.id), { val: tvalue, q: 0 }, true);
-                        }
-                        else {
-                            await this.setStateChangedAsync(group + '.' + this.osn(stateInfo.id), { val: tvalue, q: 0 }, true);
-                        }
-                        stateInfo.lastUpdateTs = Date.now();
-                        this.log.debug('Received object ' + group + '.' + this.osn(stateInfo.alphaAttrName) + ' with value ' + rawValue);
                     }
                 }
             }
         }
         catch (e) {
             this.log.error('createAndUpdateStates Exception occurred: ' + e);
+        }
+    }
+
+    /**
+     *
+     * create the state for the received element
+     * @param {string} group
+     * @param {{[x: string]: any;}} data
+     * @param {string} rawValue
+     * @param {string} alphaAttrName
+     */
+    async createStateForAttribute(group, data, rawValue, alphaAttrName, stateInfo, setObjectFunc) {
+        if (stateInfo) {
+            // The type checker has a problem with type: stateInfo.type. I have no clue why.
+            // All possible types are correct and valid. To get rid of the type checker error, we check for valid types:
+            if (stateInfo.type == 'string' || stateInfo.type == 'boolean' || stateInfo.type == 'number') {
+                await setObjectFunc(group + '.' + this.osn(stateInfo.id), {
+                    type: 'state',
+                    common: {
+                        name: stateInfo.name + ' [' + stateInfo.alphaAttrName + ']'
+                        , type: stateInfo.type
+                        , role: stateInfo.role
+                        , read: true
+                        , write: stateInfo.writeable ? stateInfo.writeable : false
+                        , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit === '{moneyType}' ? data['moneyType'] : stateInfo.unit
+                        , desc: stateInfo.alphaAttrName
+                    },
+                    native: {},
+                });
+                if (stateInfo.writeable) {
+                    await this.subscribeStatesAsync(`${group}.${stateInfo.id}`);
+                    this.log.debug(`Subscribed State: ${group}.${stateInfo.id}`);
+                }
+            }
+            else {
+                this.log.error('Internal error: Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue + ' because of invalid type definition!');
+            }
+        }
+        else {
+            if (alphaAttrName == 'sysSn' || alphaAttrName == 'theDate') {
+                this.log.debug('Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue);
+            }
+            else {
+                this.log.warn('Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue);
+            }
+        }
+    }
+
+    /**
+     * @param {string} group
+     * @param {string} rawValue
+     */
+    async setValueForAttribute(group, rawValue, stateInfo, idx) {
+        if (stateInfo) {
+            let value = '';
+            if (stateInfo.dayIndex) {
+                value = rawValue[idx];
+            }
+            else {
+                value = rawValue;
+            }
+            this.log.silly(group + '.' + this.osn(stateInfo.id) + ':' + value);
+            let tvalue;
+            switch (stateInfo.type) {
+                case 'number':
+                    tvalue = Number.parseFloat(value);
+                    if (stateInfo.factor) {
+                        tvalue *= stateInfo.factor;
+                    }
+                    if (stateInfo.round) {
+                        tvalue = (Math.round(tvalue * (10 ** stateInfo.round))) / (10 ** stateInfo.round);
+                    }
+                    break;
+                case 'boolean':
+                    if (value.toString().toLowerCase() === 'true') {
+                        tvalue = true;
+                    }
+                    else if (value.toString().toLowerCase() === 'false') {
+                        tvalue = false;
+                    }
+                    else {
+                        tvalue = Number.parseInt(value) != 0;
+                    }
+                    break;
+                default:
+                    tvalue = value;
+            }
+            if (this.config.updateUnchangedStates) {
+                await this.setStateAsync(group + '.' + this.osn(stateInfo.id), { val: tvalue, q: 0 }, true);
+            }
+            else {
+                await this.setStateChangedAsync(group + '.' + this.osn(stateInfo.id), { val: tvalue, q: 0 }, true);
+            }
+            stateInfo.lastUpdateTs = Date.now();
+            this.log.debug('Received object ' + group + '.' + this.osn(stateInfo.alphaAttrName) + ' with value ' + rawValue);
         }
     }
 
