@@ -2426,9 +2426,11 @@ class AlphaEss extends utils.Adapter {
                         }
                         else {
                             // Look for subvalues:
-                            for (const [alphaAttrName2, rawValue2] of Object.entries(data[alphaAttrName])) {
-                                const stateInfo2 = this.getStateInfoByAlphaAttrName(group, alphaAttrName2);
-                                this.createStateForAttribute(group, data[alphaAttrName], rawValue2, alphaAttrName2, stateInfo2, setObjectFunc);
+                            if (data[alphaAttrName]) {
+                                for (const [alphaAttrName2, rawValue2] of Object.entries(data[alphaAttrName])) {
+                                    const stateInfo2 = this.getStateInfoByAlphaAttrName(group, alphaAttrName2);
+                                    this.createStateForAttribute(group, data[alphaAttrName], rawValue2, alphaAttrName2, stateInfo2, setObjectFunc);
+                                }
                             }
                         }
                     }
@@ -2444,9 +2446,11 @@ class AlphaEss extends utils.Adapter {
                     }
                     else {
                         // Look for subvalues:
-                        for (const [alphaAttrName2, rawValue2] of Object.entries(data[alphaAttrName])) {
-                            const stateInfo2 = this.getStateInfoByAlphaAttrName(group, alphaAttrName2);
-                            this.setValueForAttribute(group, rawValue2, stateInfo2, idx);
+                        if (data[alphaAttrName]) {
+                            for (const [alphaAttrName2, rawValue2] of Object.entries(data[alphaAttrName])) {
+                                const stateInfo2 = this.getStateInfoByAlphaAttrName(group, alphaAttrName2);
+                                this.setValueForAttribute(group, rawValue2, stateInfo2, idx);
+                            }
                         }
                     }
                 }
