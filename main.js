@@ -558,7 +558,54 @@ class OpenAPI {
                     , type: 'number'
                     , unit: 'kWh'
                 }]
+        },
+        {
+            Group: 'Wallbox'
+            , fnct: this.getWallboxData.bind(this)
+            , enabledName: 'oAEnableWallbox'
+            , intervalName: 'oAIntervalWallboxMins'
+            , intervalFactor: 60
+            , states: [
+                {
+                    alphaAttrName: 'evchargerSn'
+                    , role: 'value'
+                    , id: 'SN'
+                    , name: 'Wallbox serial number'
+                    , type: 'string'
+                    , unit: ''
+                    , isStatic: true
+                },
+                {
+                    alphaAttrName: 'evchargerModel'
+                    , role: 'value'
+                    , id: 'Model'
+                    , name: 'Wallbox model'
+                    , type: 'string'
+                    , unit: ''
+                    , isStatic: true
+                },
+                {
+                    alphaAttrName: 'evchargerStatus'
+                    , role: 'value'
+                    , id: 'Status'
+                    , name: 'Wallbox status'
+                    , type: 'number'
+                    , unit: ''
+                    , states: {
+                        0: '0 - Unknown',
+                        1: '1 - Available state (not plugged in)',
+                        2: '2 - Preparing state of insertion (plugged in and not activated)',
+                        3: '3 - Charging state (charging with power output)',
+                        4: '4 - SuspendedEVSE pile Suspended at the terminal (already started but no available power)',
+                        5: '5 - SuspendedEV Suspended at the vehicle end (with available power, waiting for the car to respond)',
+                        6: '6 - Finishing The charging end state (actively swiping the card to stop or EMS stop control)',
+                        7: '7 - Unknown',
+                        8: '8 - Unknown',
+                        9: '9 - Faulted fault state (pile failure)'
+                    }
+                }]
         }];
+
         this.adapter = adapter;
         this.emptyBody = { data: null };
     }
@@ -648,7 +695,7 @@ class OpenAPI {
             }
         }
         catch (e) {
-            this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
+            this.adapter.log.error('Fetching data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody, group);
         }
         await this.startGroupTimeout(group);
@@ -674,7 +721,7 @@ class OpenAPI {
             }
         }
         catch (e) {
-            this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
+            this.adapter.log.error('Fetching data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody, group);
         }
         await this.startGroupTimeout(group);
@@ -712,7 +759,7 @@ class OpenAPI {
             }
         }
         catch (e) {
-            this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
+            this.adapter.log.error('Fetching data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody, group);
         }
         await this.startGroupTimeout(group);
@@ -736,7 +783,7 @@ class OpenAPI {
             }
         }
         catch (e) {
-            this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
+            this.adapter.log.error('Fetching data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody, group);
         }
         await this.startGroupTimeout(group);
@@ -762,10 +809,75 @@ class OpenAPI {
             }
         }
         catch (e) {
-            this.adapter.log.error('Reading data for group ' + group + ': Exception occurred: ' + e);
+            this.adapter.log.error('Fetching data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody, group);
         }
         await this.startGroupTimeout(group);
+    }
+
+    /**
+     * @param {string} group
+     */
+    async getWallboxData(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Fetching ' + group + ' data...');
+
+            // First we need to get SN if not already done:
+            let snState = await this.adapter.getStateAsync(`${group}.SN`);
+            if (!snState || typeof snState.val === 'string' && snState.val.length == 0) {
+                await this.getWallboxSn(group);
+                this.adapter.log.info('###' + `${group}.SN`);
+                snState = await this.adapter.getStateAsync(`${group}.SN`);
+                this.adapter.log.info('###' + `${group}.SN`);
+                // In this special case we reset the creaton indicator because more states must be created for this group in the next step
+                this.adapter.createdStates[group] = false;
+            }
+
+            if (snState && typeof snState.val === 'string' && snState.val.length > 0) {
+                this.adapter.log.debug(`Using Wallbox SN: ${snState.val}`);
+                const res = await this.getRequest(`getEvChargerStatusBySn?sysSn=${this.adapter.config.systemId}&evchargerSn=${snState.val}`, {});
+                if (true || res && res['status'] == 200 && res.data && res.data.data) {
+                    res.data.data = JSON.parse('{"evchargerStatus":1}');
+                    await this.adapter.createAndUpdateStates(group, res.data.data);
+                }
+                else {
+                    await this.handleError(res, group);
+                }
+            }
+            else {
+                this.adapter.log.error('No wallbox SN could be  found!');
+            }
+        }
+        catch (e) {
+            this.adapter.log.error('Fetching data for group ' + group + ': Exception occurred: ' + e);
+            await this.handleError(this.emptyBody, group);
+        }
+        await this.startGroupTimeout(group);
+    }
+
+    /**
+     * @param {string} group
+     */
+    async getWallboxSn(group) {
+        try {
+            this.adapter.log.debug('Fetching Wallbox SN ...');
+
+            const res = await this.getRequest(`getEvChargerConfigList?sysSn=${this.adapter.config.systemId}`, {});
+            if (res && res['status'] == 200 && res.data && res.data.data) {
+
+                res.data.data = JSON.parse('[{"evchargerSn":"ALP2021082015071x","evchargerModel":"SMILE-EVCT11"}]');
+                await this.adapter.createAndUpdateStates(group, res.data.data[0]);
+            }
+            else {
+                await this.handleError(res, group);
+            }
+        }
+        catch (e) {
+            this.adapter.log.error('Fetching Wallbox SN: Exception occurred: ' + e);
+            await this.handleError(this.emptyBody, group);
+        }
     }
 
     /**
@@ -862,7 +974,11 @@ class OpenAPI {
                 case 6010: this.adapter.log.info(`Error code: ${res.data.code} - Sign is empty (#${this.adapter.errorCount})`); break;
                 case 6011: this.adapter.log.info(`Error code: ${res.data.code} - timestamp is empty (#${this.adapter.errorCount})`); break;
                 case 6012: this.adapter.log.info(`Error code: ${res.data.code} - AppId is empty (#${this.adapter.errorCount})`); break;
+                case 6016: this.adapter.log.info(`Error code: ${res.data.code} - Data does not exist or has been deleted (#${this.adapter.errorCount})`); break;
                 case 6026: this.adapter.log.info(`Error code: ${res.data.code} - Internal Error (#${this.adapter.errorCount})`); break;
+                case 6029: this.adapter.log.info(`Error code: ${res.data.code} - operation failed (#${this.adapter.errorCount})`); break;
+                case 6038: this.adapter.log.info(`Error code: ${res.data.code} - system sn does not exist (#${this.adapter.errorCount})`); break;
+                case 6042: this.adapter.log.info(`Error code: ${res.data.code} - system offline (#${this.adapter.errorCount})`); break;
                 case 6046: this.adapter.log.info(`Error code: ${res.data.code} - Verification code error (#${this.adapter.errorCount})`); break;
                 case 6053: this.adapter.log.info(`Error code: ${res.data.code} - The request was too fast, please try again later (#${this.adapter.errorCount})`); break;
                 default: this.adapter.log.info(`Error code: ${res.data.code} - Unknown error (#${this.adapter.errorCount})`);
@@ -2422,16 +2538,16 @@ class AlphaEss extends utils.Adapter {
 
                     // Create all states for received elements
                     for (const [alphaAttrName, rawValue] of Object.entries(data)) {
-                        const stateInfo = this.getStateInfoByAlphaAttrName(group, alphaAttrName);
+                        const stateInfo = await this.getStateInfoByAlphaAttrName(group, alphaAttrName);
                         if (typeof data[alphaAttrName] !== 'object') {
-                            this.createStateForAttribute(group, data, rawValue, alphaAttrName, stateInfo, setObjectFunc);
+                            await this.createStateForAttribute(group, data, rawValue, alphaAttrName, stateInfo, setObjectFunc);
                         }
                         else {
                             // Look for subvalues:
                             if (data[alphaAttrName]) {
                                 for (const [alphaAttrName2, rawValue2] of Object.entries(data[alphaAttrName])) {
-                                    const stateInfo2 = this.getStateInfoByAlphaAttrName(group, alphaAttrName2);
-                                    this.createStateForAttribute(group, data[alphaAttrName], rawValue2, alphaAttrName2, stateInfo2, setObjectFunc);
+                                    const stateInfo2 = await this.getStateInfoByAlphaAttrName(group, alphaAttrName2);
+                                    await this.createStateForAttribute(group, data[alphaAttrName], rawValue2, alphaAttrName2, stateInfo2, setObjectFunc);
                                 }
                             }
                         }
@@ -2442,16 +2558,16 @@ class AlphaEss extends utils.Adapter {
 
                 // Set values for received states
                 for (const [alphaAttrName, rawValue] of Object.entries(data)) {
-                    const stateInfo = this.getStateInfoByAlphaAttrName(group, alphaAttrName);
+                    const stateInfo = await this.getStateInfoByAlphaAttrName(group, alphaAttrName);
                     if (typeof data[alphaAttrName] !== 'object') {
-                        this.setValueForAttribute(group, rawValue, stateInfo, idx);
+                        await this.setValueForAttribute(group, rawValue, stateInfo, idx);
                     }
                     else {
                         // Look for subvalues:
                         if (data[alphaAttrName]) {
                             for (const [alphaAttrName2, rawValue2] of Object.entries(data[alphaAttrName])) {
-                                const stateInfo2 = this.getStateInfoByAlphaAttrName(group, alphaAttrName2);
-                                this.setValueForAttribute(group, rawValue2, stateInfo2, idx);
+                                const stateInfo2 = await this.getStateInfoByAlphaAttrName(group, alphaAttrName2);
+                                await this.setValueForAttribute(group, rawValue2, stateInfo2, idx);
                             }
                         }
                     }
@@ -2486,9 +2602,11 @@ class AlphaEss extends utils.Adapter {
                         , write: stateInfo.writeable ? stateInfo.writeable : false
                         , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit === '{moneyType}' ? data['moneyType'] : stateInfo.unit
                         , desc: stateInfo.alphaAttrName
+                        , states: stateInfo.states
                     },
                     native: {},
                 });
+                this.log.debug('Created object ' + group + '.' + this.osn(stateInfo.alphaAttrName) + ' with value ' + rawValue);
                 if (stateInfo.writeable) {
                     await this.subscribeStatesAsync(`${group}.${stateInfo.id}`);
                     this.log.debug(`Subscribed State: ${group}.${stateInfo.id}`);
@@ -2563,7 +2681,7 @@ class AlphaEss extends utils.Adapter {
      * @param {string} Group
      * @param {string} alphaAttrName
      */
-    getStateInfoByAlphaAttrName(Group, alphaAttrName) {
+    async getStateInfoByAlphaAttrName(Group, alphaAttrName) {
         try {
             const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == Group);
             if (gidx >= 0) {
@@ -2615,16 +2733,24 @@ class AlphaEss extends utils.Adapter {
      */
     async setQualityForGroup(group, q) {
         try {
-            const states = await this.getStatesAsync(group + '.*');
-            for (const sid in states) {
-                const newState = states[sid];
-                if (newState.ack) {
-                    newState.q = q;
-                    this.log.debug(`Set state ${sid} to val: ${newState.val}; q: ${newState.q}; ack: ${newState.ack}`);
-                    await this.setStateAsync(sid, newState, true);
-                }
-                else {
-                    this.log.debug(`Set state ${sid} NOT to val: ${newState.val}; q: ${newState.q} because ack of this state is ${newState.ack}`);
+            const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
+            if (gidx >= 0) {
+                const groupInfo = this.getStateInfoList()[gidx];
+                const groupStates = groupInfo.states;
+                for (let i = 0; i < groupStates.length; i++) {
+                    if (!groupStates[i].isStatic) {
+                        const newState = await this.getStateAsync(`${groupInfo.Group}.${groupStates[i].id}`);
+                        if (newState) {
+                            if (newState.ack) {
+                                newState.q = q;
+                                this.log.debug(`Set state ${groupInfo.Group}.${groupStates[i].id} to val: ${newState.val}; q: ${newState.q}; ack: ${newState.ack}`);
+                                await this.setStateAsync(`${groupInfo.Group}.${groupStates[i].id}`, newState, true);
+                            }
+                            else {
+                                this.log.debug(`Set state ${groupInfo.Group}.${groupStates[i].id} NOT to val: ${newState.val}; q: ${newState.q} because ack of this state is ${newState.ack}`);
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -2645,7 +2771,7 @@ class AlphaEss extends utils.Adapter {
             const groupInfo = this.getStateInfoList()[gidx];
             const groupStates = groupInfo.states;
             for (let i = 0; i < groupStates.length; i++) {
-                if (groupStates[i].lastUpdateTs) {
+                if (groupStates[i].lastUpdateTs && !groupStates[i].isStatic) {
                     if (Date.now() - groupStates[i].lastUpdateTs > (groupInfo.interval * 1000 + REQUEST_TIMEOUT)) {
                         const newState = await this.getStateAsync(`${groupInfo.Group}.${groupStates[i].id}`);
                         if (newState) {
