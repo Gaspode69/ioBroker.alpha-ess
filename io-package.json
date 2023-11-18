@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "1.2.1",
+    "version": "1.3.0-beta.0",
     "news": {
+      "1.3.0-beta.0": {
+        "en": "Support wallbox with Open API",
+        "de": "Wallbox Unterstützung mit Open API",
+        "ru": "Поддержка настенного ящика с Open API",
+        "pt": "Suporte wallbox com API aberta",
+        "nl": "Steun muur met open API",
+        "fr": "Porte-monnaie support avec Open API",
+        "it": "Supporto wallbox con Open API",
+        "es": "Soporte de pared con Open API",
+        "pl": "Współdzielnia z API Open",
+        "uk": "Підтримка настінної коробки з відкритим API",
+        "zh-cn": "A. 开放式API的支助墙箱"
+      },
       "1.2.1": {
         "en": "Fixed severe error in ClosedAPI",
         "de": "Schweren Fehler in ClosedAPI behoben",
@@ -80,19 +93,6 @@
         "pl": "Adapted fetching energy values używając 'Closed API' do najnowszych zmian API przez Alpha-ESS",
         "uk": "Адаптивовані коефіцієнти відтікання енергії за допомогою 'Closed API' для останніх змін API від Alpha-ESS",
         "zh-cn": "利用“无能”的能源价值降低到Alpha-ESS新生动的改变"
-      },
-      "1.0.0": {
-        "en": "Support also the new official OpenAPI provided by Alpha-ESS\nSet state quality accordingly to status of data\nWriting charging and discharging settings implemented for 'Closed API' and OpenAPI\nRemove no more supported states at startup automatically",
-        "de": "Unterstützung der neuen offiziellen OpenAPI von Alpha-ESS\nQuality von States wird jetzt entsprechend des Zustands der Daten gesetzt\nSchreiben von Lade- und Entladeeinstellungen für 'Closed API' und OpenAPI implementiert\nNicht mehr unterstützte States werden bei Adapter-Neustart automatisch gelöscht",
-        "ru": "Поддержка также новый официальный OpenAPI, предоставленный Alpha-ESS\nУстановите государственное качество в соответствии с статусом данных\nНаписание зарядки и разгрузки настроек, реализованных для 'Closed API' и OpenAPI\nУдалить больше не поддерживаемых состояний при запуске автоматически",
-        "pt": "Suporte também o novo OpenAPI oficial fornecido pela Alpha-ESS\nDefina a qualidade do estado de acordo com o status dos dados\nEscrevendo as configurações de carregamento e descarregamento implementadas para ' API fechada' e OpenAPI\nRemover estados não mais suportados na inicialização automaticamente",
-        "nl": "Vertaling:\nZet de staatskwaliteit in aanmerking van gegevens\nSchrijven en ontladen opstellingen voor 'Closed API' en OpenAPI'\nVerwijder geen ondersteunende staten bij start-up automatisch",
-        "fr": "Soutien également le nouveau OpenAPI officiel fourni par Alpha-ESS\nDéfinir la qualité de l'état en conséquence à l'état des données\nRédaction des paramètres de chargement et de déchargement mis en œuvre pour 'API perdu' et OpenAPI\nEnlever plus d'états supportés au démarrage automatiquement",
-        "it": "Supporto anche il nuovo OpenAPI ufficiale fornito da Alpha-ESS\nImpostare la qualità dello stato di conseguenza allo stato dei dati\nScrivere le impostazioni di ricarica e discarica implementate per 'Closed API' e OpenAPI\nNon rimuovere più stati supportati all'avvio automaticamente",
-        "es": "Apoyar también el nuevo OpenAPI oficial proporcionado por Alpha-ESS\nEstablecer la calidad del estado en consecuencia al estado de los datos\nEscribir ajustes de carga y descarga implementados para 'Closed API' y OpenAPI\nEliminar no más estados compatibles en el inicio automáticamente",
-        "pl": "Wspiera również nowy oficjalny interfejs OpenAPI zapewniany przez Alpha-ESS\nUstalono jakość państwa zgodnie z statusem danych\nPisanie ładowania i rozładowania wdrożonych ustawień API oraz OpenAPI\nRemove nie będzie więcej wspieranych państw",
-        "uk": "Підтримка також нових офіційних OpenAPI, що надається Альфа-ESS\nВстановити якість держави відповідно до стану даних\nНаписання параметрів зарядки та відключення, що реалізовані для \"Closed API\" та OpenAPI\nВидаліть не більше підтримуваних держав при запуску автоматично",
-        "zh-cn": "还支持阿尔法-萨斯新官方开放协会\n相应地确定数据状况的国家质量\n确定和履行执行的消费和开放的消费者协会和开放协会环境\n自动取消不再支持的开办国家"
       }
     },
     "titleLang": {
