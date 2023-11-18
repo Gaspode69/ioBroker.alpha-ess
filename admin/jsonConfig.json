@@ -155,6 +155,20 @@
       "disabled": "!data.enableSummarydata",
       "hidden": "data.apiType == 1 || data.apiType == 3"
     },
+    "enableWallbox": {
+      "type": "checkbox",
+      "newLine": true,
+      "hidden": "true"
+    },
+    "intervalWallboxMins": {
+      "sm": 5,
+      "min": 1,
+      "type": "number",
+      "label": "Interval to read wallbox data",
+      "newLine": false,
+      "disabled": "!data.oAEnableWallbox",
+      "hidden": "true"
+    },
     "oAEnableRealtime": {
       "type": "checkbox",
       "newLine": true,

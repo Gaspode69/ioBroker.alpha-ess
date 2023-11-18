@@ -828,18 +828,15 @@ class OpenAPI {
             let snState = await this.adapter.getStateAsync(`${group}.SN`);
             if (!snState || typeof snState.val === 'string' && snState.val.length == 0) {
                 await this.getWallboxSn(group);
-                this.adapter.log.info('###' + `${group}.SN`);
                 snState = await this.adapter.getStateAsync(`${group}.SN`);
-                this.adapter.log.info('###' + `${group}.SN`);
-                // In this special case we reset the creaton indicator because more states must be created for this group in the next step
+                // In this special case we reset the created indicator because more states must be created for this group in the next step
                 this.adapter.createdStates[group] = false;
             }
 
             if (snState && typeof snState.val === 'string' && snState.val.length > 0) {
                 this.adapter.log.debug(`Using Wallbox SN: ${snState.val}`);
                 const res = await this.getRequest(`getEvChargerStatusBySn?sysSn=${this.adapter.config.systemId}&evchargerSn=${snState.val}`, {});
-                if (true || res && res['status'] == 200 && res.data && res.data.data) {
-                    res.data.data = JSON.parse('{"evchargerStatus":1}');
+                if (res && res['status'] == 200 && res.data && res.data.data) {
                     await this.adapter.createAndUpdateStates(group, res.data.data);
                 }
                 else {
@@ -867,7 +864,9 @@ class OpenAPI {
             const res = await this.getRequest(`getEvChargerConfigList?sysSn=${this.adapter.config.systemId}`, {});
             if (res && res['status'] == 200 && res.data && res.data.data) {
 
-                res.data.data = JSON.parse('[{"evchargerSn":"ALP2021082015071x","evchargerModel":"SMILE-EVCT11"}]');
+                if (res.data.data.length > 1) {
+                    this.adapter.log.warn('More than one wallbox found! Only the first wallbox is currently supported by this adapter!');
+                }
                 await this.adapter.createAndUpdateStates(group, res.data.data[0]);
             }
             else {
@@ -1637,6 +1636,15 @@ class ClosedAPI {
                     , unit: ''
                     , dayIndex: false
                 }]
+        },
+        {
+            // Just a dummy to ensure that this group is deleted
+            Group: 'Wallbox'
+            , fnct: this.fetchWallboxDataDummy.bind(this)
+            , enabledName: 'enableWallbox'
+            , intervalName: 'intervalWallboxMins'
+            , intervalFactor: 60
+            , states: []
         }];
 
         this.Auth =
@@ -1910,6 +1918,13 @@ class ClosedAPI {
      */
     async fetchSettingsDischargeDataDummy(group) {
         this.adapter.log.warn(`Internal error (group ${group}): function fetchSettingsDischargeDataDummy should never be called.`);
+    }
+
+    /**
+     * @param {string} group
+     */
+    async fetchWallboxDataDummy(group) {
+        this.adapter.log.warn(`Internal error (group ${group}): function fetchWallboxDataDummy should never be called.`);
     }
 
     /**
@@ -2741,13 +2756,18 @@ class AlphaEss extends utils.Adapter {
                     if (!groupStates[i].isStatic) {
                         const newState = await this.getStateAsync(`${groupInfo.Group}.${groupStates[i].id}`);
                         if (newState) {
-                            if (newState.ack) {
+                            if (newState.q != q && newState.ack) {
                                 newState.q = q;
                                 this.log.debug(`Set state ${groupInfo.Group}.${groupStates[i].id} to val: ${newState.val}; q: ${newState.q}; ack: ${newState.ack}`);
                                 await this.setStateAsync(`${groupInfo.Group}.${groupStates[i].id}`, newState, true);
                             }
                             else {
-                                this.log.debug(`Set state ${groupInfo.Group}.${groupStates[i].id} NOT to val: ${newState.val}; q: ${newState.q} because ack of this state is ${newState.ack}`);
+                                if (!newState.ack) {
+                                    this.log.silly(`Set state ${groupInfo.Group}.${groupStates[i].id} NOT to val: ${newState.val}; q: ${newState.q} because ack of this state is ${newState.ack}`);
+                                }
+                                else {
+                                    this.log.silly(`Set state ${groupInfo.Group}.${groupStates[i].id} NOT to val: ${newState.val}; q: ${newState.q} because quality is unchanged ${newState.q}`);
+                                }
                             }
                         }
                     }
@@ -2775,7 +2795,7 @@ class AlphaEss extends utils.Adapter {
                     if (Date.now() - groupStates[i].lastUpdateTs > (groupInfo.interval * 1000 + REQUEST_TIMEOUT)) {
                         const newState = await this.getStateAsync(`${groupInfo.Group}.${groupStates[i].id}`);
                         if (newState) {
-                            if (newState.q != 0 && newState.ack) {
+                            if (newState.q == 0 && newState.ack) {
                                 // Change quality only if it was OK before
                                 newState.q = 0x01;
                                 this.log.warn(`Watchdog: State ${groupInfo.Group}.${groupStates[i].id} not updated for ${Date.now() - groupStates[i].lastUpdateTs} ms`);
@@ -2783,7 +2803,12 @@ class AlphaEss extends utils.Adapter {
                                 await this.setStateAsync(`${groupInfo.Group}.${groupStates[i].id}`, newState, true);
                             }
                             else {
-                                this.log.silly(`Watchdog: Quality of state ${groupInfo.Group}.${groupStates[i].id} not changed, was already set to ${newState.q} and ack is ${newState.ack}!`);
+                                if (!newState.ack) {
+                                    this.log.silly(`Set state ${groupInfo.Group}.${groupStates[i].id} NOT to val: ${newState.val}; q: ${newState.q} because ack of this state is ${newState.ack}`);
+                                }
+                                else {
+                                    this.log.silly(`Set state ${groupInfo.Group}.${groupStates[i].id} NOT to val: ${newState.val}; q: ${newState.q} because quality is already not OK: ${newState.q}`);
+                                }
                             }
                         }
                         else {
