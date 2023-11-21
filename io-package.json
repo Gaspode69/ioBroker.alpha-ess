@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "1.3.0-beta.0",
+    "version": "1.3.0-beta.1",
     "news": {
+      "1.3.0-beta.1": {
+        "en": "Start and stop charging of wallbox with Open API",
+        "de": "Starten und stoppen des Ladevorgangs der Wallbox mit Open API",
+        "ru": "Начните и остановите зарядку настенного ящика с Open API",
+        "pt": "Iniciar e parar de carregar de wallbox com API aberta",
+        "nl": "Begin en stop met het inladen van een muurkist met open API",
+        "fr": "Démarrer et arrêter le chargement de la boîte murale avec Open API",
+        "it": "Avviare e interrompere la ricarica di wallbox con Open API",
+        "es": "Comience y deje de cargar Wallbox con Open API",
+        "pl": "Start i zatrzymanie ładowania skrzynki z Open API",
+        "uk": "Старт і зупинка зарядки стінок з відкритим API",
+        "zh-cn": "A. 开端和停止向开放的阿联酋投掷石箱"
+      },
       "1.3.0-beta.0": {
         "en": "Support wallbox with Open API",
         "de": "Wallbox Unterstützung mit Open API",
@@ -80,19 +93,6 @@
         "pl": "Wymagana wersja węzła do 16 lub nowa",
         "uk": "Оновлено необхідну версію вершини до 16 або нових",
         "zh-cn": "A. 最新要求的无误版本到16个或新成员"
-      },
-      "1.0.1": {
-        "en": "Adapted fetching energy values using 'Closed API' to latest API changes by Alpha-ESS",
-        "de": "Closed API: Energiewerte an neueste API-Änderungen von Alpha-ESS angepasst",
-        "ru": "Адаптированные выкачивание энергетических ценностей с помощью 'Closed API' для последних изменений API от Alpha-ESS",
-        "pt": "Valores de energia de busca adaptados usando ' API fechada' para as últimas alterações de API por Alpha-ESS",
-        "nl": "API verandert door Alpha-ESSS",
-        "fr": "Récupération des valeurs d'énergie à l'aide de 'API fermée' aux dernières modifications de l'API par Alpha-ESS",
-        "it": "Adattato l'ottenimento di valori energetici utilizzando 'API archiviate' alle ultime modifiche API di Alpha-ESS",
-        "es": "Valores de energía adaptados de búsqueda usando 'Closed API' para los últimos cambios de API por Alpha-ESS",
-        "pl": "Adapted fetching energy values używając 'Closed API' do najnowszych zmian API przez Alpha-ESS",
-        "uk": "Адаптивовані коефіцієнти відтікання енергії за допомогою 'Closed API' для останніх змін API від Alpha-ESS",
-        "zh-cn": "利用“无能”的能源价值降低到Alpha-ESS新生动的改变"
       }
     },
     "titleLang": {
