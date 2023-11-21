@@ -65,6 +65,10 @@ How to find SN and Check code for registration is described here: https://github
 
 ## Changelog
 
+### **WORK IN PROGRESS**
+
+-   (Gaspode) Start and stop charging of wallbox with Open API
+
 ### 1.3.0-beta.0 (2023-11-18)
 
 -   (Gaspode) Support wallbox with Open API

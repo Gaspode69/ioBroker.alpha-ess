@@ -17,7 +17,6 @@ const CA_AUTHSUFFIX = 'ui893ed';
 const CA_BaseURI = 'https://www.alphaess-cloud.com/';
 const OA_BaseURI = 'https://openapi.alphaess.com/api';
 
-const WriteTimeoutIntervalInS = 5;
 const ReadAfterWriteTimeoutIntervalInS = 2;
 
 const REQUEST_TIMEOUT = 10000;
@@ -305,6 +304,7 @@ class OpenAPI {
             Group: 'Settings_Charge'
             , fnct: this.getChargeConfigInfo.bind(this)
             , writeFnct: this.writeConfigInfo.bind(this)
+            , writeTimeoutIntervalInS: 5
             , requestName: 'updateChargeConfigInfo'
             , enabledName: 'oAEnableSettingsCharge'
             , intervalName: 'oAIntervalSettingsChargeMins'
@@ -369,6 +369,7 @@ class OpenAPI {
             Group: 'Settings_Discharge'
             , fnct: this.getDisChargeConfigInfo.bind(this)
             , writeFnct: this.writeConfigInfo.bind(this)
+            , writeTimeoutIntervalInS: 5
             , requestName: 'updateDisChargeConfigInfo'
             , enabledName: 'oAEnableSettingsDischarge'
             , intervalName: 'oAIntervalSettingsDischargeMins'
@@ -562,6 +563,9 @@ class OpenAPI {
         {
             Group: 'Wallbox'
             , fnct: this.getWallboxData.bind(this)
+            , writeFnct: this.writeWallboxChargerControl.bind(this)
+            , writeTimeoutIntervalInS: 0
+            , requestName: 'remoteControlEvCharger'
             , enabledName: 'oAEnableWallbox'
             , intervalName: 'oAIntervalWallboxMins'
             , intervalFactor: 60
@@ -583,6 +587,28 @@ class OpenAPI {
                     , type: 'string'
                     , unit: ''
                     , isStatic: true
+                },
+                {
+                    alphaAttrName: 'remoteControlEvChargerStart'
+                    , role: 'button.start'
+                    , id: 'Charging_Start'
+                    , name: 'Charging Start'
+                    , type: 'boolean'
+                    , unit: ''
+                    , isStatic: true
+                    , writeable: true
+                    , readable: false
+                },
+                {
+                    alphaAttrName: 'remoteControlEvChargerStop'
+                    , role: 'button.stop'
+                    , id: 'Charging_Stop'
+                    , name: 'Charging Stop'
+                    , type: 'boolean'
+                    , unit: ''
+                    , isStatic: true
+                    , writeable: true
+                    , readable: false
                 },
                 {
                     alphaAttrName: 'evchargerStatus'
@@ -823,7 +849,6 @@ class OpenAPI {
             this.adapter.stopGroupTimeout(group);
 
             this.adapter.log.debug('Fetching ' + group + ' data...');
-
             // First we need to get SN if not already done:
             let snState = await this.adapter.getStateAsync(`${group}.SN`);
             if (!snState || typeof snState.val === 'string' && snState.val.length == 0) {
@@ -882,7 +907,7 @@ class OpenAPI {
     /**
      * @param {string} group
      */
-    async writeConfigInfo(group) {
+    async writeConfigInfo(group, _updState, _updStateInfo) {
         const nextReadTimeout = ReadAfterWriteTimeoutIntervalInS;
         try {
             this.adapter.stopGroupWriteTimeout(group);
@@ -929,6 +954,60 @@ class OpenAPI {
             await this.handleError(this.emptyBody, group);
         }
         this.adapter.startGroupTimeout(nextReadTimeout, group);
+    }
+
+    /**
+     * @param {string} group
+     * @param {ioBroker.State} updState
+     * @param {any} updStateInfo
+     */
+    async writeWallboxChargerControl(group, updState, updStateInfo) {
+        try {
+            this.adapter.stopGroupWriteTimeout(group);
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug('Writing ' + group + ' data...');
+
+            const gidx = this.stateInfoList.findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
+            if (gidx >= 0) {
+
+                const chargerSnState = await this.adapter.getStateAsync(group + '.SN');
+
+                if (chargerSnState) {
+                    this.adapter.log.debug(`Using Wallbox SN: ${chargerSnState.val}`);
+
+                    const body = {};
+
+                    if (updStateInfo.role == 'button.start') {
+                        body['controlMode'] = 1;
+                    }
+                    else {
+                        body['controlMode'] = 0;
+                    }
+
+                    body['sysSn'] = this.adapter.config.systemId;
+                    body['evchargerSn'] = chargerSnState.val;
+
+                    this.adapter.log.debug(`Write group ${group}: ${JSON.stringify(body)}`);
+
+                    const res = await this.postRequest(this.adapter.getStateInfoList()[gidx].requestName, body, {});
+                    if (res && res['status'] == 200 && res.data) {
+                        this.adapter.log.info('Written values fror group ' + group);
+                    }
+                    else {
+                        await this.handleError(res, group);
+                    }
+                }
+                else {
+                    this.adapter.log.error('State ' + group + '.evchargerSn not found!');
+                }
+            }
+        }
+        catch (e) {
+            this.adapter.log.error('Writing data for group ' + group + ': Exception occurred: ' + e);
+            await this.handleError(this.emptyBody, group);
+        }
+        this.adapter.startGroupTimeout(ReadAfterWriteTimeoutIntervalInS, group);
     }
 
     /**
@@ -1174,6 +1253,7 @@ class ClosedAPI {
             Group: 'Settings'
             , fnct: this.fetchSettingsData.bind(this)
             , writeFnct: this.writeSettingsData.bind(this)
+            , writeTimeoutIntervalInS: 5
             , enabledName: 'enableSettingsdata'
             , intervalName: 'intervalSettingsdataMins'
             , intervalFactor: 60
@@ -2047,7 +2127,7 @@ class ClosedAPI {
     /**
      * @param {string} group
      */
-    async writeSettingsData(group) {
+    async writeSettingsData(group, _updState, _updStateInfo) {
         try {
             this.adapter.stopGroupWriteTimeout(group);
             this.adapter.stopGroupTimeout(group);
@@ -2336,7 +2416,12 @@ class AlphaEss extends utils.Adapter {
 
                         this.verifyValue(state.val, group, stateInfo);
 
-                        this.startGroupWriteTimeout(WriteTimeoutIntervalInS, group);
+                        const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
+
+                        if (gidx >= 0) {
+                            const writeTimeOut = this.getStateInfoList()[gidx].writeTimeoutIntervalInS;
+                            this.startGroupWriteTimeout(writeTimeOut ? writeTimeOut : 0, group, state, stateInfo);
+                        }
                     }
                     else {
                         this.log.debug(`Validation already in progress: ${id}`);
@@ -2471,15 +2556,17 @@ class AlphaEss extends utils.Adapter {
      * Start a timer for a given group
      * @param {number} intervalInS
      * @param {string} group
+     * @param {ioBroker.State} updState
+     * @param {{ alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; dayIndex?: undefined; } | { alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; dayIndex: boolean; } | { alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; writeable: boolean; } | { alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; round: number; factor?: undefined; } | { alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; factor: number; round: number; } | { alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; round?: undefined; factor?: undefined; } | { alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; isStatic: boolean; writeable?: undefined; readable?: undefined; states?: undefined; } | { alphaAttrName: string; role: string; id: string; name: string; type: string; unit: string; states: { 0: string; 1: string; 2: string; 3: string; 4: string; 5: string; 6: string; 7: string; 8: string; 9: string; }; isStatic?: undefined; writeable?: undefined; readable?: undefined; }} updStateInfo
      */
-    startGroupWriteTimeout(intervalInS, group) {
+    startGroupWriteTimeout(intervalInS, group, updState, updStateInfo) {
         const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
         if (!this.getStateInfoList()[gidx].writeTimeoutHandle) {
             const interval = intervalInS * 1000;
             this.log.debug('Write Timeout with interval ' + interval + ' ms started for group ' + group);
             const wf = this.getStateInfoList()[gidx].writeFnct;
             if (wf) {
-                this.getStateInfoList()[gidx].writeTimeoutHandle = this.setTimeout(() => { wf(group); }, interval);
+                this.getStateInfoList()[gidx].writeTimeoutHandle = this.setTimeout(() => { wf(group, updState, updStateInfo); }, interval);
             }
         }
     }
@@ -2511,10 +2598,11 @@ class AlphaEss extends utils.Adapter {
     /**
      * Create states when called the first time, update state values in each call
      * @param {string} group
-     * @param {{ [s: string]: any; }} data
+     * @param {{ [s: string]: any; } | null} data
      */
     async createAndUpdateStates(group, data) {
         try {
+
             if (data) {
                 await this.setStateChangedAsync('info.connection', true, true);
                 this.errorCount = 0;
@@ -2522,6 +2610,8 @@ class AlphaEss extends utils.Adapter {
                 const idx = new Date().getDate() - 1;
 
                 if (!this.createdStates[group]) {
+
+                    const setObjectFunc = await this.isMigrationNecessary() ? this.setObjectMigrationAsync : this.setObjectNormalAsync;
 
                     // Delete no longer supported states for this group
                     const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
@@ -2538,8 +2628,6 @@ class AlphaEss extends utils.Adapter {
                         }
                     }
 
-                    const setObjectFunc = await this.isMigrationNecessary() ? this.setObjectMigrationAsync : this.setObjectNormalAsync;
-
                     // Create the folder for this group
                     await setObjectFunc(group, {
                         type: 'folder',
@@ -2551,22 +2639,34 @@ class AlphaEss extends utils.Adapter {
                         native: {}
                     });
 
+                    // Create all static states:
+                    const groupStateList = this.getStateInfoList()[gidx].states;
+                    if (!this.createdStates[group]) {
+                        for (const stateInfo of groupStateList) {
+                            if (stateInfo.isStatic) {
+                                await this.createStateForAttribute(group, data, stateInfo.alphaAttrName, stateInfo, setObjectFunc);
+
+                            }
+                        }
+                    }
+
                     // Create all states for received elements
-                    for (const [alphaAttrName, rawValue] of Object.entries(data)) {
+                    for (const [alphaAttrName] of Object.entries(data)) {
                         const stateInfo = await this.getStateInfoByAlphaAttrName(group, alphaAttrName);
                         if (typeof data[alphaAttrName] !== 'object') {
-                            await this.createStateForAttribute(group, data, rawValue, alphaAttrName, stateInfo, setObjectFunc);
+                            await this.createStateForAttribute(group, data, alphaAttrName, stateInfo, setObjectFunc);
                         }
                         else {
                             // Look for subvalues:
                             if (data[alphaAttrName]) {
-                                for (const [alphaAttrName2, rawValue2] of Object.entries(data[alphaAttrName])) {
+                                for (const [alphaAttrName2] of Object.entries(data[alphaAttrName])) {
                                     const stateInfo2 = await this.getStateInfoByAlphaAttrName(group, alphaAttrName2);
-                                    await this.createStateForAttribute(group, data[alphaAttrName], rawValue2, alphaAttrName2, stateInfo2, setObjectFunc);
+                                    await this.createStateForAttribute(group, data[alphaAttrName], alphaAttrName2, stateInfo2, setObjectFunc);
                                 }
                             }
                         }
                     }
+
                     this.log.info('Initialized states for : ' + group);
                     this.createdStates[group] = true;
                 }
@@ -2598,11 +2698,10 @@ class AlphaEss extends utils.Adapter {
      *
      * create the state for the received element
      * @param {string} group
-     * @param {{[x: string]: any;}} data
-     * @param {string} rawValue
+     * @param {{[x: string]: any;} | null} data
      * @param {string} alphaAttrName
      */
-    async createStateForAttribute(group, data, rawValue, alphaAttrName, stateInfo, setObjectFunc) {
+    async createStateForAttribute(group, data, alphaAttrName, stateInfo, setObjectFunc) {
         if (stateInfo) {
             // The type checker has a problem with type: stateInfo.type. I have no clue why.
             // All possible types are correct and valid. To get rid of the type checker error, we check for valid types:
@@ -2613,30 +2712,30 @@ class AlphaEss extends utils.Adapter {
                         name: stateInfo.name + ' [' + stateInfo.alphaAttrName + ']'
                         , type: stateInfo.type
                         , role: stateInfo.role
-                        , read: true
+                        , read: stateInfo.readable != null ? stateInfo.readable : true
                         , write: stateInfo.writeable ? stateInfo.writeable : false
-                        , unit: stateInfo.unit === '{money_type}' ? data['money_type'] : stateInfo.unit === '{moneyType}' ? data['moneyType'] : stateInfo.unit
+                        , unit: stateInfo.unit === '{money_type}' && data ? data['money_type'] : stateInfo.unit === '{moneyType}' && data ? data['moneyType'] : stateInfo.unit
                         , desc: stateInfo.alphaAttrName
                         , states: stateInfo.states
                     },
                     native: {},
                 });
-                this.log.debug('Created object ' + group + '.' + this.osn(stateInfo.alphaAttrName) + ' with value ' + rawValue);
+                this.log.debug('Created object ' + group + '.' + this.osn(stateInfo.alphaAttrName));
                 if (stateInfo.writeable) {
                     await this.subscribeStatesAsync(`${group}.${stateInfo.id}`);
                     this.log.debug(`Subscribed State: ${group}.${stateInfo.id}`);
                 }
             }
             else {
-                this.log.error('Internal error: Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue + ' because of invalid type definition!');
+                this.log.error('Internal error: Skipped object ' + group + '.' + alphaAttrName + ' because of invalid type definition!');
             }
         }
         else {
             if (alphaAttrName == 'sysSn' || alphaAttrName == 'theDate') {
-                this.log.debug('Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue);
+                this.log.debug('Skipped object ' + group + '.' + alphaAttrName);
             }
             else {
-                this.log.warn('Skipped object ' + group + '.' + alphaAttrName + ' with value ' + rawValue);
+                this.log.warn('Skipped object ' + group + '.' + alphaAttrName);
             }
         }
     }
@@ -2718,12 +2817,12 @@ class AlphaEss extends utils.Adapter {
 
     /**
      * Answer the state description object for a given group and id
-     * @param {string} Group
+     * @param {string} group
      * @param {string} id
      */
-    getStateInfoById(Group, id) {
+    getStateInfoById(group, id) {
         try {
-            const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == Group);
+            const gidx = this.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
             if (gidx >= 0) {
                 const currentList = this.getStateInfoList()[gidx].states;
                 const sidx = currentList.findIndex((/** @type {{ id: string; }} */ i) => i.id == id);
@@ -2735,7 +2834,7 @@ class AlphaEss extends utils.Adapter {
         }
         catch (e) {
             this.log.error('getStateInfo Exception occurred: ' + e);
-            this.log.info('Group: ' + Group);
+            this.log.info('Group: ' + group);
             this.log.info('alphaAttrName: ' + id);
             return null;
         }
