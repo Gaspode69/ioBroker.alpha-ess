@@ -1,33 +1,20 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "1.3.0-beta.1",
+    "version": "1.3.0",
     "news": {
-      "1.3.0-beta.1": {
-        "en": "Start and stop charging of wallbox with Open API",
-        "de": "Starten und stoppen des Ladevorgangs der Wallbox mit Open API",
-        "ru": "Начните и остановите зарядку настенного ящика с Open API",
-        "pt": "Iniciar e parar de carregar de wallbox com API aberta",
-        "nl": "Begin en stop met het inladen van een muurkist met open API",
-        "fr": "Démarrer et arrêter le chargement de la boîte murale avec Open API",
-        "it": "Avviare e interrompere la ricarica di wallbox con Open API",
-        "es": "Comience y deje de cargar Wallbox con Open API",
-        "pl": "Start i zatrzymanie ładowania skrzynki z Open API",
-        "uk": "Старт і зупинка зарядки стінок з відкритим API",
-        "zh-cn": "A. 开端和停止向开放的阿联酋投掷石箱"
-      },
-      "1.3.0-beta.0": {
-        "en": "Support wallbox with Open API",
-        "de": "Wallbox Unterstützung mit Open API",
-        "ru": "Поддержка настенного ящика с Open API",
-        "pt": "Suporte wallbox com API aberta",
-        "nl": "Steun muur met open API",
-        "fr": "Porte-monnaie support avec Open API",
-        "it": "Supporto wallbox con Open API",
-        "es": "Soporte de pared con Open API",
-        "pl": "Współdzielnia z API Open",
-        "uk": "Підтримка настінної коробки з відкритим API",
-        "zh-cn": "A. 开放式API的支助墙箱"
+      "1.3.0": {
+        "en": "Support wallbox with Open API\nStart and stop charging of wallbox with Open API",
+        "de": "Wallbox Unterstützung mit Open API\nStarten und stoppen des Ladevorgangs der Wallbox mit Open API",
+        "ru": "Поддержка настенного ящика с Open API\nНачните и остановите зарядку настенного ящика с Open API",
+        "pt": "Suporte wallbox com API aberta\nIniciar e parar de carregar de wallbox com API aberta",
+        "nl": "Steun muur met open API\nBegin en stop met het inladen van een muurkist met open API",
+        "fr": "Porte-monnaie support avec Open API\nDémarrer et arrêter le chargement de la boîte murale avec Open API",
+        "it": "Supporto wallbox con Open API\nAvviare e interrompere la ricarica di wallbox con Open API",
+        "es": "Soporte de pared con Open API\nComience y deje de cargar Wallbox con Open API",
+        "pl": "Współdzielnia z API Open\nStart i zatrzymanie ładowania skrzynki z Open API",
+        "uk": "Підтримка настінної коробки з відкритим API\nСтарт і зупинка зарядки стінок з відкритим API",
+        "zh-cn": "A. 开放式API的支助墙箱\nA. 开端和停止向开放的阿联酋投掷石箱"
       },
       "1.2.1": {
         "en": "Fixed severe error in ClosedAPI",
@@ -80,19 +67,6 @@
         "pl": "Zamknięty API niepełnosprawny (czasowo?) ponieważ interfejs API został zmieniony przez Alpha-ESS\nCzytanie z powrotem zmieniało wartości 2 sekundy po zmianie ich wartości",
         "uk": "Замкнено API вимкнено (попередньо?) тому, що API було змінено Альфа-ESS\nЧитання змінених значень налаштувань 2 секунд після зміни",
         "zh-cn": "由于Alpha-ESS已改变API残疾(有时?)\n阅读后的环境价值观2"
-      },
-      "1.0.2": {
-        "en": "Updated required node version to 16 or newer",
-        "de": "Erforderliche Node Version auf 16 oder neuer aktualisiert",
-        "ru": "Обновленная необходимая версия узла до 16 или новее",
-        "pt": "Versão de nó atualizada necessária para 16 ou mais recente",
-        "nl": "Verouderd vereiste node versie van 16 of nieuw",
-        "fr": "Mise à jour de la version node requise à 16 ou plus",
-        "it": "Versione nodo richiesta aggiornata a 16 o più recente",
-        "es": "Versión actualizada de nodos requeridos a 16 o más",
-        "pl": "Wymagana wersja węzła do 16 lub nowa",
-        "uk": "Оновлено необхідну версію вершини до 16 або нових",
-        "zh-cn": "A. 最新要求的无误版本到16个或新成员"
       }
     },
     "titleLang": {
