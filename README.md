@@ -65,6 +65,10 @@ How to find SN and Check code for registration is described here: https://github
 
 ## Changelog
 
+### **WORK IN PROGRESS**
+
+-   (Gaspode) Breaking Change: Removed support of Closed API
+
 ### 1.3.0 (2023-11-22)
 
 -   (Gaspode) Support wallbox with Open API

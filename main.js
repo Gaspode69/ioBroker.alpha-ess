@@ -11,10 +11,6 @@ const utils = require('@iobroker/adapter-core');
 const crypto = require('crypto');
 const axios = require('axios').default;
 
-const CA_AUTHPREFIX = 'al8e4s';
-const CA_AUTHCONSTANT = 'LS885ZYDA95JVFQKUIUUUV7PQNODZRDZIS4ERREDS0EED8BCWSS';
-const CA_AUTHSUFFIX = 'ui893ed';
-const CA_BaseURI = 'https://www.alphaess-cloud.com/';
 const OA_BaseURI = 'https://openapi.alphaess.com/api';
 
 const ReadAfterWriteTimeoutIntervalInS = 2;
@@ -281,24 +277,6 @@ class OpenAPI {
                     , type: 'number'
                     , unit: 'kWh'
                 }]
-        },
-        {
-            // Just a dummy to ensure that this group is deleted
-            Group: 'Settings'
-            , fnct: this.getSettingsDataDummy.bind(this)
-            , enabledName: 'oAEnableSettings'
-            , intervalName: 'oAIntervalSettingsMins'
-            , intervalFactor: 60
-            , states: []
-        },
-        {
-            // Just a dummy to ensure that this group is deleted
-            Group: 'StatisticsToday'
-            , fnct: this.getOneDayPowerBySnDummy.bind(this)
-            , enabledName: 'oAEnableStatisticsToday'
-            , intervalName: 'oAIntervalStatisticsTodayMins'
-            , intervalFactor: 60
-            , states: []
         },
         {
             Group: 'Settings_Charge'
@@ -754,20 +732,6 @@ class OpenAPI {
     }
 
     /**
-     * @param {any} group
-     */
-    async getOneDayPowerBySnDummy(group) {
-        this.adapter.log.warn(`Internal error (group ${group}): function getOneDayPowerBySnDummy should never be called.`);
-    }
-
-    /**
-     * @param {any} group
-     */
-    async getSettingsDataDummy(group) {
-        this.adapter.log.warn(`Internal error (group ${group}): function getSettingsDataDummy should never be called.`);
-    }
-
-    /**
      * @param {string} group
      */
     async getChargeConfigInfo(group) {
@@ -919,11 +883,6 @@ class OpenAPI {
             const gidx = this.stateInfoList.findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
             if (gidx >= 0) {
 
-                // The openAPI (and closedAPI anyway) allows smaller intervals again to read data.
-                // Therefore we do no more need to wait the complete intarval to read back the changed value.
-                // const groupInfo = this.stateInfoList[gidx];
-                // nextReadTimeout = this.adapter.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor;
-
                 const groupStates = this.stateInfoList[gidx].states;
                 for (let i = 0; i < groupStates.length; i++) {
                     // Ensure that watchdog does not fire, because timeout may be delayed
@@ -941,12 +900,18 @@ class OpenAPI {
 
             this.adapter.log.debug(`Write group ${group}: ${JSON.stringify(body)}`);
 
-            const res = await this.postRequest(this.adapter.getStateInfoList()[gidx].requestName, body, {});
-            if (res && res['status'] == 200 && res.data) {
-                this.adapter.log.info('Written values fror group ' + group);
+            const requestName = this.adapter.getStateInfoList()[gidx].requestName;
+            if (requestName) {
+                const res = await this.postRequest(requestName, body, {});
+                if (res && res['status'] == 200 && res.data) {
+                    this.adapter.log.info('Written values fror group ' + group);
+                }
+                else {
+                    await this.handleError(res, group);
+                }
             }
             else {
-                await this.handleError(res, group);
+                this.adapter.log.error('Internal Error for group ' + group + ': No requestName found!');
             }
         }
         catch (e) {
@@ -990,12 +955,18 @@ class OpenAPI {
 
                     this.adapter.log.debug(`Write group ${group}: ${JSON.stringify(body)}`);
 
-                    const res = await this.postRequest(this.adapter.getStateInfoList()[gidx].requestName, body, {});
-                    if (res && res['status'] == 200 && res.data) {
-                        this.adapter.log.info('Written values fror group ' + group);
+                    const requestName = this.adapter.getStateInfoList()[gidx].requestName;
+                    if (requestName) {
+                        const res = await this.postRequest(requestName, body, {});
+                        if (res && res['status'] == 200 && res.data) {
+                            this.adapter.log.info('Written values fror group ' + group);
+                        }
+                        else {
+                            await this.handleError(res, group);
+                        }
                     }
                     else {
-                        await this.handleError(res, group);
+                        this.adapter.log.error('Internal Error for group ' + group + ': No requestName found!');
                     }
                 }
                 else {
@@ -1080,1141 +1051,6 @@ class OpenAPI {
     }
 }
 
-/**
- * Functions and definitions using the Alpha-ESS inofficial "closed" API.
- */
-class ClosedAPI {
-    /**
-     * @param {AlphaEss} adapter
-     */
-    constructor(adapter) {
-        this.stateInfoList = [{
-            Group: 'Realtime'
-            , fnct: this.fetchRealtimeData.bind(this)
-            , enabledName: 'enableRealtimedata'
-            , intervalName: 'intervalRealtimedata'
-            , intervalFactor: 1
-            , states: [
-                {
-                    alphaAttrName: 'pbat'
-                    , role: 'value.power'
-                    , id: 'Battery_power'
-                    , name: 'Battery power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'pmeter_l1'
-                    , role: 'value.power'
-                    , id: 'Grid_L1_power'
-                    , name: 'Grid L1 power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'pmeter_l2'
-                    , role: 'value.power'
-                    , id: 'Grid_L2_power'
-                    , name: 'Grid L2 power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'pmeter_l3'
-                    , role: 'value.power'
-                    , id: 'Grid_L3_power'
-                    , name: 'Grid L3 power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'ppv1'
-                    , role: 'value.power'
-                    , id: 'PV_string_1_power'
-                    , name: 'PV string 1 power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'ppv2'
-                    , role: 'value.power'
-                    , id: 'PV_string_2_power'
-                    , name: 'PV string 2 power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'ppv3'
-                    , role: 'value.power'
-                    , id: 'PV_string_3_power'
-                    , name: 'PV string 3 power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'ppv4'
-                    , role: 'value.power'
-                    , id: 'PV_string_4_power'
-                    , name: 'PV string 4 power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'pmeter_dc'
-                    , role: 'value.power'
-                    , id: 'PV_meter_power'
-                    , name: 'PV meter power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'preal_l1'
-                    , role: 'value.power'
-                    , id: 'Inverter_L1_power'
-                    , name: 'Inverter L1 power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'preal_l2'
-                    , role: 'value.power'
-                    , id: 'Inverter_L2_power'
-                    , name: 'Inverter L2 power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'preal_l3'
-                    , role: 'value.power'
-                    , id: 'Inverter_L3_power'
-                    , name: 'Inverter L3 power'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'ev1_power'
-                    , role: 'value.power'
-                    , id: 'EV1_power'
-                    , name: 'Wallbox Power 1'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'ev2_power'
-                    , role: 'value.power'
-                    , id: 'EV2_power'
-                    , name: 'Wallbox Power 2'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'ev3_power'
-                    , role: 'value.power'
-                    , id: 'EV3_power'
-                    , name: 'Wallbox Power 3'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'ev4_power'
-                    , role: 'value.power'
-                    , id: 'EV4_power'
-                    , name: 'Wallbox Power 4'
-                    , type: 'number'
-                    , unit: 'W'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'soc'
-                    , role: 'value.battery'
-                    , id: 'Battery_SOC'
-                    , name: 'State of charge'
-                    , type: 'number'
-                    , unit: '%'
-                    , dayIndex: false
-                }]
-        },
-        {
-            Group: 'Settings'
-            , fnct: this.fetchSettingsData.bind(this)
-            , writeFnct: this.writeSettingsData.bind(this)
-            , writeTimeoutIntervalInS: 5
-            , enabledName: 'enableSettingsdata'
-            , intervalName: 'intervalSettingsdataMins'
-            , intervalFactor: 60
-            , states: [
-                {
-                    alphaAttrName: 'ctr_dis'
-                    , role: 'switch.enable'
-                    , id: 'Battery_Discharging_enabled'
-                    , name: 'Battery Discharging enabled'
-                    , type: 'boolean'
-                    , unit: ''
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'time_disf1a'
-                    , role: 'value'
-                    , id: 'Discharging_period_1_start'
-                    , name: 'Discharging period 1 start'
-                    , type: 'string'
-                    , unit: ''
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'time_dise1a'
-                    , role: 'value'
-                    , id: 'Discharging_period_1_end'
-                    , name: 'Discharging period 1 end'
-                    , type: 'string'
-                    , unit: ''
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'time_disf2a'
-                    , role: 'value'
-                    , id: 'Discharging_period_2_start'
-                    , name: 'Discharging period 2 start'
-                    , type: 'string'
-                    , unit: ''
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'time_dise2a'
-                    , role: 'value'
-                    , id: 'Discharging_period_2_end'
-                    , name: 'Discharging period 2 end'
-                    , type: 'string'
-                    , unit: ''
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'bat_use_cap'
-                    , role: 'value'
-                    , id: 'Discharging_Cutoff_SOC'
-                    , name: 'Discharging Cutoff SOC'
-                    , type: 'number'
-                    , unit: '%'
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'grid_charge'
-                    , role: 'switch.enable'
-                    , id: 'Battery_Charging_enabled'
-                    , name: 'Battery Charging enabled'
-                    , type: 'boolean'
-                    , unit: ''
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'time_chaf1a'
-                    , role: 'value'
-                    , id: 'Charging_period_1_start'
-                    , name: 'Charging period 1 start'
-                    , type: 'string'
-                    , unit: ''
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'time_chae1a'
-                    , role: 'value'
-                    , id: 'Charging_period 1_end'
-                    , name: 'Charging period 1 end'
-                    , type: 'string'
-                    , unit: ''
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'time_chaf2a'
-                    , role: 'value'
-                    , id: 'Charging_period_2_start'
-                    , name: 'Charging period 2 start'
-                    , type: 'string'
-                    , unit: ''
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'time_chae2a'
-                    , role: 'value'
-                    , id: 'Charging_period_2_end'
-                    , name: 'Charging period 2 end'
-                    , type: 'string'
-                    , unit: ''
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'bat_high_cap'
-                    , role: 'value'
-                    , id: 'Charging_stopps_at_SOC'
-                    , name: 'Charging stopps at SOC'
-                    , type: 'number'
-                    , unit: '%'
-                    , dayIndex: false
-                    , writeable: true
-                }
-                , {
-                    alphaAttrName: 'upsReserve'
-                    , role: 'switch.enable'
-                    , id: 'UPS_Reserve'
-                    , name: 'Load to cut-off SOC from grid after power failure'
-                    , type: 'boolean'
-                    , unit: ''
-                    , dayIndex: false
-                    , writeable: true
-                }]
-        },
-        {
-            // Just a dummy to ensure that this group is deleted
-            Group: 'Settings_Charge'
-            , fnct: this.fetchSettingsChargeDataDummy.bind(this)
-            , enabledName: 'enableSettingsCharge'
-            , intervalName: 'intervalSettingsChargeMins'
-            , intervalFactor: 60
-            , states: []
-        },
-        {
-            // Just a dummy to ensure that this group is deleted
-            Group: 'Settings_Discharge'
-            , fnct: this.fetchSettingsDischargeDataDummy.bind(this)
-            , enabledName: 'enableSettingsDisCharge'
-            , intervalName: 'intervalSettingsDisChargeMins'
-            , intervalFactor: 60
-            , states: []
-        },
-        {
-            Group: 'Energy'
-            , fnct: this.fetchEnergyData.bind(this)
-            , enabledName: 'enableEnergydata'
-            , intervalName: 'intervalEnergydataMins'
-            , intervalFactor: 60
-            , states: [
-                {
-                    alphaAttrName: 'Eload'
-                    , role: 'value.power.consumption'
-                    , id: 'Consumption_today'
-                    , name: 'Today\'s consumption'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'Epvtoday'
-                    , role: 'value.power.consumption'
-                    , id: 'Generation_today'
-                    , name: 'Today\'s generation'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'Eoutput'
-                    , role: 'value.power.consumption'
-                    , id: 'Grid_feed_in_today'
-                    , name: 'Today\'s grid feed in'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'Einput'
-                    , role: 'value.power.consumption'
-                    , id: 'Grid_consumption_today'
-                    , name: 'Today\'s grid consumption'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'Echarge'
-                    , role: 'value.power.consumption'
-                    , id: 'Battery_charge_today'
-                    , name: 'Today\'s battery charge'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'EDisCharge'
-                    , role: 'value.power.consumption'
-                    , id: 'Battery_discharge_today'
-                    , name: 'Today\'s battery discharge'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , dayIndex: false
-                }]
-        },
-        {
-            Group: 'StatisticsToday'
-            , fnct: this.fetchStatisticalTodayData.bind(this)
-            , enabledName: 'enableStatisticalTodaydata'
-            , intervalName: 'intervalStatisticalTodaydataMins'
-            , intervalFactor: 60
-            , states: [
-                {
-                    alphaAttrName: 'EpvT'
-                    , role: 'value.power.consumption'
-                    , id: 'PV_power_generation'
-                    , name: 'PV power generation'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'Eout'
-                    , role: 'value.power.consumption'
-                    , id: 'Feed_in'
-                    , name: 'Feed in'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'Echarge'
-                    , role: 'value.power.consumption'
-                    , id: 'Charge'
-                    , name: 'Charge'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'Epv2load'
-                    , role: 'value.power.consumption'
-                    , id: 'PV_charging_the_loads'
-                    , name: 'PV charging the loads'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'Epvcharge'
-                    , role: 'value.power.consumption'
-                    , id: 'PV_charging_the_the_storage_system'
-                    , name: 'PV charging the the storage system'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'Eload'
-                    , role: 'value.power.consumption'
-                    , id: 'Load'
-                    , name: 'Load'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'EHomeLoad'
-                    , role: 'value.power.consumption'
-                    , id: 'Other_load_cosumption'
-                    , name: 'Other load cosumption'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'EChargingPile'
-                    , role: 'value.power.consumption'
-                    , id: 'EV_charger_consumption'
-                    , name: 'EV-charger consumption (Wallbox)'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'EGridCharge'
-                    , role: 'value.power.consumption'
-                    , id: 'Grid_charge'
-                    , name: 'Grid charge'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'EGrid2Load'
-                    , role: 'value.power.consumption'
-                    , id: 'Grid_charging_the_loads'
-                    , name: 'Grid charging the loads'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'Einput'
-                    , role: 'value.power.consumption'
-                    , id: 'Grid_consumption'
-                    , name: 'Grid consumption'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'hasChargingPile'
-                    , role: 'value'
-                    , id: 'Charging pile'
-                    , name: 'Charging pile (Wallbox)'
-                    , type: 'boolean'
-                    , unit: ''
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'EselfSufficiency'
-                    , role: 'value'
-                    , id: 'Self_sufficiency'
-                    , name: 'Self sufficiency'
-                    , type: 'number'
-                    , unit: '%'
-                    , factor: 100
-                    , round: 1
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'EselfConsumption'
-                    , role: 'value'
-                    , id: 'Self_consumption'
-                    , name: 'Self consumption'
-                    , type: 'number'
-                    , unit: '%'
-                    , factor: 100
-                    , round: 1
-                    , dayIndex: false
-                }]
-        },
-        {
-            Group: 'Summary'
-            , fnct: this.fetchSummaryData.bind(this)
-            , enabledName: 'enableSummarydata'
-            , intervalName: 'intervalSummarydataMins'
-            , intervalFactor: 60
-            , states: [
-                {
-                    alphaAttrName: 'Epvtoday'
-                    , role: 'value.power.consumption'
-                    , id: 'Generation_today'
-                    , name: 'Today\'s Generation'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'Epvtotal'
-                    , role: 'value.power.consumption'
-                    , id: 'Generation_total'
-                    , name: 'Total Generation'
-                    , type: 'number'
-                    , unit: 'kWh'
-                    , round: 3
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'TodayIncome'
-                    , role: 'value'
-                    , id: 'Income_today'
-                    , name: 'Today\'s Income'
-                    , type: 'number'
-                    , unit: '{money_type}'
-                    , round: 2
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'ToalIncome'
-                    , role: 'value'
-                    , id: 'Income_total'
-                    , name: 'Total Profit'
-                    , type: 'number'
-                    , unit: '{money_type}'
-                    , round: 2
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'EselfConsumption'
-                    , role: 'value'
-                    , id: 'Self_consumption_total'
-                    , name: 'Total Self Consumption'
-                    , type: 'number'
-                    , unit: '%'
-                    , factor: 100
-                    , round: 1
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'EselfSufficiency'
-                    , role: 'value'
-                    , id: 'Self_sufficiency_total'
-                    , name: 'Total Self Sufficiency'
-                    , type: 'number'
-                    , unit: '%'
-                    , factor: 100
-                    , round: 1
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'TreeNum'
-                    , role: 'value'
-                    , id: 'Trees_plantet_total'
-                    , name: 'Total Trees planted'
-                    , type: 'number'
-                    , unit: '🌳'
-                    , round: 1
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'CarbonNum'
-                    , role: 'value'
-                    , id: 'CO2_reduction_total'
-                    , name: 'Total CO₂ reduction'
-                    , type: 'number'
-                    , unit: 'kg'
-                    , round: 1
-                    , dayIndex: false
-                }
-                , {
-                    alphaAttrName: 'money_type'
-                    , role: 'value'
-                    , id: 'Currency'
-                    , name: 'Currency'
-                    , type: 'string'
-                    , unit: ''
-                    , dayIndex: false
-                }]
-        },
-        {
-            // Just a dummy to ensure that this group is deleted
-            Group: 'Wallbox'
-            , fnct: this.fetchWallboxDataDummy.bind(this)
-            , enabledName: 'enableWallbox'
-            , intervalName: 'intervalWallboxMins'
-            , intervalFactor: 60
-            , states: []
-        }];
-
-        this.Auth =
-        {
-            username: '',
-            password: '',
-            AccessToken: '',
-            Expires: 0,
-            RefreshToken: ''
-        };
-        this.system_id = '';
-        this.adapter = adapter;
-    }
-
-    /**
-     * Check alpha-ess authentcation. Decides if login or refresh has to be performed
-     * @returns true in case of success, otherwise false
-     */
-    async checkAuthentication() {
-        try {
-            if (this.Auth.Token && this.Auth.RefreshToken && this.Auth.Expires) {
-                if (Date.now() < this.Auth.Expires) {
-                    this.adapter.log.debug('Authentication token still valid.');
-                    return true;
-                }
-                else {
-                    // First we try to refresh the token:
-                    if (await this.authenticate(true)) {
-                        return true;
-                    }
-                    else {
-                        // If refresh fails we log in again
-                        return (await this.authenticate(false));
-                    }
-                }
-            }
-            else {
-                return (await this.authenticate(false));
-            }
-        }
-        catch (e) {
-            this.adapter.log.error('checkAuthentication Exception occurred: ' + e);
-        }
-    }
-
-    /**
-     * Perform alpha-ess authentication
-     * @param {boolean} [refresh]
-     */
-    async authenticate(refresh) {
-        try {
-
-            let LoginData = undefined;
-
-            if (refresh) {
-                this.adapter.log.info('Try to refresh authentication token');
-                LoginData =
-                {
-                    'username': this.Auth.username,
-                    'accesstoken': this.Auth.Token,
-                    'refreshtokenkey': this.Auth.RefreshToken
-                };
-            }
-            else {
-                this.adapter.log.info('Try to login');
-                LoginData =
-                {
-                    'username': this.Auth.username,
-                    'password': this.Auth.password
-                };
-            }
-
-            const res = await axios.post(CA_BaseURI + 'api/' + (refresh ? 'Account/RefreshToken' : 'Account/Login'),
-                JSON.stringify(LoginData),
-                {
-                    timeout: REQUEST_TIMEOUT,
-                    headers: this.headers(null)
-                });
-
-            if (res.status == 200) {
-                if (res.data && res.data.code && res.data.code == 5) {
-                    this.adapter.log.error('Alpha ESS Api returns \'Invalid username or password\'! Adapter won\'t try again to fetch any data.');
-                    this.adapter.wrongCredentials = true;
-                    return false;
-                }
-                else {
-                    this.Auth.Token = res.data.data.AccessToken;
-                    this.Auth.Expires = Date.now() + ((res.data.data.ExpiresIn - 3600) * 1000); // Set expire time one hour earlier to be sure
-                    this.Auth.RefreshToken = res.data.data.RefreshTokenKey;
-
-                    this.adapter.log.info(refresh ? 'Token succesfully refreshed' : 'Login succesful');
-                    this.adapter.log.debug('Auth.Token:        ' + this.Auth.Token);
-                    this.adapter.log.debug('Auth.RefreshToken: ' + this.Auth.RefreshToken);
-                    this.adapter.log.debug('Auth.Expires:      ' + new Date(this.Auth.Expires));
-                    this.adapter.errorCount = 0;
-                    return true;
-                }
-            }
-            else {
-                this.adapter.log.info('Error during authentication, status: ' + res.status);
-                return false;
-            }
-        }
-        catch (e) {
-            this.adapter.log.error('authenticate Exception occurred: ' + e);
-            return false;
-        }
-    }
-
-    /**
-     * Perform a get request and return the received body.
-     * @param {string} uri
-     * @param {string} group
-     */
-    async getData(uri, group) {
-        const emptyBody = { data: null };
-        try {
-            if (this.adapter.wrongCredentials) {
-                return emptyBody;
-            }
-            if (!await this.checkAuthentication()) {
-                await this.handleError(group);
-                this.adapter.log.warn('Error in Authorization (error count: ' + this.adapter.errorCount + ')');
-                await this.adapter.setStateChangedAsync('info.connection', false, true);
-                return emptyBody;
-            }
-
-            this.adapter.log.debug('getData Uri: ' + uri);
-
-            const res = await axios.get(uri,
-                {
-                    timeout: REQUEST_TIMEOUT,
-                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
-                });
-
-            if (res.status == 200) {
-                await this.adapter.setStateChangedAsync('info.connection', true, true);
-                return res.data;
-            }
-            else {
-                await this.handleError(group);
-                this.adapter.log.error('Error when fetching data for ' + this.adapter.config.systemId + ', status code: ' + res.status + ' (error count: ' + this.adapter.errorCount + ')');
-                return emptyBody;
-            }
-        }
-        catch (e) {
-            await this.handleError(group);
-            this.adapter.log.error('fetchData Exception occurred: ' + e + ' (error count: ' + this.adapter.errorCount + ')');
-            return emptyBody;
-        }
-    }
-
-    /**
-     * Perform a post request and return the received body.
-    * @param {string} uri
-    * @param {string} sndBody
-    * @param {string} group
-    */
-    async postData(uri, sndBody, group) {
-        const emptyBody = { data: null };
-        try {
-            if (this.adapter.wrongCredentials) {
-                return emptyBody;
-            }
-            if (!await this.checkAuthentication()) {
-                await this.handleError(group);
-                this.adapter.log.warn('Error in Authorization (error count: ' + this.adapter.errorCount + ')');
-                await this.adapter.setStateChangedAsync('info.connection', false, true);
-                return emptyBody;
-            }
-
-            this.adapter.log.debug('postData Uri: ' + uri);
-
-            const res = await axios.post(uri,
-                sndBody,
-                {
-                    timeout: REQUEST_TIMEOUT,
-                    headers: this.headers({ 'Authorization': 'Bearer ' + this.Auth.Token })
-                });
-
-            if (res.status == 200) {
-                await this.adapter.setStateChangedAsync('info.connection', true, true);
-                return res.data;
-            }
-            else {
-                await this.handleError(group);
-                this.adapter.log.error('Error when fetching data for ' + this.adapter.config.systemId + ', status code: ' + res.status + ' (error count: ' + this.adapter.errorCount + ')');
-                return emptyBody;
-            }
-        }
-        catch (e) {
-            await this.handleError(group);
-            this.adapter.log.error('fetchData Exception occurred: ' + e + ' (error count: ' + this.adapter.errorCount + ')');
-            return emptyBody;
-        }
-    }
-
-
-    /**
-     * Reset authentication data to defaults. Login must be performed afterwards.
-     */
-    async resetAuth() {
-        try {
-            await this.adapter.setStateChangedAsync('info.connection', false, true);
-            return new Promise((resolve) => {
-                this.Auth =
-                {
-                    username: this.adapter.config.username,
-                    password: this.adapter.config.password,
-                    AccessToken: '',
-                    Expires: 0,
-                    RefreshToken: ''
-                };
-                this.adapter.log.debug('Reset authentication data');
-                resolve(true);
-            });
-        }
-        catch (e) {
-            this.adapter.log.error('resetAuth Exception occurred: ' + e);
-            return false;
-        }
-    }
-
-    /**
-     * Answer alpha-ess specific headers for web requests
-     * @param {any} extraHeaders
-     */
-    headers(extraHeaders) {
-        const timestamp = ((new Date).getTime() / 1000);
-        const data = CA_AUTHCONSTANT + timestamp;
-        const hash = crypto.createHash('sha512').update(data).digest('hex');
-
-        const stdHeaders = {
-            'Content-Type': 'application/json',
-            'Connection': 'keep-alive',
-            'Accept': '*/*',
-            'Accept-Encoding': 'gzip, deflate',
-            'Cache-Control': 'no-cache',
-            'AuthTimestamp': '' + timestamp,
-            'AuthSignature': CA_AUTHPREFIX + hash + CA_AUTHSUFFIX
-        };
-
-        return Object.assign({}, stdHeaders, extraHeaders);
-    }
-
-    /**
-     * Will be called if during any request an error occurs
-     * @param {string} group
-     */
-    async handleError(group) {
-        try {
-            // Increase error count, will be reset with the next successful connection
-            this.adapter.errorCount++;
-            await this.adapter.setQualityForGroup(group, 0x44);
-            await this.resetAuth();
-        }
-        catch (e) {
-            this.adapter.log.error('handleError Exception occurred: ' + e);
-        }
-    }
-
-    /**
-     * @param {string} group
-     */
-    async fetchSettingsChargeDataDummy(group) {
-        this.adapter.log.warn(`Internal error (group ${group}): function fetchSettingsChargeDataDummy should never be called.`);
-    }
-
-    /**
-     * @param {string} group
-     */
-    async fetchSettingsDischargeDataDummy(group) {
-        this.adapter.log.warn(`Internal error (group ${group}): function fetchSettingsDischargeDataDummy should never be called.`);
-    }
-
-    /**
-     * @param {string} group
-     */
-    async fetchWallboxDataDummy(group) {
-        this.adapter.log.warn(`Internal error (group ${group}): function fetchWallboxDataDummy should never be called.`);
-    }
-
-    /**
-     * Get realtime data from alpha-ess and start timer for next execution
-     * @param {string} group
-     */
-    async fetchRealtimeData(group) {
-        try {
-            this.adapter.stopGroupTimeout(group);
-
-            this.adapter.log.debug('Fetching ' + group + ' data...');
-
-            const body = await this.getData(CA_BaseURI + 'api/ESS/GetLastPowerDataBySN?sys_sn=' + this.adapter.config.systemId + '&noLoading=true', group);
-            await this.adapter.createAndUpdateStates(group, body.data);
-
-            this.startGroupTimeout(group);
-        }
-        catch (e) {
-            this.adapter.log.error('fetchRealtimeData Exception occurred: ' + e);
-        }
-    }
-
-    /**
-     * Get energy data from alpha-ess and start timer for next execution
-     * @param {string} group
-     */
-    async fetchEnergyData(group) {
-        try {
-            this.adapter.stopGroupTimeout(group);
-
-            this.adapter.log.debug('Fetching summary data...');
-
-            const dt = new Date();
-            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
-
-            const body = await this.getData(CA_BaseURI + 'api/ESS/SticsSummeryDataForCustomer?sn=' + this.adapter.config.systemId +
-                '&tday=' + dts + '&noLoading=true', group);
-
-            await this.adapter.createAndUpdateStates(group, body.data);
-
-            // Configuration is in minutes, so multiply with 60
-            this.startGroupTimeout(group);
-        }
-        catch (e) {
-            this.adapter.log.error('fetchEnergyData Exception occurred: ' + e);
-        }
-    }
-
-    /**
-     * Get settings data from alpha-ess and start timer for next execution
-     * @param {string} group
-     */
-    async fetchSettingsData(group) {
-        try {
-            this.adapter.stopGroupTimeout(group);
-
-            this.adapter.log.debug('Fetching ' + group + ' data...');
-
-            const body = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.adapter.config.systemId + '&noLoading=true', group);
-            await this.adapter.createAndUpdateStates(group, body.data);
-
-            this.startGroupTimeout(group);
-        }
-        catch (e) {
-            this.adapter.log.error('fetchSettingsData Exception occurred: ' + e);
-        }
-    }
-
-    /**
-     * Get statistical data for today from alpha-ess and start timer for next execution
-     * @param {string} group
-     */
-    async fetchStatisticalTodayData(group) {
-        try {
-            this.adapter.stopGroupTimeout(group);
-
-            this.adapter.log.debug('Fetching ' + group + ' data...');
-
-            const dt = new Date();
-            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
-
-            const body = await this.getData(CA_BaseURI + 'api/Power/SticsByPeriod?beginDay=' + dts + '&endDay=' + dts +
-                '&tDay=' + dts + '&SN=' + this.adapter.config.systemId + '&noLoading=true', group);
-
-            await this.adapter.createAndUpdateStates(group, body.data);
-
-            this.startGroupTimeout(group);
-        }
-        catch (e) {
-            this.adapter.log.error('fetchStatisticalTodayData Exception occurred: ' + e);
-        }
-    }
-
-    /**
-     * Get summary data for today from alpha-ess and start timer for next execution
-     * @param {string} group
-     */
-    async fetchSummaryData(group) {
-        try {
-            this.adapter.stopGroupTimeout(group);
-
-            this.adapter.log.debug('Fetching summary data...');
-
-            const dt = new Date();
-            const dts = (dt.getFullYear() + '-' + (dt.getMonth() + 1) + '-' + dt.getDate());
-
-            const body = await this.getData(CA_BaseURI + 'api/ESS/SticsSummeryDataForCustomer?sn=' + this.adapter.config.systemId +
-                '&tday=' + dts + '&noLoading=true', group);
-
-            await this.adapter.createAndUpdateStates(group, body.data);
-
-            // Configuration is in minutes, so multiply with 60
-            this.startGroupTimeout(group);
-        }
-        catch (e) {
-            this.adapter.log.error('fetchSummaryData Exception occurred: ' + e);
-        }
-    }
-
-    /**
-     * @param {string} group
-     */
-    async writeSettingsData(group, _updState, _updStateInfo) {
-        try {
-            this.adapter.stopGroupWriteTimeout(group);
-            this.adapter.stopGroupTimeout(group);
-
-            this.adapter.log.info('Writing ' + group + ' data...');
-
-            // We need the system id here
-            if (this.system_id.length == 0) {
-                const custListBody = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSList?noLoading=true', group);
-                if (custListBody && custListBody.data) {
-                    for (let i = 0; i < custListBody.data.length; i++) {
-                        if (custListBody.data[i].sys_sn === this.adapter.config.systemId) {
-                            this.system_id = custListBody.data[i].system_id;
-                            this.adapter.log.debug(`Found system_id ${this.system_id}`);
-                            break;
-                        }
-                    }
-                }
-            }
-
-            if (this.system_id.length > 0) {
-                // First we read the whole data set and update our values:
-                const body = await this.getData(CA_BaseURI + 'api/Account/GetCustomUseESSSetting?sys_sn=' + this.adapter.config.systemId + '&noLoading=true', group);
-                if (body && body.data) {
-                    const data = body.data;
-                    const gidx = this.adapter.getStateInfoList().findIndex((/** @type {{ Group: string; }} */ i) => i.Group == group);
-                    if (gidx >= 0) {
-                        const groupStates = this.adapter.getStateInfoList()[gidx].states;
-                        for (let i = 0; i < groupStates.length; i++) {
-                            if (groupStates[i].writeable) {
-                                this.adapter.log.debug('State ' + group + '.' + groupStates[i].alphaAttrName + ' - ' + groupStates[i].id);
-                                const state = await this.adapter.getStateAsync(group + '.' + groupStates[i].id);
-                                let value = null;
-                                if (state) {
-                                    value = state.val;
-                                }
-                                data[groupStates[i].alphaAttrName] = groupStates[i].type != 'boolean' ? value : value ? 1 : 0;
-                            }
-                        }
-                    }
-                    data['system_id'] = this.system_id;
-
-                    this.adapter.log.debug(`Write group ${group}: ${JSON.stringify(data)}`);
-
-                    const res = await this.postData(CA_BaseURI + 'api/Account/CustomUseESSSetting', JSON.stringify(data), group);
-                    if (res && res['code'] == 200) {
-                        this.adapter.log.debug('Written values fror group ' + group);
-                    }
-                    else {
-                        this.adapter.log.error('Error writing settings data for group ' + group + 'Status: ' + res['status']);
-                    }
-                }
-                else {
-                    this.adapter.log.error('Error writing settings data for group ' + group + ' (unable to get data)');
-                }
-            }
-            else {
-                this.adapter.log.error('Error writing settings data for group ' + group + ' (unable to find system id for sys_sn ' + this.adapter.config.systemId + ')');
-            }
-        }
-        catch (e) {
-            this.adapter.log.error('Writing settings data for group ' + group + ': Exception occurred: ' + e);
-        }
-        this.adapter.startGroupTimeout(ReadAfterWriteTimeoutIntervalInS, group);
-    }
-
-    /**
-     * @param {string} group
-     */
-    async startGroupTimeout(group) {
-        if (!this.adapter.wrongCredentials) {
-            const gidx = this.stateInfoList.findIndex(i => i.Group == group);
-            if (gidx >= 0 && this.stateInfoList[gidx].interval > 0) {
-                const intervalInS = this.stateInfoList[gidx].interval;
-                this.adapter.startGroupTimeout(intervalInS, group);
-            }
-            else {
-                this.adapter.log.error('Internal Error for group ' + group + ': No timeout configuration found!');
-                await this.handleError(group);
-            }
-        }
-        else {
-            this.adapter.log.debug('Group ' + group + ': No new timer started, wrong credentials!');
-        }
-    }
-}
-
 class AlphaEss extends utils.Adapter {
 
     /**
@@ -2230,7 +1066,6 @@ class AlphaEss extends utils.Adapter {
         this.jsonConfig = require('./admin/jsonConfig.json');
 
         this.openApi = new OpenAPI(this);
-        this.closedApi = new ClosedAPI(this);
 
         this.setObjectNormalAsync = this.setObjectNotExistsAsync.bind(this);
         this.setObjectMigrationAsync = this.setObjectAsync.bind(this);
@@ -2258,41 +1093,23 @@ class AlphaEss extends utils.Adapter {
             // Reset the connection indicator during startup
             await this.setStateChangedAsync('info.connection', false, true);
 
-            if (this.config.apiType == 0) {
-                this.log.debug('Used API:                                Closed API');
-                this.log.debug('config username:                         ' + this.config.username);
-                this.log.debug('config systemId:                         ' + this.config.systemId);
-                this.log.debug('config intervalRealtimedata:             ' + this.config.intervalRealtimedata);
-                this.log.debug('config intervalEnergydataMins:           ' + this.config.intervalEnergydataMins);
-                this.log.debug('config intervalSettingsdataMins          ' + this.config.intervalSettingsdataMins);
-                this.log.debug('config intervalStatisticalTodaydataMins: ' + this.config.intervalStatisticalTodaydataMins);
-                this.log.debug('config intervalSummarydataMins:          ' + this.config.intervalSummarydataMins);
-                this.log.debug('config enableRealtimedata:               ' + this.config.enableRealtimedata);
-                this.log.debug('config enableSettingsdata:               ' + this.config.enableSettingsdata);
-                this.log.debug('config enableEnergydata:                 ' + this.config.enableEnergydata);
-                this.log.debug('config enableStatisticalTodaydata:       ' + this.config.enableStatisticalTodaydata);
-                this.log.debug('config enableSummarydata:                ' + this.config.enableSummarydata);
-                this.log.debug('config updateUnchangedStates:            ' + this.config.updateUnchangedStates);
-            }
-            else {
-                this.log.debug('Used API:                              Open API');
-                this.log.debug('config appID:                          ' + this.config.appID);
-                this.log.debug('config systemId:                       ' + this.config.systemId);
-                this.log.debug('config oAIntervalRealtime:             ' + this.config.oAIntervalRealtime);
-                this.log.debug('config oAIntervalEnergyMins:           ' + this.config.oAIntervalEnergyMins);
-                this.log.debug('config oAIntervalSettingsChargeMins    ' + this.config.oAIntervalSettingsChargeMins);
-                this.log.debug('config oAIntervalSettingsDischargeMins ' + this.config.oAIntervalSettingsDischargeMins);
-                this.log.debug('config oAIntervalSummaryMins:          ' + this.config.oAIntervalSummaryMins);
-                this.log.debug('config oAIntervalWallboxMins:          ' + this.config.oAIntervalWallboxMins);
-                this.log.debug('config oAEnableRealtime:               ' + this.config.oAEnableRealtime);
-                this.log.debug('config oAEnableEnergy:                 ' + this.config.oAEnableEnergy);
-                this.log.debug('config oAEnableSettingsCharge:         ' + this.config.oAEnableSettingsCharge);
-                this.log.debug('config oAEnableSettingsCharge:         ' + this.config.oAEnableSettingsCharge);
-                this.log.debug('config oAEnableSettingsDischarge:      ' + this.config.oAEnableSettingsDischarge);
-                this.log.debug('config oAEnableSummary:                ' + this.config.oAEnableSummary);
-                this.log.debug('config oAEnableWallbox:                ' + this.config.oAEnableWallbox);
-                this.log.debug('config updateUnchangedStates:          ' + this.config.updateUnchangedStates);
-            }
+            this.log.debug('Used API:                              Open API');
+            this.log.debug('config appID:                          ' + this.config.appID);
+            this.log.debug('config systemId:                       ' + this.config.systemId);
+            this.log.debug('config oAIntervalRealtime:             ' + this.config.oAIntervalRealtime);
+            this.log.debug('config oAIntervalEnergyMins:           ' + this.config.oAIntervalEnergyMins);
+            this.log.debug('config oAIntervalSettingsChargeMins    ' + this.config.oAIntervalSettingsChargeMins);
+            this.log.debug('config oAIntervalSettingsDischargeMins ' + this.config.oAIntervalSettingsDischargeMins);
+            this.log.debug('config oAIntervalSummaryMins:          ' + this.config.oAIntervalSummaryMins);
+            this.log.debug('config oAIntervalWallboxMins:          ' + this.config.oAIntervalWallboxMins);
+            this.log.debug('config oAEnableRealtime:               ' + this.config.oAEnableRealtime);
+            this.log.debug('config oAEnableEnergy:                 ' + this.config.oAEnableEnergy);
+            this.log.debug('config oAEnableSettingsCharge:         ' + this.config.oAEnableSettingsCharge);
+            this.log.debug('config oAEnableSettingsCharge:         ' + this.config.oAEnableSettingsCharge);
+            this.log.debug('config oAEnableSettingsDischarge:      ' + this.config.oAEnableSettingsDischarge);
+            this.log.debug('config oAEnableSummary:                ' + this.config.oAEnableSummary);
+            this.log.debug('config oAEnableWallbox:                ' + this.config.oAEnableWallbox);
+            this.log.debug('config updateUnchangedStates:          ' + this.config.updateUnchangedStates);
 
             this.wrongCredentials = false;
 
@@ -2310,54 +1127,47 @@ class AlphaEss extends utils.Adapter {
 
             if (await this.isMigrationNecessary()) {
                 this.log.info('States will be migrated.');
+
+                // Remove no longer supported groups:
+                await this.delObjectAsync('Settings', { recursive: true });
+                await this.delObjectAsync('StatisticsToday', { recursive: true });
+
             }
 
-            if (this.config.apiType == 3) { // For future possibility to disable Closed API
-                this.log.error('Closed API: Sorry, Closed API currently not supported because of changes by Alpha-ESS.');
-            }
-            else {
-                await this.closedApi.resetAuth();
+            if (this.config.appID && this.config.appSecret && this.config.systemId) {
 
-                if (this.config.apiType == 0 && this.config.password && this.config.username && this.config.systemId ||
-                    this.config.apiType == 1 && this.config.appID && this.config.appSecret && this.config.systemId) {
+                for (const gidx of Object.keys(this.getStateInfoList())) {
+                    const groupInfo = this.getStateInfoList()[gidx];
 
-                    for (const gidx of Object.keys(this.getStateInfoList())) {
-                        const groupInfo = this.getStateInfoList()[gidx];
+                    groupInfo.interval = this.config[groupInfo.intervalName] * groupInfo.intervalFactor;
+                    this.log.debug(`${groupInfo.intervalName}: ${groupInfo.interval}`);
 
-                        groupInfo.interval = this.config[groupInfo.intervalName] * groupInfo.intervalFactor;
-                        this.log.debug(`${groupInfo.intervalName}: ${groupInfo.interval}`);
-
-                        if (this.jsonConfig.items[groupInfo.intervalName] && this.jsonConfig.items[groupInfo.intervalName].min) {
-                            if (groupInfo.interval < this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor) {
-                                const oldVal = groupInfo.interval;
-                                groupInfo.interval = this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor;
-                                if (this.config[groupInfo.enabledName]) {
-                                    this.log.warn(`Configured interval ${oldVal} for ${groupInfo.Group} no longer supported. Changed to ${groupInfo.interval}. Please change your configuration!`);
-                                }
+                    if (this.jsonConfig.items[groupInfo.intervalName] && this.jsonConfig.items[groupInfo.intervalName].min) {
+                        if (groupInfo.interval < this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor) {
+                            const oldVal = groupInfo.interval;
+                            groupInfo.interval = this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor;
+                            if (this.config[groupInfo.enabledName]) {
+                                this.log.warn(`Configured interval ${oldVal} for ${groupInfo.Group} no longer supported. Changed to ${groupInfo.interval}. Please change your configuration!`);
                             }
                         }
-
-                        if (this.config[groupInfo.enabledName]) {
-                            await this.setQualityForGroup(groupInfo.Group, 0x2);
-                            await groupInfo.fnct(groupInfo.Group);
-                        }
-                        else {
-                            this.log.info(groupInfo.Group + ' data disabled! Adapter won\'t fetch ' + groupInfo.Group + ' data. According states deleted.');
-                            await this.delObjectAsync(groupInfo.Group, { recursive: true });
-                        }
                     }
-                }
-                else {
-                    if (this.config.apiType == 0) {
-                        this.log.error('Closed API: No username, password and/or system ID set! Adapter won\'t fetch any data.');
+
+                    if (this.config[groupInfo.enabledName]) {
+                        await this.setQualityForGroup(groupInfo.Group, 0x2);
+                        await groupInfo.fnct(groupInfo.Group);
                     }
                     else {
-                        this.log.error('Open API: No appID, appSecret and/or system ID set! Adapter won\'t fetch any data.');
+                        this.log.info(groupInfo.Group + ' data disabled! Adapter won\'t fetch ' + groupInfo.Group + ' data. According states deleted.');
+                        await this.delObjectAsync(groupInfo.Group, { recursive: true });
                     }
                 }
-                this.watchDogIntervalHandle = this.setInterval(this.watchDogFunction, WATCHDOG_TIMER);
-                this.log.debug('Watchdog interval started!');
             }
+            else {
+                this.log.error('Open API: No appID, appSecret and/or system ID set! Adapter won\'t fetch any data.');
+            }
+            this.watchDogIntervalHandle = this.setInterval(this.watchDogFunction, WATCHDOG_TIMER);
+            this.log.debug('Watchdog interval started!');
+
             await this.setStateAsync('info.version', '' + this.version, true);
         }
         catch (e) {
@@ -2384,8 +1194,6 @@ class AlphaEss extends utils.Adapter {
                 this.watchDogIntervalHandle = null;
                 this.log.debug('Watchdog interval cleared!');
             }
-
-            this.closedApi.resetAuth();
 
             callback();
         } catch (e) {
@@ -2502,12 +1310,7 @@ class AlphaEss extends utils.Adapter {
     }
 
     getStateInfoList() {
-        if (this.config.apiType == 0) {
-            return this.closedApi.stateInfoList;
-        }
-        else {
-            return this.openApi.stateInfoList;
-        }
+        return this.openApi.stateInfoList;
     }
 
     /**
@@ -2586,8 +1389,8 @@ class AlphaEss extends utils.Adapter {
             }
             if (vParts.length >= 3) {
                 const major = Number.parseInt(vParts[0]);
-                const minor = Number.parseInt(vParts[1]);
-                if (major == 0 && minor > 4 || major > 0) {
+                //const minor = Number.parseInt(vParts[1]);
+                if (major >= 2) {
                     return false;
                 }
             }

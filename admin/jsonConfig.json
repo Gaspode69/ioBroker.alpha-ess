@@ -2,53 +2,17 @@
   "i18n": true,
   "type": "panel",
   "items": {
-    "apiType": {
-      "sm": 5,
-      "type": "select",
-      "label": "Select API",
-      "newLine": true,
-      "options": [
-        { "label": "Closed API", "value": 0 },
-        { "label": "Open API", "value": 1 }
-      ]
-    },
-    "closedAPINotSupported": {
-      "sm": 5,
-      "type": "staticText",
-      "text": "Sorry. Closed API currently not supported!",
-      "style": {
-          "color": "red"
-      },
-      "newLine": true,
-      "hidden": "data.apiType == 1 || data.apiType == 0"
-    },
-    "username": {
-      "sm": 5,
-      "type": "text",
-      "label": "Username",
-      "newLine": true,
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
-    "password": {
-      "sm": 5,
-      "type": "password",
-      "label": "Password",
-      "newLine": true,
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
     "appID": {
       "sm": 5,
       "type": "text",
       "label": "Personal APP ID",
-      "newLine": true,
-      "hidden": "data.apiType == 0"
+      "newLine": true
     },
     "appSecret": {
       "sm": 5,
       "type": "password",
       "label": "Personal APP Secret",
-      "newLine": true,
-      "hidden": "data.apiType == 0"
+      "newLine": true
     },
     "systemId": {
       "sm": 5,
@@ -57,122 +21,9 @@
       "newLine": true,
       "disabled": "data.apiType == 3"
     },
-    "enableRealtimedata": {
-      "type": "checkbox",
-      "newLine": true,
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
-    "intervalRealtimedata": {
-      "sm": 5,
-      "min": 10,
-      "type": "number",
-      "label": "Interval to read realtime data",
-      "newLine": false,
-      "disabled": "!data.enableRealtimedata",
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
-    "enableEnergydata": {
-      "type": "checkbox",
-      "newLine": true,
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
-    "intervalEnergydataMins": {
-      "sm": 5,
-      "min": 1,
-      "type": "number",
-      "label": "Interval to read energy data",
-      "newLine": false,
-      "disabled": "!data.enableEnergydata",
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
-    "enableSettingsdata": {
-      "type": "checkbox",
-      "newLine": true,
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
-    "enableSettingsCharge": {
-      "type": "checkbox",
-      "newLine": true,
-      "hidden": "true"
-    },
-    "intervalSettingsChargeMins": {
-      "sm": 5,
-      "min": 1,
-      "type": "number",
-      "label": "Interval to read charging settings",
-      "newLine": false,
-      "disabled": "!data.oAEnableSettingsCharge",
-      "hidden": "true"
-    },
-    "enableSettingsDisCharge": {
-      "type": "checkbox",
-      "newLine": true,
-      "hidden": "true"
-    },
-    "intervalSettingsDisChargeMins": {
-      "sm": 5,
-      "min": 1,
-      "type": "number",
-      "label": "Interval to read charging settings",
-      "newLine": false,
-      "disabled": "!data.oAEnableSettingsCharge",
-      "hidden": "true"
-    },
-    "intervalSettingsdataMins": {
-      "sm": 5,
-      "min": 1,
-      "type": "number",
-      "label": "Interval to read settings data",
-      "newLine": false,
-      "disabled": "!data.enableSettingsdata",
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
-    "enableStatisticalTodaydata": {
-      "type": "checkbox",
-      "newLine": true,
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
-    "intervalStatisticalTodaydataMins": {
-      "sm": 5,
-      "min": 1,
-      "type": "number",
-      "label": "Interval to read statistical data (today)",
-      "newLine": false,
-      "disabled": "!data.enableStatisticalTodaydata",
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
-    "enableSummarydata": {
-      "type": "checkbox",
-      "newLine": true,
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
-    "intervalSummarydataMins": {
-      "sm": 5,
-      "min": 5,
-      "type": "number",
-      "label": "Interval to read summary data",
-      "newLine": false,
-      "disabled": "!data.enableSummarydata",
-      "hidden": "data.apiType == 1 || data.apiType == 3"
-    },
-    "enableWallbox": {
-      "type": "checkbox",
-      "newLine": true,
-      "hidden": "true"
-    },
-    "intervalWallboxMins": {
-      "sm": 5,
-      "min": 1,
-      "type": "number",
-      "label": "Interval to read wallbox data",
-      "newLine": false,
-      "disabled": "!data.oAEnableWallbox",
-      "hidden": "true"
-    },
     "oAEnableRealtime": {
       "type": "checkbox",
-      "newLine": true,
-      "hidden": "data.apiType == 0"
+      "newLine": true
     },
     "oAIntervalRealtime": {
       "sm": 5,
@@ -180,13 +31,11 @@
       "type": "number",
       "label": "Interval to read realtime data",
       "newLine": false,
-      "disabled": "!data.oAEnableRealtime",
-      "hidden": "data.apiType == 0"
+      "disabled": "!data.oAEnableRealtime"
     },
     "oAEnableEnergy": {
       "type": "checkbox",
-      "newLine": true,
-      "hidden": "data.apiType == 0"
+      "newLine": true
     },
     "oAIntervalEnergyMins": {
       "sm": 5,
@@ -194,41 +43,11 @@
       "type": "number",
       "label": "Interval to read energy data",
       "newLine": false,
-      "disabled": "!data.oAEnableEnergy",
-      "hidden": "data.apiType == 0"
-    },
-    "oAEnableStatisticsToday": {
-      "type": "checkbox",
-      "newLine": true,
-      "hidden": "true"
-    },
-    "oAIntervalStatisticsTodayMins": {
-      "sm": 5,
-      "min": 5,
-      "type": "number",
-      "label": "Interval to read statistical data (today)",
-      "newLine": false,
-      "disabled": "!data.oAEnableStatisticsToday",
-      "hidden": "true"
-    },
-    "oAEnableSettings": {
-      "type": "checkbox",
-      "newLine": true,
-      "hidden": "true"
-    },
-    "oAIntervalSettingsMins": {
-      "sm": 5,
-      "min": 1,
-      "type": "number",
-      "label": "Interval to read settings data",
-      "newLine": false,
-      "disabled": "!data.oAEnableSettings",
-      "hidden": "true"
+      "disabled": "!data.oAEnableEnergy"
     },
     "oAEnableSettingsCharge": {
       "type": "checkbox",
-      "newLine": true,
-      "hidden": "data.apiType == 0"
+      "newLine": true
     },
     "oAIntervalSettingsChargeMins": {
       "sm": 5,
@@ -236,13 +55,11 @@
       "type": "number",
       "label": "Interval to read charging settings",
       "newLine": false,
-      "disabled": "!data.oAEnableSettingsCharge",
-      "hidden": "data.apiType == 0"
+      "disabled": "!data.oAEnableSettingsCharge"
     },
     "oAEnableSettingsDischarge": {
       "type": "checkbox",
-      "newLine": true,
-      "hidden": "data.apiType == 0"
+      "newLine": true
     },
     "oAIntervalSettingsDischargeMins": {
       "sm": 5,
@@ -250,13 +67,11 @@
       "type": "number",
       "label": "Interval to read discharging settings",
       "newLine": false,
-      "disabled": "!data.oAEnableSettingsDischarge",
-      "hidden": "data.apiType == 0"
+      "disabled": "!data.oAEnableSettingsDischarge"
     },
     "oAEnableSummary": {
       "type": "checkbox",
-      "newLine": true,
-      "hidden": "data.apiType == 0"
+      "newLine": true
     },
     "oAIntervalSummaryMins": {
       "sm": 5,
@@ -264,13 +79,11 @@
       "type": "number",
       "label": "Interval to read summary data",
       "newLine": false,
-      "disabled": "!data.oAEnableSummary",
-      "hidden": "data.apiType == 0"
+      "disabled": "!data.oAEnableSummary"
     },
     "oAEnableWallbox": {
       "type": "checkbox",
-      "newLine": true,
-      "hidden": "data.apiType == 0"
+      "newLine": true
     },
     "oAIntervalWallboxMins": {
       "sm": 5,
@@ -278,8 +91,7 @@
       "type": "number",
       "label": "Interval to read wallbox data",
       "newLine": false,
-      "disabled": "!data.oAEnableWallbox",
-      "hidden": "data.apiType == 0"
+      "disabled": "!data.oAEnableWallbox"
     },
     "updateUnchangedStates": {
       "type": "checkbox",
