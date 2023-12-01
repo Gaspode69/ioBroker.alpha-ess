@@ -137,6 +137,7 @@
     "appSecret"
   ],
   "native": {
+    "apiType": 1,
     "appID": "",
     "appSecret": "",
     "systemId": "",

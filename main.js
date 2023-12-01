@@ -1132,6 +1132,9 @@ class AlphaEss extends utils.Adapter {
                 await this.delObjectAsync('Settings', { recursive: true });
                 await this.delObjectAsync('StatisticsToday', { recursive: true });
 
+                if (this.config['apiType'] == 0) {
+                    this.log.error('ClosedAPI is not longer suppoerted!');
+                }
             }
 
             if (this.config.appID && this.config.appSecret && this.config.systemId) {
