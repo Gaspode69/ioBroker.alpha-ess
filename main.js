@@ -1133,7 +1133,7 @@ class AlphaEss extends utils.Adapter {
                 await this.delObjectAsync('StatisticsToday', { recursive: true });
 
                 if (this.config['apiType'] == 0) {
-                    this.log.error('ClosedAPI is not longer suppoerted!');
+                    this.log.error('ClosedAPI is not longer supported! Please enter OpenAPI credentials in settings dialog if not already done!');
                 }
             }
 
