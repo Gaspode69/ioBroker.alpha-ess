@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "1.3.0",
+    "version": "2.0.0-beta.0",
     "news": {
+      "2.0.0-beta.0": {
+        "en": "Breaking Change: Removed support of Closed API",
+        "de": "Breaking Change: Entfernte Unterstützung von Closed API",
+        "ru": "Перерыв изменения: Удаленная поддержка Закрытого API",
+        "pt": "Mudança de ruptura: Suporte removido da API fechada",
+        "nl": "Vertaling: Verwijderde steun van gesloten API",
+        "fr": "Changement de rupture : Soutien retiré de l'API fermée",
+        "it": "Cambiamento di rottura: Supporto rimosso delle API chiuse",
+        "es": "Cambio de ruptura: Soporte extraído de API cerrada",
+        "pl": "Zmiana: Przewiduje wsparcie API Closed",
+        "uk": "Зміна несправностей: Видалити підтримку Закритого API",
+        "zh-cn": "打破变化: B. 取消对已结束的反补贴方案的支持"
+      },
       "1.3.0": {
         "en": "Support wallbox with Open API\nStart and stop charging of wallbox with Open API",
         "de": "Wallbox Unterstützung mit Open API\nStarten und stoppen des Ladevorgangs der Wallbox mit Open API",
