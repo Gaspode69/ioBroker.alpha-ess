@@ -96,8 +96,7 @@
     "updateUnchangedStates": {
       "type": "checkbox",
       "label": "Update unchanged states",
-      "newLine": true,
-      "hidden": "data.apiType == 3"
+      "newLine": true
     }
   }
 }
