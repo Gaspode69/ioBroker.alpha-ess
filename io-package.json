@@ -1,9 +1,9 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.0.0-beta.0",
+    "version": "2.0.0",
     "news": {
-      "2.0.0-beta.0": {
+      "2.0.0": {
         "en": "Breaking Change: Removed support of Closed API",
         "de": "Breaking Change: Entfernte Unterstützung von Closed API",
         "ru": "Перерыв изменения: Удаленная поддержка Закрытого API",
