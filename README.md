@@ -15,7 +15,7 @@
 
 ### Due to current circumstances, please take note!
 
-[Interface restriction announcement](https://github.com/alphaess-developer/alphacloud_open_api/issues/54)\
+[Interface restriction announcement](https://github.com/alphaess-developer/alphacloud_open_api/issues/54)
 
 ---
 
