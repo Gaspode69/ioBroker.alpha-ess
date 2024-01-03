@@ -13,7 +13,7 @@ const axios = require('axios').default;
 
 const OA_BaseURI = 'https://openapi.alphaess.com/api';
 
-const ReadAfterWriteTimeoutIntervalInS = 2;
+const ReadAfterWriteTimeoutIntervalInS = 6;
 
 const REQUEST_TIMEOUT = 10000;
 const WATCHDOG_TIMER = 60000;
@@ -872,7 +872,6 @@ class OpenAPI {
      * @param {string} group
      */
     async writeConfigInfo(group, _updState, _updStateInfo) {
-        const nextReadTimeout = ReadAfterWriteTimeoutIntervalInS;
         try {
             this.adapter.stopGroupWriteTimeout(group);
             this.adapter.stopGroupTimeout(group);
@@ -918,7 +917,7 @@ class OpenAPI {
             this.adapter.log.error('Writing data for group ' + group + ': Exception occurred: ' + e);
             await this.handleError(this.emptyBody, group);
         }
-        this.adapter.startGroupTimeout(nextReadTimeout, group);
+        this.adapter.startGroupTimeout(ReadAfterWriteTimeoutIntervalInS, group);
     }
 
     /**

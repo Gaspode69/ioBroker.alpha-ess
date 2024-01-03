@@ -55,6 +55,10 @@ How to find SN and Check code for registration is described here: https://github
 
 ## Changelog
 
+### **WORK IN PROGRESS**
+
+-   (Gaspode) Adapted timeout to new API restrictions
+
 ### 2.0.0 (2023-12-02)
 
 -   (Gaspode) Breaking Change: Removed support of Closed API
