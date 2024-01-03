@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.0.0",
+    "version": "2.0.1",
     "news": {
+      "2.0.1": {
+        "en": "Adapted timeout to new API restrictions",
+        "de": "Timeout Werte an neue API-Beschränkungen angepasst",
+        "ru": "Адаптированное таймирование к новым ограничениям API",
+        "pt": "Timeout adaptado para novas restrições de API",
+        "nl": "Vertaling:",
+        "fr": "Timeout adapté aux nouvelles restrictions de l'API",
+        "it": "Adeguato timeout alle nuove restrizioni API",
+        "es": "Tiempo de adaptación a nuevas restricciones de API",
+        "pl": "Zastosowany czas do nowych ograniczeń API",
+        "uk": "Адаптивний час для нових обмежень API",
+        "zh-cn": "A. 取消新优惠制度限制的时间"
+      },
       "2.0.0": {
         "en": "Breaking Change: Removed support of Closed API",
         "de": "Breaking Change: Entfernte Unterstützung von Closed API",
