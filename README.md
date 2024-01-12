@@ -55,7 +55,7 @@ How to find SN and Check code for registration is described here: https://github
 
 ## Changelog
 
-### **WORK IN PROGRESS**
+### 2.0.2 (2024-01-12)
 
 -   (Gaspode) Updated Copyright year
 
@@ -157,7 +157,7 @@ How to find SN and Check code for registration is described here: https://github
 
 MIT License
 
-Copyright (c) 2023 Gaspode <gaspode69@online.de>
+Copyright (c) 2024 Gaspode <gaspode69@online.de>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.0.1",
+    "version": "2.0.2",
     "news": {
+      "2.0.2": {
+        "en": "Updated Copyright year",
+        "de": "Aktualisierung des Copyright-Jahres",
+        "ru": "Обновленный год авторского права",
+        "pt": "Ano de direitos autorais atualizado",
+        "nl": "Bijgewerkt Copyrightjaar",
+        "fr": "Mise à jour de l'année de droit d'auteur",
+        "it": "Aggiornato Copyright anno",
+        "es": "Actualizado Año de Copyright",
+        "pl": "Aktualizacja roku Copyright",
+        "uk": "Оновлений рік авторського права",
+        "zh-cn": "更新版权年度"
+      },
       "2.0.1": {
         "en": "Adapted timeout to new API restrictions",
         "de": "Timeout Werte an neue API-Beschränkungen angepasst",
@@ -80,19 +93,6 @@
         "pl": "Zamknięty interfejs API zaadaptował się do najnowszych zmian Alpha-ESS i umożliwił powtórzenie się",
         "uk": "Закритий API, адаптований до останніх змін Альфа-ESS і знову ввімкнено",
         "zh-cn": "适应最近Alpha-ESS变革的贴近性联谊会再次促成了变革。"
-      },
-      "1.1.0": {
-        "en": "Closed API disabled (temporarily?) because API has been changed by Alpha-ESS\nRead back changed settings values 2 seconds after they have been changed",
-        "de": "Closed API deaktiviert (vorläufig?), weil die API von Alpha-ESS geändert wurde\nLesen Sie zurück geänderte Einstellungen Werte 2 Sekunden nachdem sie geändert wurden",
-        "ru": "Закрытый API отключен (временно?) потому что API был изменен Alpha-ESS\nЧитать назад измененные настройки значения 2 секунды после их изменения",
-        "pt": "API fechada desabilitada (temporariamente?) porque a API foi alterada por Alpha-ESS\nLeia novamente os valores das configurações alteradas 2 segundos depois de terem sido alterados",
-        "nl": "Omdat API veranderd is door Alpha-ESSS\nLees terug veranderde instellingen 2 seconden nadat ze veranderd zijn",
-        "fr": "API fermée désactivée (temporairement?) parce que l'API a été changée par Alpha-ESS\nLire les valeurs de paramètres changées 2 secondes après avoir été changées",
-        "it": "Chiuso API disabilitato (temporaneo?) perché API è stato modificato da Alpha-ESS\nLeggi indietro i valori delle impostazioni cambiati 2 secondi dopo che sono stati modificati",
-        "es": "API cerrada deshabilitada (temporalmente?) porque API ha sido cambiado por Alpha-ESS\nLea los valores de configuración cambiados 2 segundos después de haber cambiado",
-        "pl": "Zamknięty API niepełnosprawny (czasowo?) ponieważ interfejs API został zmieniony przez Alpha-ESS\nCzytanie z powrotem zmieniało wartości 2 sekundy po zmianie ich wartości",
-        "uk": "Замкнено API вимкнено (попередньо?) тому, що API було змінено Альфа-ESS\nЧитання змінених значень налаштувань 2 секунд після зміни",
-        "zh-cn": "由于Alpha-ESS已改变API残疾(有时?)\n阅读后的环境价值观2"
       }
     },
     "titleLang": {
