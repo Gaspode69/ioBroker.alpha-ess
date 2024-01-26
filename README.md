@@ -13,6 +13,13 @@
 
 ---
 
+### For support please open a GitHub issue or visit
+
+https://forum.iobroker.net/post/892023  
+https://www.storion4you.de/thread/683
+
+---
+
 ### Due to current circumstances, please take note!
 
 [Interface restriction announcement](https://github.com/alphaess-developer/alphacloud_open_api/issues/54)
@@ -157,7 +164,7 @@ How to find SN and Check code for registration is described here: https://github
 
 MIT License
 
-Copyright (c) 2024 Gaspode <gaspode69@online.de>
+Copyright (c) 2024 Gaspode <gaspode69@online.de> (**NO SUPPORT VIA EMAIL**)
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
