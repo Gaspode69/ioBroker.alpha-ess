@@ -16,7 +16,7 @@
     "url": "https://github.com/Gaspode69/ioBroker.alpha-ess.git"
   },
   "engines": {
-    "node": ">= 16"
+    "node": ">= 18"
   },
   "dependencies": {
     "@iobroker/adapter-core": "^3.0.4",
