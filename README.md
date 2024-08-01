@@ -15,7 +15,7 @@
 
 ### For support please open a GitHub issue or visit
 
-https://forum.iobroker.net/post/892023  
+https://forum.iobroker.net/post/892023
 https://www.storion4you.de/thread/683
 
 ---
@@ -61,6 +61,12 @@ How to find SN and Check code for registration is described here: https://github
 **All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+
+-   (Gaspode) Adapter requires node.js >= 18 and js-controller >= 5 now
+-   (Gaspode) Dependencies updated
+-   (Gaspode) Adapter logo updated. Alpha-ESS has kindly permitted to use the Alpha-ESS logo. This does not imply any affiliation with Alpha-ESS! Alpha-ESS is not the developer or provider of this adapter!
 
 ### 2.0.2 (2024-01-12)
 
