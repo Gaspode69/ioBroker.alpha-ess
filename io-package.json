@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.0.2",
+    "version": "2.1.0",
     "news": {
+      "2.1.0": {
+        "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nDependencies updated\nAdapter logo updated. Alpha-ESS has kindly permitted to use the Alpha-ESS logo. This does not imply any affiliation with Alpha-ESS! Alpha-ESS is not the developer or provider of this adapter!",
+        "de": "Adapter benötigt jetzt node.js >= 18 und js-controller >= 5\nAbhängigkeiten aktualisiert\nAdapter-Logo aktualisiert. Alpha-ESS hat freundlicherweise die Nutzung des Alpha-ESS-Logos genehmigt. Dies impliziert keine Zugehörigkeit zu Alpha-ESS! Alpha-ESS ist nicht der Entwickler oder Anbieter dieses Adapters!",
+        "ru": "Адаптер требует node.js >= 18 и js-контроллер >= 5 сейчас\nОбновленные данные о зависимостях\nОбновлен логотип адаптера. Alpha-ESS любезно разрешил использовать логотип Alpha-ESS. Это не означает никакой связи с Alpha-ESS! Alpha-ESS не является разработчиком или поставщиком этого адаптера!",
+        "pt": "Adapter requer node.js >= 18 e js-controller >= 5 agora\nDependências atualizadas\nLogotipo do adaptador atualizado. Alpha-ESS tem permissão para usar o logotipo Alpha-ESS. Isso não implica nenhuma afiliação com Alpha-ESS! Alpha-ESS não é o desenvolvedor ou provedor deste adaptador!",
+        "nl": "Voor adaptor zijn node.js < 18 en js-controller > Nu 5\nAfhankelijkheden bijgewerkt\nAdapterlogo bijgewerkt. Alpha-ESS mag het Alpha-ESS-logo gebruiken. Dit impliceert geen band met Alpha-ESS! Alpha-ESS is niet de ontwikkelaar of leverancier van deze adapter!",
+        "fr": "L'adaptateur nécessite node.js >= 18 et js-controller >= 5 maintenant\nDépendances actualisées\nLogo de l'adaptateur mis à jour. Alpha-ESS a permis d'utiliser le logo Alpha-ESS. Cela n'implique aucune affiliation avec Alpha-ESS ! Alpha-ESS n'est pas le développeur ou le fournisseur de cet adaptateur !",
+        "it": "Adattatore richiede node.js >= 18 e js-controller >= 5 ora\nDipendenze aggiornate\nLogo adattatore aggiornato. Alpha-ESS ha gentilmente permesso di utilizzare il logo Alpha-ESS. Questo non implica alcuna affiliazione con Alpha-ESS! Alpha-ESS non è lo sviluppatore o il fornitore di questo adattatore!",
+        "es": "Adaptador requiere node.js √≥= 18 y js-controller 5 ahora\nActualización de las dependencias\nAdaptador logo actualizado. Alpha-ESS ha permitido utilizar el logotipo de Alpha-ESS. ¡Esto no implica ninguna afiliación con Alpha-ESS! Alpha-ESS no es el desarrollador o proveedor de este adaptador!",
+        "pl": "Adapter wymaga node.js > = 18 i kontroler js- > = 5 teraz\nAktualizacja zależności\nAktualizacja logo adaptera. Alpha- ESS uprzejmie zezwolił na użycie logo Alpha- ESS. To nie oznacza żadnego związku z AlphaESS! Alpha- ESS nie jest deweloperem ani dostawcą tego adaptera!",
+        "uk": "Адаптер вимагає node.js >= 18 і js-controller >= 5 тепер\nЗалежність оновлено\nОновлено логотип адаптера. Альфа-ESS дозволяє використовувати логотип Альфа-ESS. Це не означає афілію Альфа-ESS! Альфа-ESS не є розробником або постачальником цього адаптера!",
+        "zh-cn": "适配器需要节点.js QQ18和js控制器 QQ 现在5号\n更新的依赖关系\n适配器标志更新. Alpha-ESS允许使用Alpha-ESS标志。 这并不意味着与Alpha -ESS有任何关系! Alpha-ESS不是这个适配器的开发者或提供者!"
+      },
       "2.0.2": {
         "en": "Updated Copyright year",
         "de": "Aktualisierung des Copyright-Jahres",
@@ -80,19 +93,6 @@
         "pl": "Dodać dodatkowe atrybuty dla OpenAPI",
         "uk": "Додано додаткові атрибути в режимі реального часу для OpenAPI",
         "zh-cn": "增加开放协会实时归属"
-      },
-      "1.1.1": {
-        "en": "Closed API adapted to latest Alpha-ESS changes and enabled again",
-        "de": "Closed API angepasst an neueste Alpha-ESS-Änderungen und wieder aktiviert",
-        "ru": "Закрытый API адаптирован к последним изменениям Alpha-ESS и включен снова",
-        "pt": "API fechada adaptada às últimas alterações Alpha-ESS e ativada novamente",
-        "nl": "Quality over Quantity (QoQ) Releases Vertaling:",
-        "fr": "API fermée adaptée aux derniers changements Alpha-ESS et réactivée",
-        "it": "API chiusa adattata alle ultime modifiche Alpha-ESS e abilitata di nuovo",
-        "es": "API cerrada adaptada a los últimos cambios de Alpha-ESS y habilitada de nuevo",
-        "pl": "Zamknięty interfejs API zaadaptował się do najnowszych zmian Alpha-ESS i umożliwił powtórzenie się",
-        "uk": "Закритий API, адаптований до останніх змін Альфа-ESS і знову ввімкнено",
-        "zh-cn": "适应最近Alpha-ESS变革的贴近性联谊会再次促成了变革。"
       }
     },
     "titleLang": {

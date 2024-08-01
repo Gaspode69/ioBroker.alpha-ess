@@ -61,8 +61,7 @@ How to find SN and Check code for registration is described here: https://github
 **All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
 
 ## Changelog
-
-### **WORK IN PROGRESS**
+### 2.1.0 (2024-08-01)
 
 -   (Gaspode) Adapter requires node.js >= 18 and js-controller >= 5 now
 -   (Gaspode) Dependencies updated
