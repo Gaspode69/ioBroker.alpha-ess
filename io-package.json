@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.1.0",
+    "version": "2.1.1",
     "news": {
+      "2.1.1": {
+        "en": "Do not longer report read timeouts as error. It should be enough to set the quality of concerned states to values according the table above and to display warnings, if values were not updated for a long time. To see details, debug log level must be enabled by the user.",
+        "de": "Read Timeouts werden nicht länger als Fehler im Log angezeigt. Es sollte ausreichen, dass die Qualität der betreffenden States auf Werte gemäß der obigen Tabelle gesetzt wird und dass Warnungen angezeigt werden, wenn Werte lange nicht aktualisiert wurden. Um Details zu sehen, muss der Log-Level Debug vom Benutzer aktiviert werden.",
+        "ru": "Не сообщайте больше о времени чтения как об ошибке. Это должно быть достаточно, чтобы установить качество соответствующих состояний к значениям согласно таблице выше и отображать предупреждения, если значения не обновлялись в течение длительного времени. Чтобы увидеть детали, уровень отладки журнала должен быть включен пользователем.",
+        "pt": "Não reporte mais tempo de leitura como erro. Deve ser suficiente definir a qualidade dos estados em causa para valores de acordo com a tabela acima e para exibir avisos, se os valores não foram atualizados por muito tempo. Para ver detalhes, o nível de log de depuração deve ser ativado pelo usuário.",
+        "nl": "Niet langer lezen time-outs rapporteren als fout. Het zou voldoende moeten zijn om de kwaliteit van de betrokken staten vast te stellen op waarden volgens bovenstaande tabel en waarschuwingen weer te geven, indien de waarden lange tijd niet werden bijgewerkt. Om details te zien, moet het debug-logniveau door de gebruiker worden ingeschakeld.",
+        "fr": "Ne déclarez plus les temps de lecture comme erreur. Il devrait suffire de fixer la qualité des états concernés à des valeurs selon le tableau ci-dessus et d'afficher des avertissements, si les valeurs ne sont pas mises à jour pendant longtemps. Pour voir les détails, le niveau de débogage doit être activé par l'utilisateur.",
+        "it": "Non report più i timeout di lettura come errore. Dovrebbe essere sufficiente impostare la qualità degli stati interessati ai valori secondo la tabella sopra e mostrare avvisi, se i valori non sono stati aggiornati per molto tempo. Per visualizzare i dettagli, il livello di registro del debug deve essere abilitato dall'utente.",
+        "es": "No reporte más tiempo de lectura como error. Debe ser suficiente para establecer la calidad de los estados interesados a valores según la tabla anterior y para mostrar advertencias, si los valores no se actualizaron durante mucho tiempo. Para ver detalles, el nivel de registro de depuración debe ser habilitado por el usuario.",
+        "pl": "Nie raportuj już timeout jako błąd. Powinno wystarczyć ustawić jakość danych państw na wartości zgodnie z powyższą tabelą oraz wyświetlić ostrzeżenia, jeżeli wartości nie były aktualizowane przez długi czas. Aby zobaczyć szczegóły, poziom dziennika debugowania musi być włączony przez użytkownika.",
+        "uk": "Не довший звіт про те, як помилка. Для того, щоб встановити якість занепокоєних станів до значень, зазначених вище таблиці та для відображення попередження, якщо значення не було оновлено протягом тривалого часу. Щоб дізнатися подробиці, рівень дебюг повинен бути включений користувачем.",
+        "zh-cn": "不再将超时读取为错误 。 如果长期不更新有关数值,则应该足以按照上表的数值确定有关国家的质量,并显示警告。 要查看细节,调试日志级别必须由用户启用."
+      },
       "2.1.0": {
         "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nDependencies updated\nAdapter logo updated. Alpha-ESS has kindly permitted to use the Alpha-ESS logo. This does not imply any affiliation with Alpha-ESS! Alpha-ESS is not the developer or provider of this adapter!",
         "de": "Adapter benötigt jetzt node.js >= 18 und js-controller >= 5\nAbhängigkeiten aktualisiert\nAdapter-Logo aktualisiert. Alpha-ESS hat freundlicherweise die Nutzung des Alpha-ESS-Logos genehmigt. Dies impliziert keine Zugehörigkeit zu Alpha-ESS! Alpha-ESS ist nicht der Entwickler oder Anbieter dieses Adapters!",
@@ -80,19 +93,6 @@
         "pl": "Szczegółowy błąd w ClosedAPI",
         "uk": "Виправлено тяжку помилку в ClosedAPI",
         "zh-cn": "A. 近似严重错误"
-      },
-      "1.2.0": {
-        "en": "Added additional realtime attributes for OpenAPI",
-        "de": "Zusätzliche Echtzeit-Attribute für OpenAPI hinzugefügt",
-        "ru": "Добавлены дополнительные атрибуты в реальном времени для OpenAPI",
-        "pt": "Adicionado atributos em tempo real adicionais para OpenAPI",
-        "nl": "Toegevoegd aanvullingen voor OpenAPI",
-        "fr": "Ajout d'autres attributs en temps réel pour OpenAPI",
-        "it": "Aggiunto attributi in tempo reale aggiuntivi per OpenAPI",
-        "es": "Atributos adicionales en tiempo real para OpenAPI",
-        "pl": "Dodać dodatkowe atrybuty dla OpenAPI",
-        "uk": "Додано додаткові атрибути в режимі реального часу для OpenAPI",
-        "zh-cn": "增加开放协会实时归属"
       }
     },
     "titleLang": {
