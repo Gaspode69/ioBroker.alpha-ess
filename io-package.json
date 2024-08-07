@@ -1,11 +1,24 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.1.1",
+    "version": "2.1.2",
     "news": {
+      "2.1.2": {
+        "en": "Quality of states optimized",
+        "de": "Quality Wert von States optimiert",
+        "ru": "Качество оптимизированных состояний",
+        "pt": "Qualidade de estados otimizados",
+        "nl": "Kwaliteit van geoptimaliseerde staten",
+        "fr": "Qualité des états optimisés",
+        "it": "Qualità degli stati ottimizzati",
+        "es": "Calidad de los estados optimizada",
+        "pl": "Jakość państw zoptymalizowanych",
+        "uk": "Якість держав оптимізовано",
+        "zh-cn": "国家质量得到优化"
+      },
       "2.1.1": {
         "en": "Do not longer report read timeouts as error. It should be enough to set the quality of concerned states to values according the table above and to display warnings, if values were not updated for a long time. To see details, debug log level must be enabled by the user.",
-        "de": "Read Timeouts werden nicht länger als Fehler im Log angezeigt. Es sollte ausreichen, dass die Qualität der betreffenden States auf Werte gemäß der obigen Tabelle gesetzt wird und dass Warnungen angezeigt werden, wenn Werte lange nicht aktualisiert wurden. Um Details zu sehen, muss der Log-Level Debug vom Benutzer aktiviert werden.",
+        "de": "Read Timeouts werden nicht länger als Fehler im Log angezeigt. Es sollte ausreichen, dass die Quality der betreffenden States auf Werte gemäß der obigen Tabelle gesetzt wird und dass Warnungen angezeigt werden, wenn Werte lange nicht aktualisiert wurden. Um Details zu sehen, muss der Log-Level Debug vom Benutzer aktiviert werden.",
         "ru": "Не сообщайте больше о времени чтения как об ошибке. Это должно быть достаточно, чтобы установить качество соответствующих состояний к значениям согласно таблице выше и отображать предупреждения, если значения не обновлялись в течение длительного времени. Чтобы увидеть детали, уровень отладки журнала должен быть включен пользователем.",
         "pt": "Não reporte mais tempo de leitura como erro. Deve ser suficiente definir a qualidade dos estados em causa para valores de acordo com a tabela acima e para exibir avisos, se os valores não foram atualizados por muito tempo. Para ver detalhes, o nível de log de depuração deve ser ativado pelo usuário.",
         "nl": "Niet langer lezen time-outs rapporteren als fout. Het zou voldoende moeten zijn om de kwaliteit van de betrokken staten vast te stellen op waarden volgens bovenstaande tabel en waarschuwingen weer te geven, indien de waarden lange tijd niet werden bijgewerkt. Om details te zien, moet het debug-logniveau door de gebruiker worden ingeschakeld.",
@@ -80,19 +93,6 @@
         "pl": "Współdzielnia z API Open\nStart i zatrzymanie ładowania skrzynki z Open API",
         "uk": "Підтримка настінної коробки з відкритим API\nСтарт і зупинка зарядки стінок з відкритим API",
         "zh-cn": "A. 开放式API的支助墙箱\nA. 开端和停止向开放的阿联酋投掷石箱"
-      },
-      "1.2.1": {
-        "en": "Fixed severe error in ClosedAPI",
-        "de": "Schweren Fehler in ClosedAPI behoben",
-        "ru": "Исправлена тяжелая ошибка в ClosedAPI",
-        "pt": "Erro grave fixo em ClosedAPI",
-        "nl": "Een ernstige fout in ClosedAPI",
-        "fr": "Erreur sévère fixe dans le fichier FerméAPI",
-        "it": "Risolto grave errore in ClosedAPI",
-        "es": "Error severo corregido en CerradaAPI",
-        "pl": "Szczegółowy błąd w ClosedAPI",
-        "uk": "Виправлено тяжку помилку в ClosedAPI",
-        "zh-cn": "A. 近似严重错误"
       }
     },
     "titleLang": {
