@@ -35,10 +35,10 @@ The quality attribute of each state is set accordingly to its status:
 | Quality | meaning |
 |:--------|:--------------------------------------------------|
 |0x00 |OK and up to date |
-|0x01 |value not updated due to unknown reason, see log |
+|0x01 |value not updated due to unknown reason, see debug log |
 |0x02 |problem with online connection for this data point |
 |0x12 |adapter disconnected or stopped |
-|0x44 |API returned error or internal error, see log |
+|0x44 |API returned error or internal error, see debug log |
 
 ## Settings:
 
@@ -61,6 +61,11 @@ How to find SN and Check code for registration is described here: https://github
 **All product and company names or logos are trademarks™ or registered® trademarks of their respective holders. Use of them does not imply any affiliation with or endorsement by them or any associated subsidiaries! This personal project is maintained in spare time and has no business goal.**
 
 ## Changelog
+
+### **WORK IN PROGRESS**
+
+-   (Gaspode) Do not longer report read timeouts as error. It should be enough to set the quality of concerned states to values according the table above and to display warnings, if values were not updated for a long time. To see details, debug log level must be enabled by the user.
+
 ### 2.1.0 (2024-08-01)
 
 -   (Gaspode) Adapter requires node.js >= 18 and js-controller >= 5 now

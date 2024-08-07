@@ -651,7 +651,7 @@ class OpenAPI {
             return res;
         }
         catch (e) {
-            this.adapter.log.error('Error prforming get request ' + path + ': ' + e);
+            this.adapter.log.debug('Error performing get request ' + path + ': ' + e);
             return this.emptyBody;
         }
     }
@@ -676,7 +676,7 @@ class OpenAPI {
             return res;
         }
         catch (e) {
-            this.adapter.log.error('Error prforming post request ' + path + ': ' + e);
+            this.adapter.log.error('Error performing post request ' + path + ': ' + e);
             return this.emptyBody;
         }
     }
@@ -1010,25 +1010,25 @@ class OpenAPI {
         if (res.data && res.data.code && res.data.code != 0) {
             this.adapter.log.error(`Alpha ESS Api returns an error! Group: ${group}`);
             switch (res.data.code) {
-                case 6001: this.adapter.log.info(`Error code: ${res.data.code} - Parameter error (#${this.adapter.errorCount})`); break;
-                case 6002: this.adapter.log.info(`Error code: ${res.data.code} - The SN is not bound to the user (#${this.adapter.errorCount})`); break;
-                case 6003: this.adapter.log.info(`Error code: ${res.data.code} - You have bound this SN (#${this.adapter.errorCount})`); break;
-                case 6004: this.adapter.log.info(`Error code: ${res.data.code} - CheckCode error (#${this.adapter.errorCount})`); break;
-                case 6005: this.adapter.log.info(`Error code: ${res.data.code} - This appId is not bound to the SN (#${this.adapter.errorCount})`); break;
-                case 6006: this.adapter.log.info(`Error code: ${res.data.code} - Timestamp error (#${this.adapter.errorCount})`); break;
-                case 6007: this.adapter.log.info(`Error code: ${res.data.code} - Sign verification error (#${this.adapter.errorCount})`); break;
-                case 6008: this.adapter.log.info(`Error code: ${res.data.code} - Set failed (#${this.adapter.errorCount})`); break;
-                case 6009: this.adapter.log.info(`Error code: ${res.data.code} - Whitelist verification failed (#${this.adapter.errorCount})`); break;
-                case 6010: this.adapter.log.info(`Error code: ${res.data.code} - Sign is empty (#${this.adapter.errorCount})`); break;
-                case 6011: this.adapter.log.info(`Error code: ${res.data.code} - timestamp is empty (#${this.adapter.errorCount})`); break;
-                case 6012: this.adapter.log.info(`Error code: ${res.data.code} - AppId is empty (#${this.adapter.errorCount})`); break;
-                case 6016: this.adapter.log.info(`Error code: ${res.data.code} - Data does not exist or has been deleted (#${this.adapter.errorCount})`); break;
-                case 6026: this.adapter.log.info(`Error code: ${res.data.code} - Internal Error (#${this.adapter.errorCount})`); break;
-                case 6029: this.adapter.log.info(`Error code: ${res.data.code} - operation failed (#${this.adapter.errorCount})`); break;
-                case 6038: this.adapter.log.info(`Error code: ${res.data.code} - system sn does not exist (#${this.adapter.errorCount})`); break;
-                case 6042: this.adapter.log.info(`Error code: ${res.data.code} - system offline (#${this.adapter.errorCount})`); break;
-                case 6046: this.adapter.log.info(`Error code: ${res.data.code} - Verification code error (#${this.adapter.errorCount})`); break;
-                case 6053: this.adapter.log.info(`Error code: ${res.data.code} - The request was too fast, please try again later (#${this.adapter.errorCount})`); break;
+                case 6001: this.adapter.log.error(`Error code: ${res.data.code} - Parameter error (#${this.adapter.errorCount})`); break;
+                case 6002: this.adapter.log.error(`Error code: ${res.data.code} - The SN is not bound to the user (#${this.adapter.errorCount})`); break;
+                case 6003: this.adapter.log.error(`Error code: ${res.data.code} - You have bound this SN (#${this.adapter.errorCount})`); break;
+                case 6004: this.adapter.log.error(`Error code: ${res.data.code} - CheckCode error (#${this.adapter.errorCount})`); break;
+                case 6005: this.adapter.log.error(`Error code: ${res.data.code} - This appId is not bound to the SN (#${this.adapter.errorCount})`); break;
+                case 6006: this.adapter.log.error(`Error code: ${res.data.code} - Timestamp error (#${this.adapter.errorCount})`); break;
+                case 6007: this.adapter.log.error(`Error code: ${res.data.code} - Sign verification error (#${this.adapter.errorCount})`); break;
+                case 6008: this.adapter.log.error(`Error code: ${res.data.code} - Set failed (#${this.adapter.errorCount})`); break;
+                case 6009: this.adapter.log.error(`Error code: ${res.data.code} - Whitelist verification failed (#${this.adapter.errorCount})`); break;
+                case 6010: this.adapter.log.error(`Error code: ${res.data.code} - Sign is empty (#${this.adapter.errorCount})`); break;
+                case 6011: this.adapter.log.error(`Error code: ${res.data.code} - timestamp is empty (#${this.adapter.errorCount})`); break;
+                case 6012: this.adapter.log.error(`Error code: ${res.data.code} - AppId is empty (#${this.adapter.errorCount})`); break;
+                case 6016: this.adapter.log.error(`Error code: ${res.data.code} - Data does not exist or has been deleted (#${this.adapter.errorCount})`); break;
+                case 6026: this.adapter.log.error(`Error code: ${res.data.code} - Internal Error (#${this.adapter.errorCount})`); break;
+                case 6029: this.adapter.log.error(`Error code: ${res.data.code} - operation failed (#${this.adapter.errorCount})`); break;
+                case 6038: this.adapter.log.error(`Error code: ${res.data.code} - system sn does not exist (#${this.adapter.errorCount})`); break;
+                case 6042: this.adapter.log.error(`Error code: ${res.data.code} - system offline (#${this.adapter.errorCount})`); break;
+                case 6046: this.adapter.log.error(`Error code: ${res.data.code} - Verification code error (#${this.adapter.errorCount})`); break;
+                case 6053: this.adapter.log.error(`Error code: ${res.data.code} - The request was too fast, please try again later (#${this.adapter.errorCount})`); break;
                 default: this.adapter.log.info(`Error code: ${res.data.code} - Unknown error (#${this.adapter.errorCount})`);
             }
             if (res.data.code == 6002 ||
@@ -1044,7 +1044,7 @@ class OpenAPI {
             }
         }
         else {
-            this.adapter.log.error(`Unknown error occurred: ${JSON.stringify(res.data)} (#${this.adapter.errorCount}) Group:${group}`);
+            this.adapter.log.debug(`Unknown error occurred: ${JSON.stringify(res.data)} (#${this.adapter.errorCount}) Group:${group}`);
         }
         await this.adapter.setQualityForGroup(group, 0x44);
     }
@@ -1591,7 +1591,7 @@ class AlphaEss extends utils.Adapter {
                 await this.setStateChangedAsync(group + '.' + this.osn(stateInfo.id), { val: tvalue, q: 0 }, true);
             }
             stateInfo.lastUpdateTs = Date.now();
-            this.log.debug('Received object ' + group + '.' + this.osn(stateInfo.alphaAttrName) + ' with value ' + rawValue);
+            this.log.silly('Received object ' + group + '.' + this.osn(stateInfo.alphaAttrName) + ' with value ' + rawValue);
         }
     }
 
@@ -1662,7 +1662,7 @@ class AlphaEss extends utils.Adapter {
                         if (newState) {
                             if (newState.q != q && newState.ack) {
                                 newState.q = q;
-                                this.log.debug(`Set state ${groupInfo.Group}.${groupStates[i].id} to val: ${newState.val}; q: ${newState.q}; ack: ${newState.ack}`);
+                                this.log.silly(`Set state ${groupInfo.Group}.${groupStates[i].id} to val: ${newState.val}; q: ${newState.q}; ack: ${newState.ack}`);
                                 await this.setStateAsync(`${groupInfo.Group}.${groupStates[i].id}`, newState, true);
                             }
                             else {
@@ -1749,7 +1749,7 @@ class AlphaEss extends utils.Adapter {
         }
         else {
             if (timeInS < 300000) { // 5 minutes
-                this.log.warn(txt + ': Five or more errors occurred, next request in 5 minutes.');
+                this.log.error(txt + ': Five or more errors occurred, next request in 5 minutes.');
                 return 300000;
             }
             else {
