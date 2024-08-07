@@ -1042,11 +1042,12 @@ class OpenAPI {
                 this.adapter.log.error(' Adapter won\'t try again to fetch any data.');
                 this.adapter.wrongCredentials = true;
             }
+            await this.adapter.setQualityForGroup(group, 0x44);
         }
         else {
             this.adapter.log.debug(`Unknown error occurred: ${JSON.stringify(res.data)} (#${this.adapter.errorCount}) Group:${group}`);
+            await this.adapter.setQualityForGroup(group, 0x2);
         }
-        await this.adapter.setQualityForGroup(group, 0x44);
     }
 }
 
@@ -1662,7 +1663,7 @@ class AlphaEss extends utils.Adapter {
                         if (newState) {
                             if (newState.q != q && newState.ack) {
                                 newState.q = q;
-                                this.log.silly(`Set state ${groupInfo.Group}.${groupStates[i].id} to val: ${newState.val}; q: ${newState.q}; ack: ${newState.ack}`);
+                                this.log.debug(`Set state ${groupInfo.Group}.${groupStates[i].id} to val: ${newState.val}; q: ${newState.q}; ack: ${newState.ack}`);
                                 await this.setStateAsync(`${groupInfo.Group}.${groupStates[i].id}`, newState, true);
                             }
                             else {
