@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.1.2",
+    "version": "2.1.3",
     "news": {
+      "2.1.3": {
+        "en": "Increased read timeout from 10s to 20s",
+        "de": "Read Timeout von 10 auf 20 Sekunden erhöht",
+        "ru": "Увеличение времени чтения с 10 до 20 с",
+        "pt": "Aumento do tempo de leitura de 10 a 20 s",
+        "nl": "Verhoogde leestijd van 10 tot 20 s",
+        "fr": "Augmentation du temps de lecture de 10 à 20 s",
+        "it": "Tempo di lettura aumentato da 10 a 20 s",
+        "es": "Mayor tiempo de lectura de 10 a 20 s",
+        "pl": "Zwiększony czas odczytu od 10 do 20 s",
+        "uk": "Підвищений час читання від 10 до 20 с",
+        "zh-cn": "阅读超时从10秒增加到20秒"
+      },
       "2.1.2": {
         "en": "Quality of states optimized",
         "de": "Quality Wert von States optimiert",
@@ -80,19 +93,6 @@
         "pl": "Zmiana: Przewiduje wsparcie API Closed",
         "uk": "Зміна несправностей: Видалити підтримку Закритого API",
         "zh-cn": "打破变化: B. 取消对已结束的反补贴方案的支持"
-      },
-      "1.3.0": {
-        "en": "Support wallbox with Open API\nStart and stop charging of wallbox with Open API",
-        "de": "Wallbox Unterstützung mit Open API\nStarten und stoppen des Ladevorgangs der Wallbox mit Open API",
-        "ru": "Поддержка настенного ящика с Open API\nНачните и остановите зарядку настенного ящика с Open API",
-        "pt": "Suporte wallbox com API aberta\nIniciar e parar de carregar de wallbox com API aberta",
-        "nl": "Steun muur met open API\nBegin en stop met het inladen van een muurkist met open API",
-        "fr": "Porte-monnaie support avec Open API\nDémarrer et arrêter le chargement de la boîte murale avec Open API",
-        "it": "Supporto wallbox con Open API\nAvviare e interrompere la ricarica di wallbox con Open API",
-        "es": "Soporte de pared con Open API\nComience y deje de cargar Wallbox con Open API",
-        "pl": "Współdzielnia z API Open\nStart i zatrzymanie ładowania skrzynki z Open API",
-        "uk": "Підтримка настінної коробки з відкритим API\nСтарт і зупинка зарядки стінок з відкритим API",
-        "zh-cn": "A. 开放式API的支助墙箱\nA. 开端和停止向开放的阿联酋投掷石箱"
       }
     },
     "titleLang": {
