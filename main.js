@@ -15,7 +15,7 @@ const OA_BaseURI = 'https://openapi.alphaess.com/api';
 
 const ReadAfterWriteTimeoutIntervalInS = 6;
 
-const REQUEST_TIMEOUT = 10000;
+const REQUEST_TIMEOUT = 20000;
 const WATCHDOG_TIMER = 60000;
 
 /**
