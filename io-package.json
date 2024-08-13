@@ -125,11 +125,13 @@
       "Gaspode <gaspode69@online.de>"
     ],
     "keywords": [
-      "photovoltaik"
+      "photovoltaik", "alpha-ess", "ioBroker"
     ],
-    "license": "MIT",
+    "licenseInformation": {
+      "license":"MIT",
+      "type": "free"
+    },
     "platform": "Javascript/Node.js",
-    "main": "main.js",
     "icon": "alpha-ess.png",
     "enabled": true,
     "extIcon": "https://raw.githubusercontent.com/Gaspode69/ioBroker.alpha-ess/main/admin/alpha-ess.png",
@@ -137,6 +139,7 @@
     "loglevel": "info",
     "mode": "daemon",
     "type": "energy",
+    "tier": 2,
     "compact": true,
     "connectionType": "cloud",
     "dataSource": "poll",
