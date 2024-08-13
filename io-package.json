@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.1.3",
+    "version": "2.1.4",
     "news": {
+      "2.1.4": {
+        "en": "Updated some formal stuff",
+        "de": "Einige Formalien aktualisiert",
+        "ru": "Обновление некоторых формальных вещей",
+        "pt": "Actualizado algumas coisas formais",
+        "nl": "Bijgewerkt wat formele dingen",
+        "fr": "Mise à jour de certains trucs formels",
+        "it": "Aggiornato alcune cose formali",
+        "es": "Actualizado algunas cosas formales",
+        "pl": "Aktualizacja niektórych formalnych rzeczy",
+        "uk": "Оновлено деякі формальні речі",
+        "zh-cn": "更新了一些正式的东西"
+      },
       "2.1.3": {
         "en": "Increased read timeout from 10s to 20s",
         "de": "Read Timeout von 10 auf 20 Sekunden erhöht",
@@ -80,19 +93,6 @@
         "pl": "Zastosowany czas do nowych ograniczeń API",
         "uk": "Адаптивний час для нових обмежень API",
         "zh-cn": "A. 取消新优惠制度限制的时间"
-      },
-      "2.0.0": {
-        "en": "Breaking Change: Removed support of Closed API",
-        "de": "Breaking Change: Entfernte Unterstützung von Closed API",
-        "ru": "Перерыв изменения: Удаленная поддержка Закрытого API",
-        "pt": "Mudança de ruptura: Suporte removido da API fechada",
-        "nl": "Vertaling: Verwijderde steun van gesloten API",
-        "fr": "Changement de rupture : Soutien retiré de l'API fermée",
-        "it": "Cambiamento di rottura: Supporto rimosso delle API chiuse",
-        "es": "Cambio de ruptura: Soporte extraído de API cerrada",
-        "pl": "Zmiana: Przewiduje wsparcie API Closed",
-        "uk": "Зміна несправностей: Видалити підтримку Закритого API",
-        "zh-cn": "打破变化: B. 取消对已结束的反补贴方案的支持"
       }
     },
     "titleLang": {
@@ -129,7 +129,7 @@
       "alpha-ess"
     ],
     "licenseInformation": {
-      "license":"MIT",
+      "license": "MIT",
       "type": "free"
     },
     "platform": "Javascript/Node.js",
