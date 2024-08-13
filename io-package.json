@@ -125,7 +125,12 @@
       "Gaspode <gaspode69@online.de>"
     ],
     "keywords": [
-      "photovoltaik", "alpha-ess", "ioBroker"
+      "photovoltaik",
+      "alpha-ess",
+      "ioBroker",
+      "iobroker",
+      "adapter",
+      "smart home"
     ],
     "licenseInformation": {
       "license":"MIT",
