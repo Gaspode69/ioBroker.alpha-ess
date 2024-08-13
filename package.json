@@ -9,7 +9,9 @@
   "homepage": "https://github.com/Gaspode69/ioBroker.alpha-ess",
   "license": "MIT",
   "keywords": [
-    "photovoltaik"
+    "photovoltaik",
+    "alpha-ess",
+    "ioBroker"
   ],
   "repository": {
     "type": "git",
