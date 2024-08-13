@@ -126,11 +126,7 @@
     ],
     "keywords": [
       "photovoltaik",
-      "alpha-ess",
-      "ioBroker",
-      "iobroker",
-      "adapter",
-      "smart home"
+      "alpha-ess"
     ],
     "licenseInformation": {
       "license":"MIT",
