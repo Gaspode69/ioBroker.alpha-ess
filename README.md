@@ -47,7 +47,7 @@ How to find SN and Check code for registration is described here: https://github
 
 -   **Personal application ID:** The application ID (see above)
 -   **Personal application Secret:** The application Secret (see above)
--   **Alpha-ESS System ID:** The system Identifier of your Alpha-ESS equipment
+-   **Alpha-ESS System ID:** The S/N (serial number) of your Alpha-ESS equipment
 -   **Interval to read realtime data:** Unit: seconds.
 -   **Interval to read energy data:** Unit: minutes.
 -   **Interval to read charging settings:** Unit: minutes.
