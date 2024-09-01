@@ -1649,7 +1649,7 @@ class AlphaEss extends utils.Adapter {
     /**
      * Set quality for all existing states of given group
      * @param {string} group
-     * @param {number} q
+     * @param {0 | 1 | 2 | 68 | 18 | 16 | 32 | 64 | 128 | 17 | 65 | 129 | 66 | 130 | 132 | undefined} q
      */
     async setQualityForGroup(group, q) {
         try {
