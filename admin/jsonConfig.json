@@ -3,30 +3,51 @@
   "type": "panel",
   "items": {
     "appID": {
-      "sm": 5,
+      "xs": 11,
+      "sm": 8,
+      "md": 4,
+      "lg": 3,
+      "xl": 1,
       "type": "text",
       "label": "Personal APP ID",
       "newLine": true
     },
     "appSecret": {
-      "sm": 5,
+      "xs": 11,
+      "sm": 8,
+      "md": 4,
+      "lg": 3,
+      "xl": 1,
       "type": "password",
       "label": "Personal APP Secret",
       "newLine": true
     },
     "systemId": {
-      "sm": 5,
+      "xs": 11,
+      "sm": 8,
+      "md": 4,
+      "lg": 3,
+      "xl": 1,
       "type": "text",
       "label": "Alpha ESS System ID",
       "newLine": true,
       "disabled": "data.apiType == 3"
     },
     "oAEnableRealtime": {
+      "xs": 1.1,
+      "sm": 0.6,
+      "md": 0.4,
+      "lg": 0.2,
+      "xl": 0.2,
       "type": "checkbox",
       "newLine": true
     },
     "oAIntervalRealtime": {
-      "sm": 5,
+      "xs": 9.9,
+      "sm": 7.4,
+      "md": 3.6,
+      "lg": 2.8,
+      "xl": 0.8,
       "min": 10,
       "type": "number",
       "label": "Interval to read realtime data",
@@ -34,11 +55,20 @@
       "disabled": "!data.oAEnableRealtime"
     },
     "oAEnableEnergy": {
+      "xs": 1.1,
+      "sm": 0.6,
+      "md": 0.4,
+      "lg": 0.2,
+      "xl": 0.2,
       "type": "checkbox",
       "newLine": true
     },
     "oAIntervalEnergyMins": {
-      "sm": 5,
+      "xs": 9.9,
+      "sm": 7.4,
+      "md": 3.6,
+      "lg": 2.8,
+      "xl": 0.8,
       "min": 5,
       "type": "number",
       "label": "Interval to read energy data",
@@ -46,11 +76,20 @@
       "disabled": "!data.oAEnableEnergy"
     },
     "oAEnableSettingsCharge": {
+      "xs": 1.1,
+      "sm": 0.6,
+      "md": 0.4,
+      "lg": 0.2,
+      "xl": 0.2,
       "type": "checkbox",
       "newLine": true
     },
     "oAIntervalSettingsChargeMins": {
-      "sm": 5,
+      "xs": 9.9,
+      "sm": 7.4,
+      "md": 3.6,
+      "lg": 2.8,
+      "xl": 0.8,
       "min": 1,
       "type": "number",
       "label": "Interval to read charging settings",
@@ -58,11 +97,20 @@
       "disabled": "!data.oAEnableSettingsCharge"
     },
     "oAEnableSettingsDischarge": {
+      "xs": 1.1,
+      "sm": 0.6,
+      "md": 0.4,
+      "lg": 0.2,
+      "xl": 0.2,
       "type": "checkbox",
       "newLine": true
     },
     "oAIntervalSettingsDischargeMins": {
-      "sm": 5,
+      "xs": 9.9,
+      "sm": 7.4,
+      "md": 3.6,
+      "lg": 2.8,
+      "xl": 0.8,
       "min": 1,
       "type": "number",
       "label": "Interval to read discharging settings",
@@ -70,11 +118,20 @@
       "disabled": "!data.oAEnableSettingsDischarge"
     },
     "oAEnableSummary": {
+      "xs": 1.1,
+      "sm": 0.6,
+      "md": 0.4,
+      "lg": 0.2,
+      "xl": 0.2,
       "type": "checkbox",
       "newLine": true
     },
     "oAIntervalSummaryMins": {
-      "sm": 5,
+      "xs": 9.9,
+      "sm": 7.4,
+      "md": 3.6,
+      "lg": 2.8,
+      "xl": 0.8,
       "min": 5,
       "type": "number",
       "label": "Interval to read summary data",
@@ -82,11 +139,20 @@
       "disabled": "!data.oAEnableSummary"
     },
     "oAEnableWallbox": {
+      "xs": 1.1,
+      "sm": 0.6,
+      "md": 0.4,
+      "lg": 0.2,
+      "xl": 0.2,
       "type": "checkbox",
       "newLine": true
     },
     "oAIntervalWallboxMins": {
-      "sm": 5,
+      "xs": 9.9,
+      "sm": 7.4,
+      "md": 3.6,
+      "lg": 2.8,
+      "xl": 0.8,
       "min": 1,
       "type": "number",
       "label": "Interval to read wallbox data",
@@ -94,6 +160,11 @@
       "disabled": "!data.oAEnableWallbox"
     },
     "updateUnchangedStates": {
+      "xs": 11,
+      "sm": 8,
+      "md": 4,
+      "lg": 3,
+      "xl": 1,
       "type": "checkbox",
       "label": "Update unchanged states",
       "newLine": true
