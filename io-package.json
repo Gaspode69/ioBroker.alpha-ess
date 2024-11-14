@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.1.4",
+    "version": "2.1.5",
     "news": {
+      "2.1.5": {
+        "en": "Optimized GUI for all screen resolutions (responsive design)",
+        "de": "GUI für alle Bildschirmauflösungen optimiert (Responsive Design)",
+        "ru": "Оптимизированный графический интерфейс для всех экранных решений (ответственный дизайн)",
+        "pt": "GUI otimizada para todas as resoluções de tela (design responsivo)",
+        "nl": "Geoptimaliseerde GUI voor alle schermresoluties (responsief ontwerp)",
+        "fr": "IGU optimisé pour toutes les résolutions d'écran (conception sensible)",
+        "it": "GUI ottimizzata per tutte le risoluzioni dello schermo (progetto reattivo)",
+        "es": "Optimizado GUI para todas las resoluciones de pantalla (diseño responsable)",
+        "pl": "Zoptymalizowany interfejs graficzny dla wszystkich rozdzielczości ekranu (responsible design)",
+        "uk": "Оптимізований графічний інтерфейс для всіх дозволів екрану (відповідальний дизайн)",
+        "zh-cn": "优化所有屏幕分辨率的图形用户界面(响应设计)"
+      },
       "2.1.4": {
         "en": "Updated some formal stuff",
         "de": "Einige Formalien aktualisiert",
@@ -80,19 +93,6 @@
         "pl": "Aktualizacja roku Copyright",
         "uk": "Оновлений рік авторського права",
         "zh-cn": "更新版权年度"
-      },
-      "2.0.1": {
-        "en": "Adapted timeout to new API restrictions",
-        "de": "Timeout Werte an neue API-Beschränkungen angepasst",
-        "ru": "Адаптированное таймирование к новым ограничениям API",
-        "pt": "Timeout adaptado para novas restrições de API",
-        "nl": "Vertaling:",
-        "fr": "Timeout adapté aux nouvelles restrictions de l'API",
-        "it": "Adeguato timeout alle nuove restrizioni API",
-        "es": "Tiempo de adaptación a nuevas restricciones de API",
-        "pl": "Zastosowany czas do nowych ograniczeń API",
-        "uk": "Адаптивний час для нових обмежень API",
-        "zh-cn": "A. 取消新优惠制度限制的时间"
       }
     },
     "titleLang": {
