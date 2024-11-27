@@ -1,22 +1,22 @@
 version: 2
 updates:
-  - package-ecosystem: npm
-    directory: "/"
-    schedule:
-      interval: monthly
-      time: "04:00"
-      timezone: Europe/Berlin
-    open-pull-requests-limit: 5
-    assignees:
-      - Gaspode69
-    versioning-strategy: increase
+    - package-ecosystem: npm
+      directory: '/'
+      schedule:
+          interval: monthly
+          time: '04:00'
+          timezone: Europe/Berlin
+      open-pull-requests-limit: 5
+      assignees:
+          - Gaspode69
+      versioning-strategy: increase
 
-  - package-ecosystem: github-actions
-    directory: "/"
-    schedule:
-      interval: monthly
-      time: "04:00"
-      timezone: Europe/Berlin
-    open-pull-requests-limit: 5
-    assignees:
-      - Gaspode69
+    - package-ecosystem: github-actions
+      directory: '/'
+      schedule:
+          interval: monthly
+          time: '04:00'
+          timezone: Europe/Berlin
+      open-pull-requests-limit: 5
+      assignees:
+          - Gaspode69
