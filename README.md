@@ -62,6 +62,10 @@ How to find SN and Check code for registration is described here: https://github
 
 ## Changelog
 
+### **WORK IN PROGRESS**
+
+- (Gaspode) Migrated to ESLint 9
+
 ### 2.1.5 (2024-11-14)
 
 - (Gaspode) Optimized GUI for all screen resolutions (responsive design)
