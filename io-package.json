@@ -1,201 +1,212 @@
 {
-    "common": {
-        "name": "alpha-ess",
-        "version": "2.1.5",
-        "news": {
-            "2.1.5": {
-                "en": "Optimized GUI for all screen resolutions (responsive design)",
-                "de": "GUI für alle Bildschirmauflösungen optimiert (Responsive Design)",
-                "ru": "Оптимизированный графический интерфейс для всех экранных решений (ответственный дизайн)",
-                "pt": "GUI otimizada para todas as resoluções de tela (design responsivo)",
-                "nl": "Geoptimaliseerde GUI voor alle schermresoluties (responsief ontwerp)",
-                "fr": "IGU optimisé pour toutes les résolutions d'écran (conception sensible)",
-                "it": "GUI ottimizzata per tutte le risoluzioni dello schermo (progetto reattivo)",
-                "es": "Optimizado GUI para todas las resoluciones de pantalla (diseño responsable)",
-                "pl": "Zoptymalizowany interfejs graficzny dla wszystkich rozdzielczości ekranu (responsible design)",
-                "uk": "Оптимізований графічний інтерфейс для всіх дозволів екрану (відповідальний дизайн)",
-                "zh-cn": "优化所有屏幕分辨率的图形用户界面(响应设计)"
-            },
-            "2.1.4": {
-                "en": "Updated some formal stuff",
-                "de": "Einige Formalien aktualisiert",
-                "ru": "Обновление некоторых формальных вещей",
-                "pt": "Actualizado algumas coisas formais",
-                "nl": "Bijgewerkt wat formele dingen",
-                "fr": "Mise à jour de certains trucs formels",
-                "it": "Aggiornato alcune cose formali",
-                "es": "Actualizado algunas cosas formales",
-                "pl": "Aktualizacja niektórych formalnych rzeczy",
-                "uk": "Оновлено деякі формальні речі",
-                "zh-cn": "更新了一些正式的东西"
-            },
-            "2.1.3": {
-                "en": "Increased read timeout from 10s to 20s",
-                "de": "Read Timeout von 10 auf 20 Sekunden erhöht",
-                "ru": "Увеличение времени чтения с 10 до 20 с",
-                "pt": "Aumento do tempo de leitura de 10 a 20 s",
-                "nl": "Verhoogde leestijd van 10 tot 20 s",
-                "fr": "Augmentation du temps de lecture de 10 à 20 s",
-                "it": "Tempo di lettura aumentato da 10 a 20 s",
-                "es": "Mayor tiempo de lectura de 10 a 20 s",
-                "pl": "Zwiększony czas odczytu od 10 do 20 s",
-                "uk": "Підвищений час читання від 10 до 20 с",
-                "zh-cn": "阅读超时从10秒增加到20秒"
-            },
-            "2.1.2": {
-                "en": "Quality of states optimized",
-                "de": "Quality Wert von States optimiert",
-                "ru": "Качество оптимизированных состояний",
-                "pt": "Qualidade de estados otimizados",
-                "nl": "Kwaliteit van geoptimaliseerde staten",
-                "fr": "Qualité des états optimisés",
-                "it": "Qualità degli stati ottimizzati",
-                "es": "Calidad de los estados optimizada",
-                "pl": "Jakość państw zoptymalizowanych",
-                "uk": "Якість держав оптимізовано",
-                "zh-cn": "国家质量得到优化"
-            },
-            "2.1.1": {
-                "en": "Do not longer report read timeouts as error. It should be enough to set the quality of concerned states to values according the table above and to display warnings, if values were not updated for a long time. To see details, debug log level must be enabled by the user.",
-                "de": "Read Timeouts werden nicht länger als Fehler im Log angezeigt. Es sollte ausreichen, dass die Quality der betreffenden States auf Werte gemäß der obigen Tabelle gesetzt wird und dass Warnungen angezeigt werden, wenn Werte lange nicht aktualisiert wurden. Um Details zu sehen, muss der Log-Level Debug vom Benutzer aktiviert werden.",
-                "ru": "Не сообщайте больше о времени чтения как об ошибке. Это должно быть достаточно, чтобы установить качество соответствующих состояний к значениям согласно таблице выше и отображать предупреждения, если значения не обновлялись в течение длительного времени. Чтобы увидеть детали, уровень отладки журнала должен быть включен пользователем.",
-                "pt": "Não reporte mais tempo de leitura como erro. Deve ser suficiente definir a qualidade dos estados em causa para valores de acordo com a tabela acima e para exibir avisos, se os valores não foram atualizados por muito tempo. Para ver detalhes, o nível de log de depuração deve ser ativado pelo usuário.",
-                "nl": "Niet langer lezen time-outs rapporteren als fout. Het zou voldoende moeten zijn om de kwaliteit van de betrokken staten vast te stellen op waarden volgens bovenstaande tabel en waarschuwingen weer te geven, indien de waarden lange tijd niet werden bijgewerkt. Om details te zien, moet het debug-logniveau door de gebruiker worden ingeschakeld.",
-                "fr": "Ne déclarez plus les temps de lecture comme erreur. Il devrait suffire de fixer la qualité des états concernés à des valeurs selon le tableau ci-dessus et d'afficher des avertissements, si les valeurs ne sont pas mises à jour pendant longtemps. Pour voir les détails, le niveau de débogage doit être activé par l'utilisateur.",
-                "it": "Non report più i timeout di lettura come errore. Dovrebbe essere sufficiente impostare la qualità degli stati interessati ai valori secondo la tabella sopra e mostrare avvisi, se i valori non sono stati aggiornati per molto tempo. Per visualizzare i dettagli, il livello di registro del debug deve essere abilitato dall'utente.",
-                "es": "No reporte más tiempo de lectura como error. Debe ser suficiente para establecer la calidad de los estados interesados a valores según la tabla anterior y para mostrar advertencias, si los valores no se actualizaron durante mucho tiempo. Para ver detalles, el nivel de registro de depuración debe ser habilitado por el usuario.",
-                "pl": "Nie raportuj już timeout jako błąd. Powinno wystarczyć ustawić jakość danych państw na wartości zgodnie z powyższą tabelą oraz wyświetlić ostrzeżenia, jeżeli wartości nie były aktualizowane przez długi czas. Aby zobaczyć szczegóły, poziom dziennika debugowania musi być włączony przez użytkownika.",
-                "uk": "Не довший звіт про те, як помилка. Для того, щоб встановити якість занепокоєних станів до значень, зазначених вище таблиці та для відображення попередження, якщо значення не було оновлено протягом тривалого часу. Щоб дізнатися подробиці, рівень дебюг повинен бути включений користувачем.",
-                "zh-cn": "不再将超时读取为错误 。 如果长期不更新有关数值,则应该足以按照上表的数值确定有关国家的质量,并显示警告。 要查看细节,调试日志级别必须由用户启用."
-            },
-            "2.1.0": {
-                "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nDependencies updated\nAdapter logo updated. Alpha-ESS has kindly permitted to use the Alpha-ESS logo. This does not imply any affiliation with Alpha-ESS! Alpha-ESS is not the developer or provider of this adapter!",
-                "de": "Adapter benötigt jetzt node.js >= 18 und js-controller >= 5\nAbhängigkeiten aktualisiert\nAdapter-Logo aktualisiert. Alpha-ESS hat freundlicherweise die Nutzung des Alpha-ESS-Logos genehmigt. Dies impliziert keine Zugehörigkeit zu Alpha-ESS! Alpha-ESS ist nicht der Entwickler oder Anbieter dieses Adapters!",
-                "ru": "Адаптер требует node.js >= 18 и js-контроллер >= 5 сейчас\nОбновленные данные о зависимостях\nОбновлен логотип адаптера. Alpha-ESS любезно разрешил использовать логотип Alpha-ESS. Это не означает никакой связи с Alpha-ESS! Alpha-ESS не является разработчиком или поставщиком этого адаптера!",
-                "pt": "Adapter requer node.js >= 18 e js-controller >= 5 agora\nDependências atualizadas\nLogotipo do adaptador atualizado. Alpha-ESS tem permissão para usar o logotipo Alpha-ESS. Isso não implica nenhuma afiliação com Alpha-ESS! Alpha-ESS não é o desenvolvedor ou provedor deste adaptador!",
-                "nl": "Voor adaptor zijn node.js < 18 en js-controller > Nu 5\nAfhankelijkheden bijgewerkt\nAdapterlogo bijgewerkt. Alpha-ESS mag het Alpha-ESS-logo gebruiken. Dit impliceert geen band met Alpha-ESS! Alpha-ESS is niet de ontwikkelaar of leverancier van deze adapter!",
-                "fr": "L'adaptateur nécessite node.js >= 18 et js-controller >= 5 maintenant\nDépendances actualisées\nLogo de l'adaptateur mis à jour. Alpha-ESS a permis d'utiliser le logo Alpha-ESS. Cela n'implique aucune affiliation avec Alpha-ESS ! Alpha-ESS n'est pas le développeur ou le fournisseur de cet adaptateur !",
-                "it": "Adattatore richiede node.js >= 18 e js-controller >= 5 ora\nDipendenze aggiornate\nLogo adattatore aggiornato. Alpha-ESS ha gentilmente permesso di utilizzare il logo Alpha-ESS. Questo non implica alcuna affiliazione con Alpha-ESS! Alpha-ESS non è lo sviluppatore o il fornitore di questo adattatore!",
-                "es": "Adaptador requiere node.js √≥= 18 y js-controller 5 ahora\nActualización de las dependencias\nAdaptador logo actualizado. Alpha-ESS ha permitido utilizar el logotipo de Alpha-ESS. ¡Esto no implica ninguna afiliación con Alpha-ESS! Alpha-ESS no es el desarrollador o proveedor de este adaptador!",
-                "pl": "Adapter wymaga node.js > = 18 i kontroler js- > = 5 teraz\nAktualizacja zależności\nAktualizacja logo adaptera. Alpha- ESS uprzejmie zezwolił na użycie logo Alpha- ESS. To nie oznacza żadnego związku z AlphaESS! Alpha- ESS nie jest deweloperem ani dostawcą tego adaptera!",
-                "uk": "Адаптер вимагає node.js >= 18 і js-controller >= 5 тепер\nЗалежність оновлено\nОновлено логотип адаптера. Альфа-ESS дозволяє використовувати логотип Альфа-ESS. Це не означає афілію Альфа-ESS! Альфа-ESS не є розробником або постачальником цього адаптера!",
-                "zh-cn": "适配器需要节点.js QQ18和js控制器 QQ 现在5号\n更新的依赖关系\n适配器标志更新. Alpha-ESS允许使用Alpha-ESS标志。 这并不意味着与Alpha -ESS有任何关系! Alpha-ESS不是这个适配器的开发者或提供者!"
-            },
-            "2.0.2": {
-                "en": "Updated Copyright year",
-                "de": "Aktualisierung des Copyright-Jahres",
-                "ru": "Обновленный год авторского права",
-                "pt": "Ano de direitos autorais atualizado",
-                "nl": "Bijgewerkt Copyrightjaar",
-                "fr": "Mise à jour de l'année de droit d'auteur",
-                "it": "Aggiornato Copyright anno",
-                "es": "Actualizado Año de Copyright",
-                "pl": "Aktualizacja roku Copyright",
-                "uk": "Оновлений рік авторського права",
-                "zh-cn": "更新版权年度"
-            }
-        },
-        "titleLang": {
-            "en": "Alpha ESS",
-            "de": "Alpha-ESS",
-            "ru": "Альфа ЭСС",
-            "pt": "Alfa ESS",
-            "nl": "Alfa ESS",
-            "fr": "Alpha SSE",
-            "it": "Alfa ESS",
-            "es": "Alfa ESS",
-            "pl": "Alfa ESS",
-            "zh-cn": "阿尔法 ESS",
-            "uk": "Альфа ESS"
-        },
-        "desc": {
-            "en": "Read and write data from and to Alpha ESS systems.",
-            "de": "Lesen und schreiben Sie Daten von und zu Alpha ESS-Systemen.",
-            "ru": "Чтение и запись данных из и в системы Alpha ESS.",
-            "pt": "Ler e gravar dados de e para sistemas Alpha ESS.",
-            "nl": "Gegevens lezen en schrijven van en naar Alpha ESS-systemen.",
-            "fr": "Lire et écrire des données depuis et vers les systèmes Alpha ESS.",
-            "it": "Leggere e scrivere dati da e verso sistemi Alpha ESS.",
-            "es": "Lea y escriba datos desde y hacia los sistemas Alpha ESS.",
-            "pl": "Odczytywanie i zapisywanie danych zi do systemów Alpha ESS.",
-            "zh-cn": "在 Alpha ESS 系统中读取和写入数据。",
-            "uk": "Читання та запис даних із систем Alpha ESS і до них."
-        },
-        "authors": ["Gaspode <gaspode69@online.de>"],
-        "keywords": ["photovoltaik", "alpha-ess"],
-        "licenseInformation": {
-            "license": "MIT",
-            "type": "free"
-        },
-        "platform": "Javascript/Node.js",
-        "icon": "alpha-ess.png",
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/Gaspode69/ioBroker.alpha-ess/main/admin/alpha-ess.png",
-        "readme": "https://github.com/Gaspode69/ioBroker.alpha-ess/blob/main/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "energy",
-        "tier": 2,
-        "compact": true,
-        "connectionType": "cloud",
-        "dataSource": "poll",
-        "adminUI": {
-            "config": "json"
-        },
-        "dependencies": [
-            {
-                "js-controller": ">=5.0.19"
-            }
-        ],
-        "globalDependencies": [
-            {
-                "admin": ">=6.13.16"
-            }
-        ]
+  "common": {
+    "name": "alpha-ess",
+    "version": "2.1.6",
+    "news": {
+      "2.1.6": {
+        "en": "Migrated to ESLint 9",
+        "de": "Zu ESLint 9 migriert",
+        "ru": "Migrated to ESLint 9",
+        "pt": "Migrado para ESLint 9",
+        "nl": "Verplaatst naar ESLint 9",
+        "fr": "Migrées à ESLint 9",
+        "it": "Migrato a ESLint 9",
+        "es": "Migrated to ESLint 9",
+        "pl": "Migrant to ESLint 9",
+        "uk": "Міграція до ESLint 9",
+        "zh-cn": "迁移到 ESLint 9"
+      },
+      "2.1.5": {
+        "en": "Optimized GUI for all screen resolutions (responsive design)",
+        "de": "GUI für alle Bildschirmauflösungen optimiert (Responsive Design)",
+        "ru": "Оптимизированный графический интерфейс для всех экранных решений (ответственный дизайн)",
+        "pt": "GUI otimizada para todas as resoluções de tela (design responsivo)",
+        "nl": "Geoptimaliseerde GUI voor alle schermresoluties (responsief ontwerp)",
+        "fr": "IGU optimisé pour toutes les résolutions d'écran (conception sensible)",
+        "it": "GUI ottimizzata per tutte le risoluzioni dello schermo (progetto reattivo)",
+        "es": "Optimizado GUI para todas las resoluciones de pantalla (diseño responsable)",
+        "pl": "Zoptymalizowany interfejs graficzny dla wszystkich rozdzielczości ekranu (responsible design)",
+        "uk": "Оптимізований графічний інтерфейс для всіх дозволів екрану (відповідальний дизайн)",
+        "zh-cn": "优化所有屏幕分辨率的图形用户界面(响应设计)"
+      },
+      "2.1.4": {
+        "en": "Updated some formal stuff",
+        "de": "Einige Formalien aktualisiert",
+        "ru": "Обновление некоторых формальных вещей",
+        "pt": "Actualizado algumas coisas formais",
+        "nl": "Bijgewerkt wat formele dingen",
+        "fr": "Mise à jour de certains trucs formels",
+        "it": "Aggiornato alcune cose formali",
+        "es": "Actualizado algunas cosas formales",
+        "pl": "Aktualizacja niektórych formalnych rzeczy",
+        "uk": "Оновлено деякі формальні речі",
+        "zh-cn": "更新了一些正式的东西"
+      },
+      "2.1.3": {
+        "en": "Increased read timeout from 10s to 20s",
+        "de": "Read Timeout von 10 auf 20 Sekunden erhöht",
+        "ru": "Увеличение времени чтения с 10 до 20 с",
+        "pt": "Aumento do tempo de leitura de 10 a 20 s",
+        "nl": "Verhoogde leestijd van 10 tot 20 s",
+        "fr": "Augmentation du temps de lecture de 10 à 20 s",
+        "it": "Tempo di lettura aumentato da 10 a 20 s",
+        "es": "Mayor tiempo de lectura de 10 a 20 s",
+        "pl": "Zwiększony czas odczytu od 10 do 20 s",
+        "uk": "Підвищений час читання від 10 до 20 с",
+        "zh-cn": "阅读超时从10秒增加到20秒"
+      },
+      "2.1.2": {
+        "en": "Quality of states optimized",
+        "de": "Quality Wert von States optimiert",
+        "ru": "Качество оптимизированных состояний",
+        "pt": "Qualidade de estados otimizados",
+        "nl": "Kwaliteit van geoptimaliseerde staten",
+        "fr": "Qualité des états optimisés",
+        "it": "Qualità degli stati ottimizzati",
+        "es": "Calidad de los estados optimizada",
+        "pl": "Jakość państw zoptymalizowanych",
+        "uk": "Якість держав оптимізовано",
+        "zh-cn": "国家质量得到优化"
+      },
+      "2.1.1": {
+        "en": "Do not longer report read timeouts as error. It should be enough to set the quality of concerned states to values according the table above and to display warnings, if values were not updated for a long time. To see details, debug log level must be enabled by the user.",
+        "de": "Read Timeouts werden nicht länger als Fehler im Log angezeigt. Es sollte ausreichen, dass die Quality der betreffenden States auf Werte gemäß der obigen Tabelle gesetzt wird und dass Warnungen angezeigt werden, wenn Werte lange nicht aktualisiert wurden. Um Details zu sehen, muss der Log-Level Debug vom Benutzer aktiviert werden.",
+        "ru": "Не сообщайте больше о времени чтения как об ошибке. Это должно быть достаточно, чтобы установить качество соответствующих состояний к значениям согласно таблице выше и отображать предупреждения, если значения не обновлялись в течение длительного времени. Чтобы увидеть детали, уровень отладки журнала должен быть включен пользователем.",
+        "pt": "Não reporte mais tempo de leitura como erro. Deve ser suficiente definir a qualidade dos estados em causa para valores de acordo com a tabela acima e para exibir avisos, se os valores não foram atualizados por muito tempo. Para ver detalhes, o nível de log de depuração deve ser ativado pelo usuário.",
+        "nl": "Niet langer lezen time-outs rapporteren als fout. Het zou voldoende moeten zijn om de kwaliteit van de betrokken staten vast te stellen op waarden volgens bovenstaande tabel en waarschuwingen weer te geven, indien de waarden lange tijd niet werden bijgewerkt. Om details te zien, moet het debug-logniveau door de gebruiker worden ingeschakeld.",
+        "fr": "Ne déclarez plus les temps de lecture comme erreur. Il devrait suffire de fixer la qualité des états concernés à des valeurs selon le tableau ci-dessus et d'afficher des avertissements, si les valeurs ne sont pas mises à jour pendant longtemps. Pour voir les détails, le niveau de débogage doit être activé par l'utilisateur.",
+        "it": "Non report più i timeout di lettura come errore. Dovrebbe essere sufficiente impostare la qualità degli stati interessati ai valori secondo la tabella sopra e mostrare avvisi, se i valori non sono stati aggiornati per molto tempo. Per visualizzare i dettagli, il livello di registro del debug deve essere abilitato dall'utente.",
+        "es": "No reporte más tiempo de lectura como error. Debe ser suficiente para establecer la calidad de los estados interesados a valores según la tabla anterior y para mostrar advertencias, si los valores no se actualizaron durante mucho tiempo. Para ver detalles, el nivel de registro de depuración debe ser habilitado por el usuario.",
+        "pl": "Nie raportuj już timeout jako błąd. Powinno wystarczyć ustawić jakość danych państw na wartości zgodnie z powyższą tabelą oraz wyświetlić ostrzeżenia, jeżeli wartości nie były aktualizowane przez długi czas. Aby zobaczyć szczegóły, poziom dziennika debugowania musi być włączony przez użytkownika.",
+        "uk": "Не довший звіт про те, як помилка. Для того, щоб встановити якість занепокоєних станів до значень, зазначених вище таблиці та для відображення попередження, якщо значення не було оновлено протягом тривалого часу. Щоб дізнатися подробиці, рівень дебюг повинен бути включений користувачем.",
+        "zh-cn": "不再将超时读取为错误 。 如果长期不更新有关数值,则应该足以按照上表的数值确定有关国家的质量,并显示警告。 要查看细节,调试日志级别必须由用户启用."
+      },
+      "2.1.0": {
+        "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nDependencies updated\nAdapter logo updated. Alpha-ESS has kindly permitted to use the Alpha-ESS logo. This does not imply any affiliation with Alpha-ESS! Alpha-ESS is not the developer or provider of this adapter!",
+        "de": "Adapter benötigt jetzt node.js >= 18 und js-controller >= 5\nAbhängigkeiten aktualisiert\nAdapter-Logo aktualisiert. Alpha-ESS hat freundlicherweise die Nutzung des Alpha-ESS-Logos genehmigt. Dies impliziert keine Zugehörigkeit zu Alpha-ESS! Alpha-ESS ist nicht der Entwickler oder Anbieter dieses Adapters!",
+        "ru": "Адаптер требует node.js >= 18 и js-контроллер >= 5 сейчас\nОбновленные данные о зависимостях\nОбновлен логотип адаптера. Alpha-ESS любезно разрешил использовать логотип Alpha-ESS. Это не означает никакой связи с Alpha-ESS! Alpha-ESS не является разработчиком или поставщиком этого адаптера!",
+        "pt": "Adapter requer node.js >= 18 e js-controller >= 5 agora\nDependências atualizadas\nLogotipo do adaptador atualizado. Alpha-ESS tem permissão para usar o logotipo Alpha-ESS. Isso não implica nenhuma afiliação com Alpha-ESS! Alpha-ESS não é o desenvolvedor ou provedor deste adaptador!",
+        "nl": "Voor adaptor zijn node.js < 18 en js-controller > Nu 5\nAfhankelijkheden bijgewerkt\nAdapterlogo bijgewerkt. Alpha-ESS mag het Alpha-ESS-logo gebruiken. Dit impliceert geen band met Alpha-ESS! Alpha-ESS is niet de ontwikkelaar of leverancier van deze adapter!",
+        "fr": "L'adaptateur nécessite node.js >= 18 et js-controller >= 5 maintenant\nDépendances actualisées\nLogo de l'adaptateur mis à jour. Alpha-ESS a permis d'utiliser le logo Alpha-ESS. Cela n'implique aucune affiliation avec Alpha-ESS ! Alpha-ESS n'est pas le développeur ou le fournisseur de cet adaptateur !",
+        "it": "Adattatore richiede node.js >= 18 e js-controller >= 5 ora\nDipendenze aggiornate\nLogo adattatore aggiornato. Alpha-ESS ha gentilmente permesso di utilizzare il logo Alpha-ESS. Questo non implica alcuna affiliazione con Alpha-ESS! Alpha-ESS non è lo sviluppatore o il fornitore di questo adattatore!",
+        "es": "Adaptador requiere node.js √≥= 18 y js-controller 5 ahora\nActualización de las dependencias\nAdaptador logo actualizado. Alpha-ESS ha permitido utilizar el logotipo de Alpha-ESS. ¡Esto no implica ninguna afiliación con Alpha-ESS! Alpha-ESS no es el desarrollador o proveedor de este adaptador!",
+        "pl": "Adapter wymaga node.js > = 18 i kontroler js- > = 5 teraz\nAktualizacja zależności\nAktualizacja logo adaptera. Alpha- ESS uprzejmie zezwolił na użycie logo Alpha- ESS. To nie oznacza żadnego związku z AlphaESS! Alpha- ESS nie jest deweloperem ani dostawcą tego adaptera!",
+        "uk": "Адаптер вимагає node.js >= 18 і js-controller >= 5 тепер\nЗалежність оновлено\nОновлено логотип адаптера. Альфа-ESS дозволяє використовувати логотип Альфа-ESS. Це не означає афілію Альфа-ESS! Альфа-ESS не є розробником або постачальником цього адаптера!",
+        "zh-cn": "适配器需要节点.js QQ18和js控制器 QQ 现在5号\n更新的依赖关系\n适配器标志更新. Alpha-ESS允许使用Alpha-ESS标志。 这并不意味着与Alpha -ESS有任何关系! Alpha-ESS不是这个适配器的开发者或提供者!"
+      }
     },
-    "encryptedNative": ["appSecret"],
-    "protectedNative": ["username", "appID", "appSecret"],
-    "native": {
-        "apiType": 1,
-        "appID": "",
-        "appSecret": "",
-        "systemId": "",
-        "oAEnableRealtime": true,
-        "oAIntervalRealtime": 30,
-        "oAEnableEnergy": true,
-        "oAIntervalEnergyMins": 5,
-        "oAEnableSettingsCharge": true,
-        "oAIntervalSettingsChargeMins": 5,
-        "oAEnableSettingsDischarge": true,
-        "oAIntervalSettingsDischargeMins": 5,
-        "oAEnableSummary": true,
-        "oAIntervalSummaryMins": 5,
-        "oAEnableWallbox": false,
-        "oAIntervalWallboxMins": 5,
-        "updateUnchangedStates": false
+    "titleLang": {
+      "en": "Alpha ESS",
+      "de": "Alpha-ESS",
+      "ru": "Альфа ЭСС",
+      "pt": "Alfa ESS",
+      "nl": "Alfa ESS",
+      "fr": "Alpha SSE",
+      "it": "Alfa ESS",
+      "es": "Alfa ESS",
+      "pl": "Alfa ESS",
+      "zh-cn": "阿尔法 ESS",
+      "uk": "Альфа ESS"
     },
-    "objects": [],
-    "instanceObjects": [
-        {
-            "_id": "info",
-            "type": "channel",
-            "common": {
-                "name": "Information"
-            },
-            "native": {}
-        },
-        {
-            "_id": "info.connection",
-            "type": "state",
-            "common": {
-                "role": "indicator.connected",
-                "name": "Device or service connected",
-                "type": "boolean",
-                "read": true,
-                "write": false,
-                "def": false
-            },
-            "native": {}
-        }
+    "desc": {
+      "en": "Read and write data from and to Alpha ESS systems.",
+      "de": "Lesen und schreiben Sie Daten von und zu Alpha ESS-Systemen.",
+      "ru": "Чтение и запись данных из и в системы Alpha ESS.",
+      "pt": "Ler e gravar dados de e para sistemas Alpha ESS.",
+      "nl": "Gegevens lezen en schrijven van en naar Alpha ESS-systemen.",
+      "fr": "Lire et écrire des données depuis et vers les systèmes Alpha ESS.",
+      "it": "Leggere e scrivere dati da e verso sistemi Alpha ESS.",
+      "es": "Lea y escriba datos desde y hacia los sistemas Alpha ESS.",
+      "pl": "Odczytywanie i zapisywanie danych zi do systemów Alpha ESS.",
+      "zh-cn": "在 Alpha ESS 系统中读取和写入数据。",
+      "uk": "Читання та запис даних із систем Alpha ESS і до них."
+    },
+    "authors": [
+      "Gaspode <gaspode69@online.de>"
+    ],
+    "keywords": [
+      "photovoltaik",
+      "alpha-ess"
+    ],
+    "licenseInformation": {
+      "license": "MIT",
+      "type": "free"
+    },
+    "platform": "Javascript/Node.js",
+    "icon": "alpha-ess.png",
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/Gaspode69/ioBroker.alpha-ess/main/admin/alpha-ess.png",
+    "readme": "https://github.com/Gaspode69/ioBroker.alpha-ess/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "energy",
+    "tier": 2,
+    "compact": true,
+    "connectionType": "cloud",
+    "dataSource": "poll",
+    "adminUI": {
+      "config": "json"
+    },
+    "dependencies": [
+      {
+        "js-controller": ">=5.0.19"
+      }
+    ],
+    "globalDependencies": [
+      {
+        "admin": ">=6.13.16"
+      }
     ]
+  },
+  "encryptedNative": [
+    "appSecret"
+  ],
+  "protectedNative": [
+    "username",
+    "appID",
+    "appSecret"
+  ],
+  "native": {
+    "apiType": 1,
+    "appID": "",
+    "appSecret": "",
+    "systemId": "",
+    "oAEnableRealtime": true,
+    "oAIntervalRealtime": 30,
+    "oAEnableEnergy": true,
+    "oAIntervalEnergyMins": 5,
+    "oAEnableSettingsCharge": true,
+    "oAIntervalSettingsChargeMins": 5,
+    "oAEnableSettingsDischarge": true,
+    "oAIntervalSettingsDischargeMins": 5,
+    "oAEnableSummary": true,
+    "oAIntervalSummaryMins": 5,
+    "oAEnableWallbox": false,
+    "oAIntervalWallboxMins": 5,
+    "updateUnchangedStates": false
+  },
+  "objects": [],
+  "instanceObjects": [
+    {
+      "_id": "info",
+      "type": "channel",
+      "common": {
+        "name": "Information"
+      },
+      "native": {}
+    },
+    {
+      "_id": "info.connection",
+      "type": "state",
+      "common": {
+        "role": "indicator.connected",
+        "name": "Device or service connected",
+        "type": "boolean",
+        "read": true,
+        "write": false,
+        "def": false
+      },
+      "native": {}
+    }
+  ]
 }
