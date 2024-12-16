@@ -14,5 +14,6 @@
     "Interval to read charging settings": "读取充电设置的间隔",
     "Interval to read discharging settings": "读取放电设置的间隔",
     "Interval to read wallbox data": "读取 Wallbox 数据的时间间隔 [min]",
-    "Sorry. Closed API currently not supported!": "对不起。由于 Alpha-ESS 的更改，目前不支持封闭 API！"
+    "Sorry. Closed API currently not supported!": "对不起。由于 Alpha-ESS 的更改，目前不支持封闭 API！",
+    "Interval to read system information data": "读取系统信息数据的时间间隔[s]"
 }

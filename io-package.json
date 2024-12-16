@@ -173,6 +173,8 @@
     "systemId": "",
     "oAEnableRealtime": true,
     "oAIntervalRealtime": 30,
+    "oAEnableEssList": true,
+    "oAIntervalEssList": 30,
     "oAEnableEnergy": true,
     "oAIntervalEnergyMins": 5,
     "oAEnableSettingsCharge": true,

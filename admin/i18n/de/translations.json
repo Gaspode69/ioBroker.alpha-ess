@@ -14,5 +14,6 @@
     "Interval to read charging settings": "Intervall zum Lesen der Ladeeinstellungen [min]",
     "Interval to read discharging settings": "Intervall zum Lesen der Entladeeinstellungen [min]",
     "Interval to read wallbox data": "Intervall zum Auslesen der Wallbox-Daten [min]",
-    "Sorry. Closed API currently not supported!": "Entschuldigung. Closed API wird aufgrund von Änderungen durch Alpha-ESS derzeit nicht unterstützt!"
+    "Sorry. Closed API currently not supported!": "Entschuldigung. Closed API wird aufgrund von Änderungen durch Alpha-ESS derzeit nicht unterstützt!",
+    "Interval to read system information data": "Intervall zum Lesen von Systeminformationsdaten [s]"
 }

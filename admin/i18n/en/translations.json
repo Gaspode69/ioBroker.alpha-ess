@@ -5,6 +5,7 @@
     "Alpha ESS System ID": "Alpha ESS System ID",
     "Interval to read realtime data": "Interval to read realtime data [s]",
     "Interval to read energy data": "Interval to read energy data [min]",
+    "Interval to read system information data": "Interval to read system information data [s]",
     "Interval to read settings data": "Interval to read settings data [min]",
     "Interval to read statistical data (today)": "Interval to read statistical data (today) [min]",
     "Interval to read summary data": "Interval to read summary data [min]",

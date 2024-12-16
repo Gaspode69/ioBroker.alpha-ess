@@ -217,6 +217,87 @@ class OpenAPI {
                 ],
             },
             {
+                Group: 'System',
+                fnct: this.getEssList.bind(this),
+                enabledName: 'oAEnableEssList',
+                intervalName: 'oAIntervalEssList',
+                intervalFactor: 1,
+                states: [
+                    {
+                        alphaAttrName: 'cobat',
+                        role: 'value.energy',
+                        id: 'Battery_capacity',
+                        name: 'Battery capacity',
+                        type: 'number',
+                        unit: 'kWh',
+                    },
+                    {
+                        alphaAttrName: 'emsStatus',
+                        role: 'text',
+                        id: 'EMS_status',
+                        name: 'EMS status',
+                        type: 'string',
+                        unit: null,
+                    },
+                    {
+                        alphaAttrName: 'mbat',
+                        role: 'text',
+                        id: 'Battery_model',
+                        name: 'Battery model',
+                        type: 'string',
+                        unit: null,
+                    },
+                    {
+                        alphaAttrName: 'minv',
+                        role: 'text',
+                        id: 'Inverter_model',
+                        name: 'Inverter model',
+                        type: 'string',
+                        unit: null,
+                    },
+                    {
+                        alphaAttrName: 'poinv',
+                        role: 'value.power',
+                        id: 'Inverter_nominal_power',
+                        name: 'Inverter nominal Power',
+                        type: 'number',
+                        unit: 'kW',
+                    },
+                    {
+                        alphaAttrName: 'popv',
+                        role: 'value.power',
+                        id: 'PV_nominal_power',
+                        name: 'PV nominal Power',
+                        type: 'number',
+                        unit: 'kW',
+                    },
+                    {
+                        alphaAttrName: 'surplusCobat',
+                        role: 'value.energy',
+                        id: 'Battery_capacity_remaining',
+                        name: 'Battery capacity remaining',
+                        type: 'number',
+                        unit: 'kWh',
+                    },
+                    {
+                        alphaAttrName: 'usCapacity',
+                        role: 'value',
+                        id: 'Battery_available_percentage',
+                        name: 'Battery Available Percentage',
+                        type: 'number',
+                        unit: '%',
+                    },
+                    {
+                        alphaAttrName: 'sysSn',
+                        role: 'text',
+                        id: 'System_SN',
+                        name: 'System S/N',
+                        type: 'string',
+                        unit: null,
+                    },
+                ],
+            },
+            {
                 Group: 'Energy',
                 fnct: this.getOneDateEnergyBySn.bind(this),
                 enabledName: 'oAEnableEnergy',
@@ -709,6 +790,25 @@ class OpenAPI {
         await this.startGroupTimeout(group);
     }
 
+    async getEssList(group) {
+        try {
+            this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug(`Fetching ${group} data...`);
+
+            const res = await this.getRequest('getEssList', {});
+            if (res && res['status'] == 200 && res.data && res.data.data) {
+                await this.adapter.createAndUpdateStates(group, res.data.data);
+            } else {
+                await this.handleError(res, group);
+            }
+        } catch (e) {
+            this.adapter.log.error(`Fetching data for group ${group}: Exception occurred: ${e}`);
+            await this.handleError(this.emptyBody, group);
+        }
+        await this.startGroupTimeout(group);
+    }
+
     /**
      * @param group Group name
      */
@@ -1165,12 +1265,14 @@ class AlphaEss extends utils.Adapter {
             this.log.debug(`config systemId:                       ${this.config.systemId}`);
             this.log.debug(`config oAIntervalRealtime:             ${this.config.oAIntervalRealtime}`);
             this.log.debug(`config oAIntervalEnergyMins:           ${this.config.oAIntervalEnergyMins}`);
+            this.log.debug(`config oAIntervalEnergyMins:           ${this.config.oAIntervalEssList}`);
             this.log.debug(`config oAIntervalSettingsChargeMins    ${this.config.oAIntervalSettingsChargeMins}`);
             this.log.debug(`config oAIntervalSettingsDischargeMins ${this.config.oAIntervalSettingsDischargeMins}`);
             this.log.debug(`config oAIntervalSummaryMins:          ${this.config.oAIntervalSummaryMins}`);
             this.log.debug(`config oAIntervalWallboxMins:          ${this.config.oAIntervalWallboxMins}`);
             this.log.debug(`config oAEnableRealtime:               ${this.config.oAEnableRealtime}`);
             this.log.debug(`config oAEnableEnergy:                 ${this.config.oAEnableEnergy}`);
+            this.log.debug(`config oAEnableEnergy:                 ${this.config.oAEnableEssList}`);
             this.log.debug(`config oAEnableSettingsCharge:         ${this.config.oAEnableSettingsCharge}`);
             this.log.debug(`config oAEnableSettingsCharge:         ${this.config.oAEnableSettingsCharge}`);
             this.log.debug(`config oAEnableSettingsDischarge:      ${this.config.oAEnableSettingsDischarge}`);

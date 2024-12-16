@@ -54,6 +54,27 @@
             "newLine": false,
             "disabled": "!data.oAEnableRealtime"
         },
+        "oAEnableEssList": {
+            "xs": 1.1,
+            "sm": 0.6,
+            "md": 0.4,
+            "lg": 0.2,
+            "xl": 0.2,
+            "type": "checkbox",
+            "newLine": true
+        },
+        "oAIntervalEssList": {
+            "xs": 9.9,
+            "sm": 7.4,
+            "md": 3.6,
+            "lg": 2.8,
+            "xl": 2.8,
+            "min": 10,
+            "type": "number",
+            "label": "Interval to read system information data",
+            "newLine": false,
+            "disabled": "!data.oAEnableEssList"
+        },
         "oAEnableEnergy": {
             "xs": 1.1,
             "sm": 0.6,
