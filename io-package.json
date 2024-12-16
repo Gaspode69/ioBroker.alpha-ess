@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.1.6",
+    "version": "2.2.0",
     "news": {
+      "2.2.0": {
+        "en": "Provide system information data (getEssList)",
+        "de": "Lesen von System-Informationsdaten (getEssList)",
+        "ru": "Предоставление системных информационных данных (getEssList)",
+        "pt": "Fornecer dados do sistema de infom (getEssList)",
+        "nl": "Geef systeeminformatiemgegevens (getEssList)",
+        "fr": "Fournir des informations sur le système (getEssList)",
+        "it": "Fornire dati informativi del sistema (getEssList)",
+        "es": "Proporcione datos del sistema (getEssList)",
+        "pl": "Dostarczanie informacji systemowych (GetesList)",
+        "uk": "Забезпечити інформацію про систему (getEssList)",
+        "zh-cn": "提供系统信息m数据( getEsList)"
+      },
       "2.1.6": {
         "en": "Migrated to ESLint 9",
         "de": "Zu ESLint 9 migriert",
@@ -80,19 +93,6 @@
         "pl": "Nie raportuj już timeout jako błąd. Powinno wystarczyć ustawić jakość danych państw na wartości zgodnie z powyższą tabelą oraz wyświetlić ostrzeżenia, jeżeli wartości nie były aktualizowane przez długi czas. Aby zobaczyć szczegóły, poziom dziennika debugowania musi być włączony przez użytkownika.",
         "uk": "Не довший звіт про те, як помилка. Для того, щоб встановити якість занепокоєних станів до значень, зазначених вище таблиці та для відображення попередження, якщо значення не було оновлено протягом тривалого часу. Щоб дізнатися подробиці, рівень дебюг повинен бути включений користувачем.",
         "zh-cn": "不再将超时读取为错误 。 如果长期不更新有关数值,则应该足以按照上表的数值确定有关国家的质量,并显示警告。 要查看细节,调试日志级别必须由用户启用."
-      },
-      "2.1.0": {
-        "en": "Adapter requires node.js >= 18 and js-controller >= 5 now\nDependencies updated\nAdapter logo updated. Alpha-ESS has kindly permitted to use the Alpha-ESS logo. This does not imply any affiliation with Alpha-ESS! Alpha-ESS is not the developer or provider of this adapter!",
-        "de": "Adapter benötigt jetzt node.js >= 18 und js-controller >= 5\nAbhängigkeiten aktualisiert\nAdapter-Logo aktualisiert. Alpha-ESS hat freundlicherweise die Nutzung des Alpha-ESS-Logos genehmigt. Dies impliziert keine Zugehörigkeit zu Alpha-ESS! Alpha-ESS ist nicht der Entwickler oder Anbieter dieses Adapters!",
-        "ru": "Адаптер требует node.js >= 18 и js-контроллер >= 5 сейчас\nОбновленные данные о зависимостях\nОбновлен логотип адаптера. Alpha-ESS любезно разрешил использовать логотип Alpha-ESS. Это не означает никакой связи с Alpha-ESS! Alpha-ESS не является разработчиком или поставщиком этого адаптера!",
-        "pt": "Adapter requer node.js >= 18 e js-controller >= 5 agora\nDependências atualizadas\nLogotipo do adaptador atualizado. Alpha-ESS tem permissão para usar o logotipo Alpha-ESS. Isso não implica nenhuma afiliação com Alpha-ESS! Alpha-ESS não é o desenvolvedor ou provedor deste adaptador!",
-        "nl": "Voor adaptor zijn node.js < 18 en js-controller > Nu 5\nAfhankelijkheden bijgewerkt\nAdapterlogo bijgewerkt. Alpha-ESS mag het Alpha-ESS-logo gebruiken. Dit impliceert geen band met Alpha-ESS! Alpha-ESS is niet de ontwikkelaar of leverancier van deze adapter!",
-        "fr": "L'adaptateur nécessite node.js >= 18 et js-controller >= 5 maintenant\nDépendances actualisées\nLogo de l'adaptateur mis à jour. Alpha-ESS a permis d'utiliser le logo Alpha-ESS. Cela n'implique aucune affiliation avec Alpha-ESS ! Alpha-ESS n'est pas le développeur ou le fournisseur de cet adaptateur !",
-        "it": "Adattatore richiede node.js >= 18 e js-controller >= 5 ora\nDipendenze aggiornate\nLogo adattatore aggiornato. Alpha-ESS ha gentilmente permesso di utilizzare il logo Alpha-ESS. Questo non implica alcuna affiliazione con Alpha-ESS! Alpha-ESS non è lo sviluppatore o il fornitore di questo adattatore!",
-        "es": "Adaptador requiere node.js √≥= 18 y js-controller 5 ahora\nActualización de las dependencias\nAdaptador logo actualizado. Alpha-ESS ha permitido utilizar el logotipo de Alpha-ESS. ¡Esto no implica ninguna afiliación con Alpha-ESS! Alpha-ESS no es el desarrollador o proveedor de este adaptador!",
-        "pl": "Adapter wymaga node.js > = 18 i kontroler js- > = 5 teraz\nAktualizacja zależności\nAktualizacja logo adaptera. Alpha- ESS uprzejmie zezwolił na użycie logo Alpha- ESS. To nie oznacza żadnego związku z AlphaESS! Alpha- ESS nie jest deweloperem ani dostawcą tego adaptera!",
-        "uk": "Адаптер вимагає node.js >= 18 і js-controller >= 5 тепер\nЗалежність оновлено\nОновлено логотип адаптера. Альфа-ESS дозволяє використовувати логотип Альфа-ESS. Це не означає афілію Альфа-ESS! Альфа-ESS не є розробником або постачальником цього адаптера!",
-        "zh-cn": "适配器需要节点.js QQ18和js控制器 QQ 现在5号\n更新的依赖关系\n适配器标志更新. Alpha-ESS允许使用Alpha-ESS标志。 这并不意味着与Alpha -ESS有任何关系! Alpha-ESS不是这个适配器的开发者或提供者!"
       }
     },
     "titleLang": {

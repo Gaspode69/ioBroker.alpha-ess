@@ -62,9 +62,9 @@ How to find SN and Check code for registration is described here: https://github
 
 ## Changelog
 
-### **WORK IN PROGRESS**
+### 2.2.0 (2024-12-16)
 
-- (Gaspode) Provide system informationm data (getEssList)
+- (Gaspode) Provide system information data (getEssList)
 
 ### 2.1.6 (2024-12-01)
 
