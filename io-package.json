@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.2.0",
+    "version": "2.3.0",
     "news": {
+      "2.3.0": {
+        "en": "Provides the ability to read pseudo-realtime power data using the API function getTodayPowerBySn. This feature is useful for systems that lack \"realtime data support.\" When activated, data is fetched every 5 minutes and stored in the \"Recent\" folder.",
+        "de": "Bietet die Möglichkeit, pseudo-realtime Stromdaten mit der API-Funktion getTodayPowerBySn zu lesen. Diese Funktion ist nützlich für Systeme, die keinen \"Realtime Data Support\" haben. Wenn aktiviert, werden alle 5 Minuten Daten gelesen und im Ordner \"Recent\" gespeichert.",
+        "ru": "Предоставляет возможность чтения псевдо-в реальном времени данных питания с использованием функции API getTodayPowerBySn. Эта функция полезна для систем, которые не имеют «поддержки данных в реальном времени». При активации данные загружаются каждые 5 минут и хранятся в папке «Recent».",
+        "pt": "Fornece a capacidade de ler dados de energia pseudo-realtime usando a função API getTodayPowerBySn. Esse recurso é útil para sistemas que não possuem \"apoio de dados em tempo real\". Quando ativado, os dados são obtidos a cada 5 minutos e armazenados na pasta \"Recente\".",
+        "nl": "Biedt de mogelijkheid om pseudo-realtime power data te lezen met behulp van de API-functie krijgenTodayPowerBySn. Deze functie is nuttig voor systemen die geen \"realtime data support\" hebben. Wanneer geactiveerd, worden de gegevens elke 5 minuten opgehaald en opgeslagen in de \"Recent\" map.",
+        "fr": "Fournit la possibilité de lire des données de puissance pseudo-réel en utilisant la fonction API getTodayPowerBySn. Cette fonctionnalité est utile pour les systèmes qui manquent de « support de données en temps réel ». Une fois activé, les données sont récupérées toutes les 5 minutes et stockées dans le dossier \"Récent\".",
+        "it": "Fornisce la capacità di leggere i dati di potenza pseudo-realtime utilizzando la funzione API getTodayPowerBySn. Questa funzione è utile per i sistemi che mancano di \"supporto dati realtime\". Quando si attiva, i dati vengono recuperati ogni 5 minuti e memorizzati nella cartella \"Recent\".",
+        "es": "Proporciona la capacidad de leer datos de energía pseudo-realtime usando la función API getTodayPowerBySn. Esta característica es útil para sistemas que carecen de \"apoyo de datos en tiempo real\". Cuando se activa, los datos se recogen cada 5 minutos y se almacenan en la carpeta \"Recent\".",
+        "pl": "Zapewnia możliwość odczytu danych o mocy pseudo-realtime za pomocą funkcji API getTodayPowerBySn. Funkcja ta jest przydatna dla systemów, którym brakuje \"wsparcia danych w czasie rzeczywistym\". Po aktywowaniu dane są pobierane co 5 minut i przechowywane w folderze \"Najnowsze\".",
+        "uk": "Забезпечує можливість читати дані псевдореального часу за допомогою функції API getTodayPowerBySn. Ця функція є корисною для систем, які не мають підтримки загальних даних. При активації дані подаються кожні 5 хвилин і зберігаються в папці \"Відсоток\".",
+        "zh-cn": "提供使用API函数get TodayPowerBySn读取伪实时功率数据的能力. 这个特性对于缺乏\"实时数据支持\"的系统是有用的. 当启动时,数据每5分钟获取一次,并存储在\"Recent\"文件夹中."
+      },
       "2.2.0": {
         "en": "Provide system information data (getEssList)",
         "de": "Lesen von System-Informationsdaten (getEssList)",
@@ -80,19 +93,6 @@
         "pl": "Jakość państw zoptymalizowanych",
         "uk": "Якість держав оптимізовано",
         "zh-cn": "国家质量得到优化"
-      },
-      "2.1.1": {
-        "en": "Do not longer report read timeouts as error. It should be enough to set the quality of concerned states to values according the table above and to display warnings, if values were not updated for a long time. To see details, debug log level must be enabled by the user.",
-        "de": "Read Timeouts werden nicht länger als Fehler im Log angezeigt. Es sollte ausreichen, dass die Quality der betreffenden States auf Werte gemäß der obigen Tabelle gesetzt wird und dass Warnungen angezeigt werden, wenn Werte lange nicht aktualisiert wurden. Um Details zu sehen, muss der Log-Level Debug vom Benutzer aktiviert werden.",
-        "ru": "Не сообщайте больше о времени чтения как об ошибке. Это должно быть достаточно, чтобы установить качество соответствующих состояний к значениям согласно таблице выше и отображать предупреждения, если значения не обновлялись в течение длительного времени. Чтобы увидеть детали, уровень отладки журнала должен быть включен пользователем.",
-        "pt": "Não reporte mais tempo de leitura como erro. Deve ser suficiente definir a qualidade dos estados em causa para valores de acordo com a tabela acima e para exibir avisos, se os valores não foram atualizados por muito tempo. Para ver detalhes, o nível de log de depuração deve ser ativado pelo usuário.",
-        "nl": "Niet langer lezen time-outs rapporteren als fout. Het zou voldoende moeten zijn om de kwaliteit van de betrokken staten vast te stellen op waarden volgens bovenstaande tabel en waarschuwingen weer te geven, indien de waarden lange tijd niet werden bijgewerkt. Om details te zien, moet het debug-logniveau door de gebruiker worden ingeschakeld.",
-        "fr": "Ne déclarez plus les temps de lecture comme erreur. Il devrait suffire de fixer la qualité des états concernés à des valeurs selon le tableau ci-dessus et d'afficher des avertissements, si les valeurs ne sont pas mises à jour pendant longtemps. Pour voir les détails, le niveau de débogage doit être activé par l'utilisateur.",
-        "it": "Non report più i timeout di lettura come errore. Dovrebbe essere sufficiente impostare la qualità degli stati interessati ai valori secondo la tabella sopra e mostrare avvisi, se i valori non sono stati aggiornati per molto tempo. Per visualizzare i dettagli, il livello di registro del debug deve essere abilitato dall'utente.",
-        "es": "No reporte más tiempo de lectura como error. Debe ser suficiente para establecer la calidad de los estados interesados a valores según la tabla anterior y para mostrar advertencias, si los valores no se actualizaron durante mucho tiempo. Para ver detalles, el nivel de registro de depuración debe ser habilitado por el usuario.",
-        "pl": "Nie raportuj już timeout jako błąd. Powinno wystarczyć ustawić jakość danych państw na wartości zgodnie z powyższą tabelą oraz wyświetlić ostrzeżenia, jeżeli wartości nie były aktualizowane przez długi czas. Aby zobaczyć szczegóły, poziom dziennika debugowania musi być włączony przez użytkownika.",
-        "uk": "Не довший звіт про те, як помилка. Для того, щоб встановити якість занепокоєних станів до значень, зазначених вище таблиці та для відображення попередження, якщо значення не було оновлено протягом тривалого часу. Щоб дізнатися подробиці, рівень дебюг повинен бути включений користувачем.",
-        "zh-cn": "不再将超时读取为错误 。 如果长期不更新有关数值,则应该足以按照上表的数值确定有关国家的质量,并显示警告。 要查看细节,调试日志级别必须由用户启用."
       }
     },
     "titleLang": {
