@@ -15,5 +15,6 @@
     "Interval to read discharging settings": "Intervalle pour lire les paramètres de décharge",
     "Interval to read wallbox data": "Intervalle de lecture des données de la wallbox [min]",
     "Sorry. Closed API currently not supported!": "Désolé. API fermée actuellement non prise en charge en raison de modifications apportées par Alpha-ESS !",
-    "Interval to read system information data": "Intervalle de lecture des données d'informations système [s]"
+    "Interval to read system information data": "Intervalle de lecture des données d'informations système [s]",
+    "Get recent power data every 5 minutes (for systems with no realtime data)": "Obtenez des données de puissance récentes toutes les 5 minutes (pour les systèmes sans prise en charge des données en temps réel)"
 }

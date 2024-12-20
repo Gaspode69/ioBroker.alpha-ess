@@ -54,6 +54,16 @@
             "newLine": false,
             "disabled": "!data.oAEnableRealtime"
         },
+        "oAEnableRecent": {
+            "xs": 9.9,
+            "sm": 7.4,
+            "md": 3.6,
+            "lg": 2.8,
+            "xl": 2.8,
+            "type": "checkbox",
+            "newLine": true,
+            "label": "Get recent power data every 5 minutes (for systems with no realtime data)"
+        },
         "oAEnableEssList": {
             "xs": 1.1,
             "sm": 0.6,

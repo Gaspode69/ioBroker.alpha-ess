@@ -15,5 +15,6 @@
     "Interval to read discharging settings": "Интервал чтения настроек разрядки",
     "Interval to read wallbox data": "Интервал чтения данных Wallbox [мин]",
     "Sorry. Closed API currently not supported!": "Извини. Закрытый API в настоящее время не поддерживается из-за изменений Alpha-ESS!",
-    "Interval to read system information data": "Интервал чтения данных системной информации [с]"
+    "Interval to read system information data": "Интервал чтения данных системной информации [с]",
+    "Get recent power data every 5 minutes (for systems with no realtime data)": "Получайте последние данные о питании каждые 5 минут (для систем без поддержки данных в реальном времени)"
 }

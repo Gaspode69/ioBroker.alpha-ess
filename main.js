@@ -217,6 +217,71 @@ class OpenAPI {
                 ],
             },
             {
+                Group: 'Recent',
+                fnct: this.getLatestTodayPowerBySn.bind(this),
+                enabledName: 'oAEnableRecent',
+                intervalFactor: 1, // For scheduled group not used
+                isSchedule: true,
+                states: [
+                    {
+                        alphaAttrName: 'ppv',
+                        role: 'value.power',
+                        id: 'PV_power_total',
+                        name: 'PV power total',
+                        type: 'number',
+                        unit: 'W',
+                    },
+                    {
+                        alphaAttrName: 'load',
+                        role: 'value.power',
+                        id: 'Load_total',
+                        name: 'Load total',
+                        type: 'number',
+                        unit: 'W',
+                    },
+                    {
+                        alphaAttrName: 'cbat',
+                        role: 'value.battery',
+                        id: 'Battery_SOC',
+                        name: 'State of charge',
+                        type: 'number',
+                        unit: '%',
+                    },
+                    {
+                        alphaAttrName: 'gridCharge',
+                        role: 'value.power',
+                        id: 'Grid_power_total_charge',
+                        name: 'Grid power total charge',
+                        type: 'number',
+                        unit: 'W',
+                    },
+                    {
+                        alphaAttrName: 'feedIn',
+                        role: 'value.power',
+                        id: 'Grid_power_total_feedin',
+                        name: 'Grid power total feedin',
+                        type: 'number',
+                        unit: 'W',
+                    },
+                    {
+                        alphaAttrName: 'pchargingPile',
+                        role: 'value.power',
+                        id: 'Charging_pile_power_total',
+                        name: 'Charging pile (Wallbox) power total',
+                        type: 'number',
+                        unit: 'W',
+                    },
+                    {
+                        alphaAttrName: 'sysSn',
+                        role: 'text',
+                        id: 'System_SN',
+                        name: 'System S/N',
+                        type: 'string',
+                        unit: null,
+                    },
+                ],
+            },
+            {
                 Group: 'System',
                 fnct: this.getEssList.bind(this),
                 enabledName: 'oAEnableEssList',
@@ -773,7 +838,7 @@ class OpenAPI {
      */
     async getLastPowerData(group) {
         try {
-            this.adapter.stopGroupTimeout(group);
+            await this.adapter.stopGroupTimeout(group);
 
             this.adapter.log.debug(`Fetching ${group} data...`);
 
@@ -790,9 +855,50 @@ class OpenAPI {
         await this.startGroupTimeout(group);
     }
 
+    /**
+     * @param group Group name
+     */
+    async getLatestTodayPowerBySn(group) {
+        try {
+            await this.adapter.stopGroupTimeout(group);
+            this.adapter.log.debug(`Fetching ${group} data...`);
+
+            const dt = new Date();
+            const dts = `${dt.getFullYear()}-${`0${dt.getMonth() + 1}`.slice(-2)}-${`0${dt.getDate()}`.slice(-2)}`;
+            const res = await this.getRequest(
+                `getOneDayPowerBySn?sysSn=${this.adapter.config.systemId}&queryDate=${dts}`,
+                {},
+            );
+            if (res && res['status'] == 200 && res.data && res.data.data) {
+                const latestEntry = res.data.data.reduce((latest, current) => {
+                    return new Date(current.uploadTime) > new Date(latest.uploadTime) ? current : latest;
+                });
+                if (latestEntry.uploadTime != null) {
+                    const deliveredTs = new Date(latestEntry.uploadTime.replace(' ', 'T')).getTime();
+                    if (Date.now() - deliveredTs < 300000) {
+                        // ensure that the data is not older than 5 minutes
+                        await this.adapter.createAndUpdateStates(group, latestEntry);
+                    } else {
+                        this.adapter.log.error(
+                            `Time received for data of group ${group} is too old or invalid (${latestEntry.uploadTime})! States not updated!`,
+                        );
+                    }
+                } else {
+                    this.adapter.log.error(`No time received for data of group ${group}! States not updated!`);
+                }
+            } else {
+                await this.handleError(res, group);
+            }
+        } catch (e) {
+            this.adapter.log.error(`Fetching data for group ${group}: Exception occurred: ${e}`);
+            await this.handleError(this.emptyBody, group);
+        }
+        await this.startGroupTimeout(group);
+    }
+
     async getEssList(group) {
         try {
-            this.adapter.stopGroupTimeout(group);
+            await this.adapter.stopGroupTimeout(group);
 
             this.adapter.log.debug(`Fetching ${group} data...`);
 
@@ -814,7 +920,7 @@ class OpenAPI {
      */
     async getOneDateEnergyBySn(group) {
         try {
-            this.adapter.stopGroupTimeout(group);
+            await this.adapter.stopGroupTimeout(group);
 
             this.adapter.log.debug(`Fetching ${group} data...`);
 
@@ -841,7 +947,7 @@ class OpenAPI {
      */
     async getChargeConfigInfo(group) {
         try {
-            this.adapter.stopGroupTimeout(group);
+            await this.adapter.stopGroupTimeout(group);
 
             this.adapter.log.debug(`Fetching ${group} data...`);
 
@@ -863,7 +969,7 @@ class OpenAPI {
      */
     async getDisChargeConfigInfo(group) {
         try {
-            this.adapter.stopGroupTimeout(group);
+            await this.adapter.stopGroupTimeout(group);
 
             this.adapter.log.debug(`Fetching ${group} data...`);
 
@@ -885,7 +991,7 @@ class OpenAPI {
      */
     async getSumDataForCustomer(group) {
         try {
-            this.adapter.stopGroupTimeout(group);
+            await this.adapter.stopGroupTimeout(group);
 
             this.adapter.log.debug(`Fetching ${group} data...`);
 
@@ -912,7 +1018,7 @@ class OpenAPI {
      */
     async getWallboxData(group) {
         try {
-            this.adapter.stopGroupTimeout(group);
+            await this.adapter.stopGroupTimeout(group);
 
             this.adapter.log.debug(`Fetching ${group} data...`);
             // First we need to get SN if not already done:
@@ -977,7 +1083,7 @@ class OpenAPI {
     async writeConfigInfo(group, _updState, _updStateInfo) {
         try {
             this.adapter.stopGroupWriteTimeout(group);
-            this.adapter.stopGroupTimeout(group);
+            await this.adapter.stopGroupTimeout(group);
 
             this.adapter.log.debug(`Writing ${group} data...`);
 
@@ -1027,7 +1133,7 @@ class OpenAPI {
     async writeWallboxChargerControl(group, _updState, updStateInfo) {
         try {
             this.adapter.stopGroupWriteTimeout(group);
-            this.adapter.stopGroupTimeout(group);
+            await this.adapter.stopGroupTimeout(group);
 
             this.adapter.log.debug(`Writing ${group} data...`);
 
@@ -1271,6 +1377,7 @@ class AlphaEss extends utils.Adapter {
             this.log.debug(`config oAIntervalSummaryMins:          ${this.config.oAIntervalSummaryMins}`);
             this.log.debug(`config oAIntervalWallboxMins:          ${this.config.oAIntervalWallboxMins}`);
             this.log.debug(`config oAEnableRealtime:               ${this.config.oAEnableRealtime}`);
+            this.log.debug(`config oAEnableRealtime:               ${this.config.oAEnableRecent}`);
             this.log.debug(`config oAEnableEnergy:                 ${this.config.oAEnableEnergy}`);
             this.log.debug(`config oAEnableEnergy:                 ${this.config.oAEnableEssList}`);
             this.log.debug(`config oAEnableSettingsCharge:         ${this.config.oAEnableSettingsCharge}`);
@@ -1312,28 +1419,31 @@ class AlphaEss extends utils.Adapter {
                 for (const gidx of Object.keys(this.getStateInfoList())) {
                     const groupInfo = this.getStateInfoList()[gidx];
 
-                    groupInfo.interval = this.config[groupInfo.intervalName] * groupInfo.intervalFactor;
-                    this.log.debug(`${groupInfo.intervalName}: ${groupInfo.interval}`);
+                    if (groupInfo.isSchedule) {
+                        groupInfo.interval = 300; // 5 Minutes, used for watchdog only
+                    } else {
+                        groupInfo.interval = this.config[groupInfo.intervalName] * groupInfo.intervalFactor;
+                        this.log.debug(`${groupInfo.intervalName}: ${groupInfo.interval}`);
 
-                    if (
-                        this.jsonConfig.items[groupInfo.intervalName] &&
-                        this.jsonConfig.items[groupInfo.intervalName].min
-                    ) {
                         if (
-                            groupInfo.interval <
-                            this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor
+                            this.jsonConfig.items[groupInfo.intervalName] &&
+                            this.jsonConfig.items[groupInfo.intervalName].min
                         ) {
-                            const oldVal = groupInfo.interval;
-                            groupInfo.interval =
-                                this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor;
-                            if (this.config[groupInfo.enabledName]) {
-                                this.log.warn(
-                                    `Configured interval ${oldVal} for ${groupInfo.Group} no longer supported. Changed to ${groupInfo.interval}. Please change your configuration!`,
-                                );
+                            if (
+                                groupInfo.interval <
+                                this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor
+                            ) {
+                                const oldVal = groupInfo.interval;
+                                groupInfo.interval =
+                                    this.jsonConfig.items[groupInfo.intervalName].min * groupInfo.intervalFactor;
+                                if (this.config[groupInfo.enabledName]) {
+                                    this.log.warn(
+                                        `Configured interval ${oldVal} for ${groupInfo.Group} no longer supported. Changed to ${groupInfo.interval}. Please change your configuration!`,
+                                    );
+                                }
                             }
                         }
                     }
-
                     if (this.config[groupInfo.enabledName]) {
                         await this.setQualityForGroup(groupInfo.Group, 0x2);
                         await groupInfo.fnct(groupInfo.Group);
@@ -1513,11 +1623,12 @@ class AlphaEss extends utils.Adapter {
      */
     startGroupTimeout(intervalInS, group) {
         const gidx = this.getStateInfoList().findIndex(i => i.Group == group);
-        if (!this.getStateInfoList()[gidx].timeoutHandle) {
-            const interval = this.calculateIntervalInMs(intervalInS, group);
+        const groupInfo = this.getStateInfoList()[gidx];
+        if (!groupInfo.timeoutHandle) {
+            const interval = this.calculateIntervalInMs(intervalInS, groupInfo);
             this.log.debug(`Timeout with interval ${interval} ms started for group ${group}`);
-            this.getStateInfoList()[gidx].timeoutHandle = this.setTimeout(() => {
-                this.getStateInfoList()[gidx].fnct(group);
+            groupInfo.timeoutHandle = this.setTimeout(() => {
+                groupInfo.fnct(group);
             }, interval);
         }
     }
@@ -1949,17 +2060,29 @@ class AlphaEss extends utils.Adapter {
      * This is to avoid too many requests and flooding the ioBroker log file with messages
      *
      * @param timeInS Interval time in seconds
-     * @param group Group name
+     * @param groupInfo Group Info
      */
-    calculateIntervalInMs(timeInS, group) {
-        if (this.errorCount < 5) {
-            return timeInS * 1000;
-        }
+    calculateIntervalInMs(timeInS, groupInfo) {
+        if (groupInfo.isSchedule) {
+            // In this case we calculate the seconds until the next full 5 minutes plus 10 seconds
+            const now = new Date();
+            const minutes = now.getMinutes();
+            const seconds = now.getSeconds();
+            const nextFullFiveMinute = Math.ceil((minutes + 1) / 5) * 5;
+            const remainingMinutes = nextFullFiveMinute - minutes - 1;
+            const remainingSeconds = 60 - seconds;
 
-        if (timeInS < 300000) {
-            // 5 minutes
-            this.log.error(`${group}: Five or more errors occurred, next request in 5 minutes.`);
-            return 300000;
+            timeInS = remainingMinutes * 60 + remainingSeconds + 10;
+        } else {
+            if (this.errorCount < 5) {
+                return timeInS * 1000;
+            }
+
+            if (timeInS < 300000) {
+                // 5 minutes
+                this.log.error(`${groupInfo.Group}: Five or more errors occurred, next request in 5 minutes.`);
+                return 300000;
+            }
         }
 
         return timeInS * 1000;

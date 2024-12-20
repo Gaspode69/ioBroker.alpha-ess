@@ -62,6 +62,10 @@ How to find SN and Check code for registration is described here: https://github
 
 ## Changelog
 
+### **WORK IN PROGRESS**
+
+- (Gaspode) Provides the ability to read pseudo-realtime power data using the API function getTodayPowerBySn. This feature is useful for systems that lack "realtime data support." When activated, data is fetched every 5 minutes and stored in the "Recent" folder.
+
 ### 2.2.0 (2024-12-16)
 
 - (Gaspode) Provide system information data (getEssList)

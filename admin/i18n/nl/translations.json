@@ -15,5 +15,6 @@
     "Interval to read discharging settings": "Interval om ontlaadinstellingen te lezen",
     "Interval to read wallbox data": "Interval voor het lezen van wallbox-gegevens [min]",
     "Sorry. Closed API currently not supported!": "Sorry. Gesloten API momenteel niet ondersteund vanwege wijzigingen door Alpha-ESS!",
-    "Interval to read system information data": "Interval voor het lezen van systeeminformatiegegevens [s]"
+    "Interval to read system information data": "Interval voor het lezen van systeeminformatiegegevens [s]",
+    "Get recent power data every 5 minutes (for systems with no realtime data)": "Ontvang elke 5 minuten recente stroomgegevens (voor systemen zonder realtime gegevensondersteuning)"
 }
