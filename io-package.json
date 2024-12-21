@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "2.3.0",
+    "version": "3.0.0",
     "news": {
+      "3.0.0": {
+        "en": "**Breaking Change:** Renamed state \"Charging_period 1_end\" to \"Charging_period_1_end\"\nOptimizations in configuration dialog",
+        "de": "**Breaking Change:** Zustand \"Charging_period 1_end\" wurde zu \"Charging_period_1_end\" umbenannt\nOptimierungen im Konfigurationsdialog",
+        "ru": "**Изменение:** Переименованное состояние \"Charging_period 1_end\" в \"Charging_period_1_end\"\nОптимизация в диалоге конфигурации",
+        "pt": "** Mudança de travagem:*** Renamed estado \"Charging_period 1_end\" para \"Charging_period_1_end\"\nOtimizações na caixa de diálogo de configuração",
+        "nl": "**Breaking Change:** Hernoemde status \"Charging_period1 end\" naar \"Charging_period1_end\"\nOptimalisaties in configuratiedialoog",
+        "fr": "**Modification progressive :** Renommé \"Charging_period 1_end\" en \"Charging_period_1_end\"\nOptimisations dans la boîte de dialogue de configuration",
+        "it": "#Breaking Change # Rinominato stato \"Charging_period 1_end\" a \"Charging_period_1_end\"\nOttimizzazione nella finestra di dialogo di configurazione",
+        "es": "**Breaking Change:** Estado renombrado \"Charging_period 1_end\" a \"Charging_period_1_end\"\nOptimizaciones en el diálogo de configuración",
+        "pl": "* *Break Change:* * Zmiana nazwy państwa \"Charging_period 1_end\" na \"Charging_period_1_end\" \nOptymalizacja w oknie konfiguracji",
+        "uk": "** Зміна маршруту:** Перейменований стан \"Charging_period 1_end\" до \"Charging_period_1_end\"\nОптимізація в діалоговому вікні конфігурації",
+        "zh-cn": "** 产生变化:** 将状态“ Charging_周期1_期末” 改为“ Charging_周期1_期末”\n配置对话框中的优化"
+      },
       "2.3.0": {
         "en": "Provides the ability to read pseudo-realtime power data using the API function getTodayPowerBySn. This feature is useful for systems that lack \"realtime data support.\" When activated, data is fetched every 5 minutes and stored in the \"Recent\" folder.",
         "de": "Bietet die Möglichkeit, pseudo-realtime Stromdaten mit der API-Funktion getTodayPowerBySn zu lesen. Diese Funktion ist nützlich für Systeme, die keinen \"Realtime Data Support\" haben. Wenn aktiviert, werden alle 5 Minuten Daten gelesen und im Ordner \"Recent\" gespeichert.",
@@ -80,19 +93,6 @@
         "pl": "Zwiększony czas odczytu od 10 do 20 s",
         "uk": "Підвищений час читання від 10 до 20 с",
         "zh-cn": "阅读超时从10秒增加到20秒"
-      },
-      "2.1.2": {
-        "en": "Quality of states optimized",
-        "de": "Quality Wert von States optimiert",
-        "ru": "Качество оптимизированных состояний",
-        "pt": "Qualidade de estados otimizados",
-        "nl": "Kwaliteit van geoptimaliseerde staten",
-        "fr": "Qualité des états optimisés",
-        "it": "Qualità degli stati ottimizzati",
-        "es": "Calidad de los estados optimizada",
-        "pl": "Jakość państw zoptymalizowanych",
-        "uk": "Якість держав оптимізовано",
-        "zh-cn": "国家质量得到优化"
       }
     },
     "titleLang": {
