@@ -54,16 +54,6 @@
             "newLine": false,
             "disabled": "!data.oAEnableRealtime"
         },
-        "oAEnableRecent": {
-            "xs": 9.9,
-            "sm": 7.4,
-            "md": 3.6,
-            "lg": 2.8,
-            "xl": 2.8,
-            "type": "checkbox",
-            "newLine": true,
-            "label": "Get recent power data every 5 minutes (for systems with no realtime data)"
-        },
         "oAEnableEssList": {
             "xs": 1.1,
             "sm": 0.6,
@@ -169,6 +159,16 @@
             "newLine": false,
             "disabled": "!data.oAEnableSummary"
         },
+        "oAEnableRecent": {
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12,
+            "type": "checkbox",
+            "newLine": true,
+            "label": "Get recent power data every 5 minutes (for systems with no realtime data)"
+        },
         "oAEnableWallbox": {
             "xs": 1.1,
             "sm": 0.6,
@@ -191,11 +191,11 @@
             "disabled": "!data.oAEnableWallbox"
         },
         "updateUnchangedStates": {
-            "xs": 11,
-            "sm": 8,
-            "md": 4,
-            "lg": 3,
-            "xl": 3,
+            "xs": 12,
+            "sm": 12,
+            "md": 12,
+            "lg": 12,
+            "xl": 12,
             "type": "checkbox",
             "label": "Update unchanged states",
             "newLine": true

@@ -458,7 +458,7 @@ class OpenAPI {
                     {
                         alphaAttrName: 'timeChae1',
                         role: 'value',
-                        id: 'Charging_period 1_end',
+                        id: 'Charging_period_1_end',
                         name: 'Charging period 1 end',
                         type: 'string',
                         unit: '',
@@ -1407,12 +1407,6 @@ class AlphaEss extends utils.Adapter {
                 // Remove no longer supported groups:
                 await this.delObjectAsync('Settings', { recursive: true });
                 await this.delObjectAsync('StatisticsToday', { recursive: true });
-
-                if (this.config['apiType'] == 0) {
-                    this.log.error(
-                        'ClosedAPI is not longer supported! Please enter OpenAPI credentials in settings dialog if not already done!',
-                    );
-                }
             }
 
             if (this.config.appID && this.config.appSecret && this.config.systemId) {
@@ -1685,7 +1679,7 @@ class AlphaEss extends utils.Adapter {
             if (vParts.length >= 3) {
                 const major = Number.parseInt(vParts[0]);
                 //const minor = Number.parseInt(vParts[1]);
-                if (major >= 2) {
+                if (major >= 3) {
                     return false;
                 }
             }
