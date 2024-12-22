@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "3.0.0",
+    "version": "3.0.1",
     "news": {
+      "3.0.1": {
+        "en": "Optimizations of reading pseudo-realtime power data for slow systems",
+        "de": "Lesen von Pseudo-Realtime-Leistungsdaten für langsame Systeme optimiert",
+        "ru": "Оптимизация чтения псевдо-реальных данных питания для медленных систем",
+        "pt": "Otimizações de leitura de dados de energia pseudo-realtime para sistemas lentos",
+        "nl": "Optimalisaties van het lezen van pseudo-realtime stroomgegevens voor trage systemen",
+        "fr": "Optimisation de la lecture des données de puissance pseudo-en temps réel pour les systèmes lents",
+        "it": "Ottimizzazione dei dati di potenza pseudo-realtime di lettura per sistemi lenti",
+        "es": "Optimizaciones de lectura de datos de energía pseudo-real para sistemas lentos",
+        "pl": "Optymalizacja odczytu danych o mocy pseudorealtime dla powolnych systemów",
+        "uk": "Оптимізація даних псевдореального часу для повільних систем",
+        "zh-cn": "对慢系统读取伪实时功率数据的优化"
+      },
       "3.0.0": {
         "en": "**Breaking Change:** Renamed state \"Charging_period 1_end\" to \"Charging_period_1_end\"\nOptimizations in configuration dialog",
         "de": "**Breaking Change:** Zustand \"Charging_period 1_end\" wurde zu \"Charging_period_1_end\" umbenannt\nOptimierungen im Konfigurationsdialog",
@@ -18,7 +31,7 @@
       },
       "2.3.0": {
         "en": "Provides the ability to read pseudo-realtime power data using the API function getTodayPowerBySn. This feature is useful for systems that lack \"realtime data support.\" When activated, data is fetched every 5 minutes and stored in the \"Recent\" folder.",
-        "de": "Bietet die Möglichkeit, pseudo-realtime Stromdaten mit der API-Funktion getTodayPowerBySn zu lesen. Diese Funktion ist nützlich für Systeme, die keinen \"Realtime Data Support\" haben. Wenn aktiviert, werden alle 5 Minuten Daten gelesen und im Ordner \"Recent\" gespeichert.",
+        "de": "Bietet die Möglichkeit, pseudo-realtime Leistungsdaten mit der API-Funktion getTodayPowerBySn zu lesen. Diese Funktion ist nützlich für Systeme, die keinen \"Realtime Data Support\" haben. Wenn aktiviert, werden alle 5 Minuten Daten gelesen und im Ordner \"Recent\" gespeichert.",
         "ru": "Предоставляет возможность чтения псевдо-в реальном времени данных питания с использованием функции API getTodayPowerBySn. Эта функция полезна для систем, которые не имеют «поддержки данных в реальном времени». При активации данные загружаются каждые 5 минут и хранятся в папке «Recent».",
         "pt": "Fornece a capacidade de ler dados de energia pseudo-realtime usando a função API getTodayPowerBySn. Esse recurso é útil para sistemas que não possuem \"apoio de dados em tempo real\". Quando ativado, os dados são obtidos a cada 5 minutos e armazenados na pasta \"Recente\".",
         "nl": "Biedt de mogelijkheid om pseudo-realtime power data te lezen met behulp van de API-functie krijgenTodayPowerBySn. Deze functie is nuttig voor systemen die geen \"realtime data support\" hebben. Wanneer geactiveerd, worden de gegevens elke 5 minuten opgehaald en opgeslagen in de \"Recent\" map.",
@@ -80,19 +93,6 @@
         "pl": "Aktualizacja niektórych formalnych rzeczy",
         "uk": "Оновлено деякі формальні речі",
         "zh-cn": "更新了一些正式的东西"
-      },
-      "2.1.3": {
-        "en": "Increased read timeout from 10s to 20s",
-        "de": "Read Timeout von 10 auf 20 Sekunden erhöht",
-        "ru": "Увеличение времени чтения с 10 до 20 с",
-        "pt": "Aumento do tempo de leitura de 10 a 20 s",
-        "nl": "Verhoogde leestijd van 10 tot 20 s",
-        "fr": "Augmentation du temps de lecture de 10 à 20 s",
-        "it": "Tempo di lettura aumentato da 10 a 20 s",
-        "es": "Mayor tiempo de lectura de 10 a 20 s",
-        "pl": "Zwiększony czas odczytu od 10 do 20 s",
-        "uk": "Підвищений час читання від 10 до 20 с",
-        "zh-cn": "阅读超时从10秒增加到20秒"
       }
     },
     "titleLang": {

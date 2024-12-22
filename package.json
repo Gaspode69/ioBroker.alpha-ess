@@ -1,6 +1,6 @@
 {
   "name": "iobroker.alpha-ess",
-  "version": "3.0.0",
+  "version": "3.0.1",
   "description": "Read and write data from and to Alpha ESS systems.",
   "author": {
     "name": "Gaspode",
