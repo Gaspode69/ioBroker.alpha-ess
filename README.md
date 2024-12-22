@@ -62,6 +62,10 @@ How to find SN and Check code for registration is described here: https://github
 
 ## Changelog
 
+### **WORK IN PROGRESS**
+
+- (Gaspode) Optimizations of reading pseudo-realtime power data for slow systems
+
 ### 3.0.0 (2024-12-21)
 
 - (Gaspode) **Breaking Change:** Renamed state "Charging_period 1_end" to "Charging_period_1_end"

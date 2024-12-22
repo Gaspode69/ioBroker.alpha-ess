@@ -279,6 +279,14 @@ class OpenAPI {
                         type: 'string',
                         unit: null,
                     },
+                    {
+                        alphaAttrName: 'uploadTime',
+                        role: 'text',
+                        id: 'Upload_time',
+                        name: 'Upload time to Alpha ESS Cloud',
+                        type: 'string',
+                        unit: null,
+                    },
                 ],
             },
             {
@@ -875,8 +883,8 @@ class OpenAPI {
                 });
                 if (latestEntry.uploadTime != null) {
                     const deliveredTs = new Date(latestEntry.uploadTime.replace(' ', 'T')).getTime();
-                    if (Date.now() - deliveredTs < 300000) {
-                        // ensure that the data is not older than 5 minutes
+                    if (Date.now() - deliveredTs < 600000) {
+                        // ensure that the data is not older than 10 minutes
                         await this.adapter.createAndUpdateStates(group, latestEntry);
                     } else {
                         this.adapter.log.error(
@@ -1414,7 +1422,7 @@ class AlphaEss extends utils.Adapter {
                     const groupInfo = this.getStateInfoList()[gidx];
 
                     if (groupInfo.isSchedule) {
-                        groupInfo.interval = 300; // 5 Minutes, used for watchdog only
+                        groupInfo.interval = 600; // 10 Minutes, used for watchdog only
                     } else {
                         groupInfo.interval = this.config[groupInfo.intervalName] * groupInfo.intervalFactor;
                         this.log.debug(`${groupInfo.intervalName}: ${groupInfo.interval}`);
@@ -2058,7 +2066,7 @@ class AlphaEss extends utils.Adapter {
      */
     calculateIntervalInMs(timeInS, groupInfo) {
         if (groupInfo.isSchedule) {
-            // In this case we calculate the seconds until the next full 5 minutes plus 10 seconds
+            // In this case we calculate the seconds until the next full 5 minutes plus 50 seconds
             const now = new Date();
             const minutes = now.getMinutes();
             const seconds = now.getSeconds();
@@ -2066,7 +2074,7 @@ class AlphaEss extends utils.Adapter {
             const remainingMinutes = nextFullFiveMinute - minutes - 1;
             const remainingSeconds = 60 - seconds;
 
-            timeInS = remainingMinutes * 60 + remainingSeconds + 10;
+            timeInS = remainingMinutes * 60 + remainingSeconds + 50;
         } else {
             if (this.errorCount < 5) {
                 return timeInS * 1000;
