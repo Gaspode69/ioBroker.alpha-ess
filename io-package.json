@@ -168,6 +168,7 @@
   ],
   "native": {
     "apiType": 1,
+    "username": "",
     "appID": "",
     "appSecret": "",
     "systemId": "",
