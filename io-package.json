@@ -1,8 +1,21 @@
 {
   "common": {
     "name": "alpha-ess",
-    "version": "3.0.1",
+    "version": "4.0.0",
     "news": {
+      "4.0.0": {
+        "en": "Update dependencies, Node.js version 20 or later is now required",
+        "de": "Abhängigkeiten aktualisiert, Node.js Version 20 oder höher ist jetzt erforderlich",
+        "ru": "Обновление зависимостей, теперь требуется версия Node.js 20 или новее",
+        "pt": "Atualizar dependências, agora é necessária a versão 20 ou posterior do Node.js",
+        "nl": "Afhankelijkheden bijwerken, Node.js versie 20 of later is nu vereist",
+        "fr": "Mise à jour des dépendances, la version 20 ou ultérieure de Node.js est désormais requise",
+        "it": "Dipendenze di aggiornamento, ora è richiesta la versione 20 o successiva di Node.js",
+        "es": "Actualizar las dependencias, ahora se requiere la versión 20 o posterior de Node.js",
+        "pl": "Aktualizuj zależności, wymagana jest teraz wersja Node.js 20 lub nowsza",
+        "uk": "Оновлення залежності,  ",
+        "zh-cn": "更新依赖关系,现在需要 Node.js 20 或更高版本"
+      },
       "3.0.1": {
         "en": "Optimizations of reading pseudo-realtime power data for slow systems",
         "de": "Lesen von Pseudo-Realtime-Leistungsdaten für langsame Systeme optimiert",
@@ -80,19 +93,6 @@
         "pl": "Zoptymalizowany interfejs graficzny dla wszystkich rozdzielczości ekranu (responsible design)",
         "uk": "Оптимізований графічний інтерфейс для всіх дозволів екрану (відповідальний дизайн)",
         "zh-cn": "优化所有屏幕分辨率的图形用户界面(响应设计)"
-      },
-      "2.1.4": {
-        "en": "Updated some formal stuff",
-        "de": "Einige Formalien aktualisiert",
-        "ru": "Обновление некоторых формальных вещей",
-        "pt": "Actualizado algumas coisas formais",
-        "nl": "Bijgewerkt wat formele dingen",
-        "fr": "Mise à jour de certains trucs formels",
-        "it": "Aggiornato alcune cose formali",
-        "es": "Actualizado algunas cosas formales",
-        "pl": "Aktualizacja niektórych formalnych rzeczy",
-        "uk": "Оновлено деякі формальні речі",
-        "zh-cn": "更新了一些正式的东西"
       }
     },
     "titleLang": {
