@@ -58,7 +58,7 @@ How to find SN and Check code for registration is described here: https://github
 
 ### **WORK IN PROGRESS**
 
-- (Gaspode) Update dependencies
+- (Gaspode) Update dependencies, Node.js version 20 or later is now required
 
 ### 3.0.1 (2024-12-22)
 
