@@ -770,6 +770,27 @@ class OpenAPI {
                     },
                 ],
             },
+            {
+                Group: 'Wallbox_Current',
+                fnct: this.getWallboxCurrentData.bind(this),
+                writeFnct: this.writeConfigInfo.bind(this),
+                writeTimeoutIntervalInS: 0,
+                requestName: 'setEvChargerCurrentsBySn',
+                enabledName: 'oAEnableWallboxCurrent',
+                intervalName: 'oAIntervalWallboxCurrent',
+                intervalFactor: 1,
+                states: [
+                    {
+                        alphaAttrName: 'currentsetting',
+                        role: 'level.current',
+                        id: 'Current',
+                        name: 'Wallbox household current setting',
+                        type: 'number',
+                        unit: 'A',
+                        writeable: true,
+                    },
+                ],
+            },
         ];
 
         this.adapter = adapter;
@@ -1050,7 +1071,28 @@ class OpenAPI {
                     await this.handleError(res, group);
                 }
             } else {
-                this.adapter.log.error('No wallbox SN could be  found!');
+                this.adapter.log.error('No wallbox SN could be found for status request');
+            }
+        } catch (e) {
+            this.adapter.log.error(`Fetching data for group ${group}: Exception occurred: ${e}`);
+            await this.handleError(this.emptyBody, group);
+        }
+        await this.startGroupTimeout(group);
+    }
+
+    /**
+     * @param group Group name
+     */
+    async getWallboxCurrentData(group) {
+        try {
+            await this.adapter.stopGroupTimeout(group);
+
+            this.adapter.log.debug(`Fetching ${group} data...`);
+            const res = await this.getRequest(`getEvChargerCurrentsBySn?sysSn=${this.adapter.config.systemId}`, {});
+            if (res && res['status'] == 200 && res.data && res.data.data) {
+                await this.adapter.createAndUpdateStates(group, res.data.data);
+            } else {
+                await this.handleError(res, group);
             }
         } catch (e) {
             this.adapter.log.error(`Fetching data for group ${group}: Exception occurred: ${e}`);
@@ -1165,7 +1207,11 @@ class OpenAPI {
 
                     this.adapter.log.debug(`Write group ${group}: ${JSON.stringify(body)}`);
 
-                    const requestName = this.adapter.getStateInfoList()[gidx].requestName;
+                    const requestName =
+                        updStateInfo.alphaAttrName == 'remoteControlEvChargerStart' ||
+                        updStateInfo.alphaAttrName == 'remoteControlEvChargerStop'
+                            ? this.adapter.getStateInfoList()[gidx].requestName
+                            : null;
                     if (requestName) {
                         const res = await this.postRequest(requestName, body, {});
                         if (res && res['status'] == 200 && res.data) {
@@ -1384,6 +1430,7 @@ class AlphaEss extends utils.Adapter {
             this.log.debug(`config oAIntervalSettingsDischargeMins ${this.config.oAIntervalSettingsDischargeMins}`);
             this.log.debug(`config oAIntervalSummaryMins:          ${this.config.oAIntervalSummaryMins}`);
             this.log.debug(`config oAIntervalWallboxMins:          ${this.config.oAIntervalWallboxMins}`);
+            this.log.debug(`config oAIntervalWallboxCurrent:       ${this.config.oAIntervalWallboxCurrent}`);
             this.log.debug(`config oAEnableRealtime:               ${this.config.oAEnableRealtime}`);
             this.log.debug(`config oAEnableRealtime:               ${this.config.oAEnableRecent}`);
             this.log.debug(`config oAEnableEnergy:                 ${this.config.oAEnableEnergy}`);
@@ -1393,6 +1440,7 @@ class AlphaEss extends utils.Adapter {
             this.log.debug(`config oAEnableSettingsDischarge:      ${this.config.oAEnableSettingsDischarge}`);
             this.log.debug(`config oAEnableSummary:                ${this.config.oAEnableSummary}`);
             this.log.debug(`config oAEnableWallbox:                ${this.config.oAEnableWallbox}`);
+            this.log.debug(`config oAEnableWallboxCurrent:         ${this.config.oAEnableWallboxCurrent}`);
             this.log.debug(`config updateUnchangedStates:          ${this.config.updateUnchangedStates}`);
 
             this.wrongCredentials = false;

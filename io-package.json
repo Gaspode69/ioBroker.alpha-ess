@@ -185,6 +185,8 @@
     "oAIntervalSummaryMins": 5,
     "oAEnableWallbox": false,
     "oAIntervalWallboxMins": 5,
+    "oAEnableWallboxCurrent": false,
+    "oAIntervalWallboxCurrent": 30,
     "updateUnchangedStates": false
   },
   "objects": [],
