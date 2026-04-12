@@ -8,7 +8,7 @@
 // you need to create an adapter
 const utils = require('@iobroker/adapter-core');
 
-const crypto = require('crypto');
+const crypto = require('node:crypto');
 const axios = require('axios');
 
 const OA_BaseURI = 'https://openapi.alphaess.com/api';
