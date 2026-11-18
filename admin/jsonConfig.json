@@ -34,7 +34,7 @@
             "disabled": "data.apiType == 3"
         },
         "oAEnableRealtime": {
-            "xs": 1.1,
+            "xs": 12,
             "sm": 0.6,
             "md": 0.4,
             "lg": 0.2,
@@ -43,7 +43,7 @@
             "newLine": true
         },
         "oAIntervalRealtime": {
-            "xs": 9.9,
+            "xs": 12,
             "sm": 7.4,
             "md": 3.6,
             "lg": 2.8,
@@ -55,7 +55,7 @@
             "disabled": "!data.oAEnableRealtime"
         },
         "oAEnableEssList": {
-            "xs": 1.1,
+            "xs": 12,
             "sm": 0.6,
             "md": 0.4,
             "lg": 0.2,
@@ -64,7 +64,7 @@
             "newLine": true
         },
         "oAIntervalEssList": {
-            "xs": 9.9,
+            "xs": 12,
             "sm": 7.4,
             "md": 3.6,
             "lg": 2.8,
@@ -76,7 +76,7 @@
             "disabled": "!data.oAEnableEssList"
         },
         "oAEnableEnergy": {
-            "xs": 1.1,
+            "xs": 12,
             "sm": 0.6,
             "md": 0.4,
             "lg": 0.2,
@@ -85,7 +85,7 @@
             "newLine": true
         },
         "oAIntervalEnergyMins": {
-            "xs": 9.9,
+            "xs": 12,
             "sm": 7.4,
             "md": 3.6,
             "lg": 2.8,
@@ -97,7 +97,7 @@
             "disabled": "!data.oAEnableEnergy"
         },
         "oAEnableSettingsCharge": {
-            "xs": 1.1,
+            "xs": 12,
             "sm": 0.6,
             "md": 0.4,
             "lg": 0.2,
@@ -106,7 +106,7 @@
             "newLine": true
         },
         "oAIntervalSettingsChargeMins": {
-            "xs": 9.9,
+            "xs": 12,
             "sm": 7.4,
             "md": 3.6,
             "lg": 2.8,
@@ -118,7 +118,7 @@
             "disabled": "!data.oAEnableSettingsCharge"
         },
         "oAEnableSettingsDischarge": {
-            "xs": 1.1,
+            "xs": 12,
             "sm": 0.6,
             "md": 0.4,
             "lg": 0.2,
@@ -127,7 +127,7 @@
             "newLine": true
         },
         "oAIntervalSettingsDischargeMins": {
-            "xs": 9.9,
+            "xs": 12,
             "sm": 7.4,
             "md": 3.6,
             "lg": 2.8,
@@ -139,7 +139,7 @@
             "disabled": "!data.oAEnableSettingsDischarge"
         },
         "oAEnableSummary": {
-            "xs": 1.1,
+            "xs": 12,
             "sm": 0.6,
             "md": 0.4,
             "lg": 0.2,
@@ -148,7 +148,7 @@
             "newLine": true
         },
         "oAIntervalSummaryMins": {
-            "xs": 9.9,
+            "xs": 12,
             "sm": 7.4,
             "md": 3.6,
             "lg": 2.8,
@@ -170,7 +170,7 @@
             "label": "Get recent power data every 5 minutes (for systems with no realtime data)"
         },
         "oAEnableWallbox": {
-            "xs": 1.1,
+            "xs": 12,
             "sm": 0.6,
             "md": 0.4,
             "lg": 0.2,
@@ -179,7 +179,7 @@
             "newLine": true
         },
         "oAIntervalWallboxMins": {
-            "xs": 9.9,
+            "xs": 12,
             "sm": 7.4,
             "md": 3.6,
             "lg": 2.8,
@@ -191,7 +191,7 @@
             "disabled": "!data.oAEnableWallbox"
         },
         "oAEnableWallboxCurrent": {
-            "xs": 1.1,
+            "xs": 12,
             "sm": 0.6,
             "md": 0.4,
             "lg": 0.2,
@@ -200,7 +200,7 @@
             "newLine": true
         },
         "oAIntervalWallboxCurrent": {
-            "xs": 9.9,
+            "xs": 12,
             "sm": 7.4,
             "md": 3.6,
             "lg": 2.8,
